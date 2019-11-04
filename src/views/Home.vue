@@ -16,3 +16,10 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+  .aa{
+    width: 200px;
+    height: 200px;
+    background-color: orange;
+  }
+</style>

@@ -1,5 +1,12 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <div class="a">This is an about page</div>
   </div>
 </template>
+<style lang="scss" scoped>
+.a {
+  font-family: "Tangerine";
+  font-size: 40px;
+  color: orange;
+}
+</style>
