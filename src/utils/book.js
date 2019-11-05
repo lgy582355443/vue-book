@@ -97,13 +97,15 @@ export function themeList(vue) {
   ]
 }
 
-// export function getReadTimeByMinute(fileName) {
-//   if (!getReadTime(fileName)) {
-//     return 0
-//   } else {
-//     return Math.ceil(getReadTime(fileName) / 60)
-//   }
-// }
+//秒转化为 分
+export function getReadTimeByMinute(fileName) {
+  const readTime = getReadTime(fileName);
+  if (!readTime) {
+    return 0;
+  } else {
+    return Math.ceil(readTime / 60);
+  }
+}
 
 export function getCategoryName(id) {
   switch (id) {
@@ -336,4 +338,9 @@ export function reset(vue) {
   vue.$store.dispatch('setSettingVisible', 0)
   vue.$store.dispatch('setFontFamilyVisible', false)
   vue.$store.dispatch('setSpeakingIconBottom', realPx(58))
+}
+
+//把书籍目录数组转为一维数组
+export function flatten(array) {
+  return [].concat(...array.map(item => [].concat(item, ...flatten(item.subitems))))
 }

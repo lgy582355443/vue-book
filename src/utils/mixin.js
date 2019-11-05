@@ -25,11 +25,12 @@ export const ebookMixin = {
       'pagelist',
       'offsetY',
       'isBookmark',
-      'speakingIconBottom'
     ]),
+
     themeList() {
       return themeList(this)
     },
+
     // getSectionName() {
     //   if (this.section) {
     //     const sectionInfo = this.currentBook.section(this.section)
@@ -39,6 +40,11 @@ export const ebookMixin = {
     //     }
     //   }
     // }
+
+    //获取已阅读时间
+    getReadTimeText() {
+      return this.$t("book.haveRead").replace("$1", getReadTimeByMinute(this.fileName));
+    }
   },
   data() {
     return {
@@ -69,24 +75,29 @@ export const ebookMixin = {
       'setIsBookmark',
       'setSpeakingIconBottom'
     ]),
+
     //显示字体选择
     showFontFamilySetting() {
       this.setFontFamilyVisible(true)
     },
+
     //隐藏字体选择
     hideFontFamilySetting() {
       this.setFontFamilyVisible(false)
     },
+
     //book底部bar选择的settingVisible相对应得功能,
     showSetting(key) {
       this.setSettingVisible(key)
     },
+
     //隐藏所有菜单
     hideMenuVisible() {
       this.setMenuVisible(false)
       this.setSettingVisible(-1)
       this.setFontFamilyVisible(false)
     },
+
     //菜单栏显示隐藏
     toggleMenuVisible() {
       if (this.menuVisible) {
@@ -118,6 +129,7 @@ export const ebookMixin = {
           break
       }
     },
+
     //注册主题
     registerTheme() {
       this.themeList.forEach(theme => {
@@ -148,6 +160,7 @@ export const ebookMixin = {
         Storage.saveFontSize(this.fileName, fontSize)
       })
     },
+
     //设置字体样式
     setFontFamily(font) {
       this.setDefaultFontFamily(font).then(() => {
@@ -186,6 +199,7 @@ export const ebookMixin = {
     //         })
     //       }
     //     },
+
     //渲染book
     display(target, callback) {
       if (target) {
@@ -196,7 +210,7 @@ export const ebookMixin = {
           }
         })
       } else {
-        this.currentBook.renditions.display().then(() => {
+        this.currentBook.rendition.display().then(() => {
           this.refreshLocation();
           if (callback) {
             callback();
@@ -204,6 +218,7 @@ export const ebookMixin = {
         })
       }
     },
+
     //     //渲染book
     //     display(target, highlight = false) {
     //       if (target) {
@@ -225,19 +240,31 @@ export const ebookMixin = {
     //       }
     //       this.hideMenuVisible()
     //     },
+
     //更新进度
     refreshLocation() {
       const currentLocation = this.currentBook.rendition.currentLocation();
-      //  通过本章第一个字currentLocation.start.cfi
-      const startCfi = currentLocation.start.cfi
-      //获取百分比
-      const progress = this.currentBook.locations.percentageFromCfi(
-        startCfi
-      );
-      this.setProgress(Math.floor(progress * 100));
-      this.setSection(currentLocation.start.index);
-      Storage.saveLocation(this.fileName, startCfi);
+      if (currentLocation && currentLocation.start) {
+        //  通过本章第一个字currentLocation.start.cfi
+        const startCfi = currentLocation.start.cfi
+        //获取百分比
+        const progress = this.currentBook.locations.percentageFromCfi(startCfi);
+        this.setProgress(Math.floor(progress * 100));
+        this.setSection(currentLocation.start.index);
+        Storage.saveLocation(this.fileName, startCfi);
+        const bookmark = Storage.getBookObject(this.fileName);
+        if (bookmark) {
+          if (bookmark.some(item => item.cfi == startCfi)) {
+            this.setIsBookmark(true)
+          } else {
+            this.setIsBookmark(false)
+          }
+        } else {
+          this.setIsBookmark(false)
+        }
+      }
     },
+
     //     //更新进度
     //     refreshLocation() {
     //       const currentLocation = this.currentBook.rendition.currentLocation()
@@ -268,10 +295,7 @@ export const ebookMixin = {
     //         Storage.saveLocation(this.fileName, cfistart)
     //       }
     //     },
-    //     //获取已阅读时间
-    //     getReadTime() {
-    //       return this.$t('book.haveRead').replace('$1', getReadTimeByMinute(this.fileName))
-    //     }
+    //     
   }
 }
 

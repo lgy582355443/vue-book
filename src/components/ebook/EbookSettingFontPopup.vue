@@ -25,7 +25,7 @@
   </transition>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 import { ebookMixin } from "@/utils/mixin";
 import { getFontFamily, saveFontFamily } from "../../utils/localStorage";
 export default {

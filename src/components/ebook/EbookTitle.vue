@@ -19,7 +19,7 @@
   </transition>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 import { ebookMixin } from "@/utils/mixin";
 export default {
   name: "EbookTitle",

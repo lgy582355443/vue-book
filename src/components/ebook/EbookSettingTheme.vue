@@ -20,7 +20,7 @@
   </transition>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 import { ebookMixin } from "@/utils/mixin";
 import { saveTheme, getTheme } from "../../utils/localStorage";
 
@@ -36,7 +36,7 @@ export default {
 
 .setting-wrapper {
   position: absolute;
-  bottom: 50px;
+  bottom: 48px;
   left: 0;
   z-index: 190;
   width: 100%;
