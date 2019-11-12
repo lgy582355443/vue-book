@@ -116,7 +116,6 @@ export default {
             );
             return item;
           });
-          // this.$refs.searchInput.blur();
         });
       }
     },

@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import { px2rem } from "@/utils/utils";
 export default {
   props: {
     width: Number,
@@ -23,8 +24,11 @@ export default {
   methods: {
     refresh() {
       if (this.height && this.width && this.width > 0 && this.height > 10) {
-        this.$refs.bookmark.style.borderWidth = `${this.height - 5}px ${this
-          .width / 2}px ${5}px ${this.width / 2}px`;
+        this.$refs.bookmark.style.borderWidth = `${px2rem(
+          this.height - 5
+        )}rem ${px2rem(this.width / 2)}rem ${px2rem(5)}rem ${px2rem(
+          this.width / 2
+        )}rem`;
       }
     }
   },

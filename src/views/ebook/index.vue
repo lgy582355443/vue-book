@@ -1,15 +1,19 @@
 <template>
   <div class="ebook-main">
     <div class="ebook" ref="ebook">
+      <ebook-header></ebook-header>
       <ebook-bookmark></ebook-bookmark>
       <ebook-title></ebook-title>
       <ebook-reader></ebook-reader>
       <ebook-menu></ebook-menu>
+      <ebook-footer></ebook-footer>
     </div>
   </div>
 </template>
 
 <script>
+import EbookFooter from "@/components/ebook/EbookFooter";
+import EbookHeader from "@/components/ebook/EbookHeader";
 import EbookBookmark from "@/components/ebook/EbookBookmark";
 import EbookTitle from "@/components/ebook/EbookTitle";
 import EbookMenu from "@/components/ebook/EbookMenu";
@@ -24,7 +28,9 @@ export default {
     EbookReader,
     EbookTitle,
     EbookMenu,
-    EbookBookmark
+    EbookBookmark,
+    EbookHeader,
+    EbookFooter
   },
   props: {},
   data() {

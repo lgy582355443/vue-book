@@ -30,7 +30,7 @@ export function themeList(vue) {
           'color': '#4c5059',
           'background': '#cecece',
           'padding-top': `50px!important`,
-          'padding-bottom': `50pxpx!important`
+          'padding-bottom': `50px!important`
         },
         img: {
           'width': '100%'
@@ -47,8 +47,8 @@ export function themeList(vue) {
         body: {
           'color': '#5c5b56',
           'background': '#c6c2b6',
-          'padding-top': `50pxpx!important`,
-          'padding-bottom': `50pxpx!important`
+          'padding-top': `50px!important`,
+          'padding-bottom': `50px!important`
         },
         img: {
           'width': '100%'
@@ -65,8 +65,8 @@ export function themeList(vue) {
         body: {
           'color': '#404c42',
           'background': '#a9c1a9',
-          'padding-top': `50pxpx!important`,
-          'padding-bottom': `50pxpx!important`
+          'padding-top': `50px!important`,
+          'padding-bottom': `50px!important`
         },
         img: {
           'width': '100%'
@@ -83,8 +83,8 @@ export function themeList(vue) {
         body: {
           'color': '#cecece',
           'background': '#000000',
-          'padding-top': `50pxpx!important`,
-          'padding-bottom': `50pxpx!important`
+          'padding-top': `50px!important`,
+          'padding-bottom': `50px!important`
         },
         img: {
           'width': '100%'
@@ -92,7 +92,7 @@ export function themeList(vue) {
         '.epubjs-hl': {
           'fill': 'red', 'fill-opacity': '0.3', 'mix-blend-mode': 'multiply'
         }
-      }
+      } 
     }
   ]
 }
@@ -107,141 +107,9 @@ export function getReadTimeByMinute(fileName) {
   }
 }
 
-export function getCategoryName(id) {
-  switch (id) {
-    case 1:
-      return 'ComputerScience'
-    case 2:
-      return 'SocialSciences'
-    case 3:
-      return 'Economics'
-    case 4:
-      return 'Education'
-    case 5:
-      return 'Engineering'
-    case 6:
-      return 'Environment'
-    case 7:
-      return 'Geography'
-    case 8:
-      return 'History'
-    case 9:
-      return 'Laws'
-    case 10:
-      return 'LifeSciences'
-    case 11:
-      return 'Literature'
-    case 12:
-      return 'Biomedicine'
-    case 13:
-      return 'BusinessandManagement'
-    case 14:
-      return 'EarthSciences'
-    case 15:
-      return 'MaterialsScience'
-    case 16:
-      return 'Mathematics'
-    case 17:
-      return 'MedicineAndPublicHealth'
-    case 18:
-      return 'Philosophy'
-    case 19:
-      return 'Physics'
-    case 20:
-      return 'PoliticalScienceAndInternationalRelations'
-    case 21:
-      return 'Psychology'
-    case 22:
-      return 'Statistics'
-  }
-}
-
-export function categoryText(category, vue) {
-  switch (category) {
-    case 1:
-      return vue.$t('category.computerScience')
-    case 2:
-      return vue.$t('category.socialSciences')
-    case 3:
-      return vue.$t('category.economics')
-    case 4:
-      return vue.$t('category.education')
-    case 5:
-      return vue.$t('category.engineering')
-    case 6:
-      return vue.$t('category.environment')
-    case 7:
-      return vue.$t('category.geography')
-    case 8:
-      return vue.$t('category.history')
-    case 9:
-      return vue.$t('category.laws')
-    case 10:
-      return vue.$t('category.lifeSciences')
-    case 11:
-      return vue.$t('category.literature')
-    case 12:
-      return vue.$t('category.biomedicine')
-    case 13:
-      return vue.$t('category.businessandManagement')
-    case 14:
-      return vue.$t('category.earthSciences')
-    case 15:
-      return vue.$t('category.materialsScience')
-    case 16:
-      return vue.$t('category.mathematics')
-    case 17:
-      return vue.$t('category.medicineAndPublicHealth')
-    case 18:
-      return vue.$t('category.philosophy')
-    case 19:
-      return vue.$t('category.physics')
-    case 20:
-      return vue.$t('category.politicalScienceAndInternationalRelations')
-    case 21:
-      return vue.$t('category.psychology')
-    case 22:
-      return vue.$t('category.statistics')
-  }
-}
-
-export function showBookDetail(vue, book) {
-  vue.$router.push({
-    path: '/book-store/detail',
-    query: {
-      fileName: book.fileName,
-      category: book.categoryText
-    }
-  })
-}
-
-export const categoryList = {
-  'ComputerScience': 1,
-  'SocialSciences': 2,
-  'Economics': 3,
-  'Education': 4,
-  'Engineering': 5,
-  'Environment': 6,
-  'Geography': 7,
-  'History': 8,
-  'Laws': 9,
-  'LifeSciences': 10,
-  'Literature': 11,
-  'Biomedicine': 12,
-  'BusinessandManagement': 13,
-  'EarthSciences': 14,
-  'MaterialsScience': 15,
-  'Mathematics': 16,
-  'MedicineAndPublicHealth': 17,
-  'Philosophy': 18,
-  'Physics': 19,
-  'PoliticalScienceAndInternationalRelations': 20,
-  'Psychology': 21,
-  'Statistics': 22
-}
-
 const BOOK_SHELF_KEY = 'bookShelf'
 
+//加入书架
 export function addToShelf(book) {
   let bookList = getLocalStorage(BOOK_SHELF_KEY)
   bookList = clearAddFromBookList(bookList)
@@ -254,6 +122,7 @@ export function addToShelf(book) {
   setLocalStorage(BOOK_SHELF_KEY, bookList)
 }
 
+
 export function appendAddToBookList(bookList) {
   bookList.push({
     cover: '',
@@ -262,6 +131,7 @@ export function appendAddToBookList(bookList) {
     id: Number.MAX_SAFE_INTEGER
   })
 }
+
 
 export function clearAddFromBookList(bookList) {
   return bookList.filter(item => {

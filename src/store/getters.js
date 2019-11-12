@@ -17,7 +17,14 @@ const book = {
   paginate: state => state.book.paginate,
   pagelist: state => state.book.pagelist,
   offsetY: state => state.book.offsetY,
-  isBookmark: state => state.book.isBookmark
+  isBookmark: state => state.book.isBookmark,
+  hotSearchOffsetY: state => state.home.hotSearchOffsetY,
+  flapCardVisible: state => state.home.flapCardVisible,
+  isEditMode: state => state.home.isEditMode,
+  shelfList: state => state.home.shelfList,
+  shelfSelected: state => state.home.shelfSelected,
+  shelfTitleVisible: state => state.home.shelfTitleVisible,
+  shelfCategory: state => state.home.shelfCategory,
+  currentType: state => state.home.currentType
 }
-
 export default book

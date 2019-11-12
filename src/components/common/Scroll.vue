@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { realPx } from "@/utils/utils";
+import { realPx } from "../../utils/utils";
 
 export default {
   props: {

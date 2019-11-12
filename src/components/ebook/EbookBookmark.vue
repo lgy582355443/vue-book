@@ -13,6 +13,7 @@
 </template>
 
 <script>
+ import { realPx } from '@/utils/utils';
 import BookMark from "@/components/common/Bookmark";
 import { ebookMixin } from "../../utils/mixin";
 import { saveBookmark, getBookmark } from "../../utils/localStorage";
@@ -29,11 +30,17 @@ export default {
       color: WHITE,
       text: this.$t("book.pulldownAddMark"),
       isFixed: false,
-      height: 35,
-      threshold: 55 //临界值
     };
   },
   computed: {
+    //书签高
+     height() {
+        return realPx(35)
+      },
+      //临界值
+      threshold() {
+        return realPx(55)
+      },
     fixedStyle() {
       return {
         position: "fixed",
@@ -73,7 +80,7 @@ export default {
     //归位
     restore() {
       setTimeout(() => {
-        this.$refs.ebookBookmark.style.top = -this.height + "px";
+        this.$refs.ebookBookmark.style.top = -100% + "px";
         this.$refs.iconDown.style.transform = "rotate(0deg)";
       }, 200);
       if (this.isFixed) {
@@ -107,6 +114,7 @@ export default {
           cfi: currentLocation.start.cfi,
           text: text
         });
+        saveBookmark(this.fileName, this.bookmark);
       });
     },
 
@@ -177,7 +185,7 @@ export default {
   position: absolute;
   top: -35px;
   left: 0;
-  z-index: 300;
+  z-index: 100;
   width: 100%;
   height: 35px;
   .ebook-bookmark-text-wrapper {
@@ -185,6 +193,7 @@ export default {
     right: 45px;
     bottom: 0;
     display: flex;
+     z-index: 101;
     .ebook-bookmark-down-wrapper {
       font-size: 14px;
       color: #ffffff;
@@ -201,6 +210,7 @@ export default {
     right: 0;
     bottom: 0;
     margin-right: 10px;
+    z-index: 100;
   }
 }
 </style>

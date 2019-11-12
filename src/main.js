@@ -9,6 +9,9 @@ import './assets/styles/reset.scss'
 import './assets/fonts/fonts.css'
 // 初始化html font-size
 import 'lib-flexible';
+// import './mock/index';
+import './utils/boost'
+import './utils/create-api'
 
 Vue.config.productionTip = false
 

@@ -46,23 +46,7 @@ export default {
       isProgressLoading: false
     };
   },
-  computed: {
-    getSectionName() {
-      // if (this.section) {
-      // const sectionInfo = this.currentBook.section(this.section);
-      // if (
-      //   sectionInfo &&
-      //   sectionInfo.href &&
-      //   this.currentBook &&
-      //   this.currentBook.navigation
-      // ) {
-      //   //获取当前章节目录  .label就是标题
-      //   return this.currentBook.navigation.get(sectionInfo.href).label;
-      // }
-      // }
-      return this.section ? this.navigation[this.section].label : "";
-    }
-  },
+  computed: {},
   created() {},
   methods: {
     //上一章
@@ -94,6 +78,7 @@ export default {
         });
       }
     },
+    
     //渲染当前章节的text内容
     displaySection() {
       const sectionInfo = this.currentBook.section(this.section);
@@ -109,14 +94,16 @@ export default {
         // this.displayProgress();
       });
     },
+
     //拖动结束后
     onProgressChange(progress) {
       this.setProgress(progress).then(() => {
         this.updateProgressBg();
         this.displayProgress();
       });
-      saveProgress(this.fileName, progress);
+      // saveProgress(this.fileName, progress);
     },
+
     //渲染当前进度的text内容
     displayProgress() {
       const cfi = this.currentBook.locations.cfiFromPercentage(
@@ -124,6 +111,7 @@ export default {
       );
       this.display(cfi);
     },
+
     //进度条动态样式 (当前进度,总进度)
     updateProgressBg() {
       this.$refs.progress.style.backgroundSize = `${this.progress}% 100%`;

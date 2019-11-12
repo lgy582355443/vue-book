@@ -50,6 +50,14 @@ export function saveBookmark(fileName, bookmark) {
   setBookObject(fileName, 'bookmark', bookmark)
 }
 
+export function saveBookShelf(shelf) {
+  return setLocalStorage('shelf', shelf);
+}
+
+export function getBookShelf() {
+  return getLocalStorage('shelf');
+}
+
 export function getReadTime(fileName) {
   return getBookObject(fileName, 'time')
 }
