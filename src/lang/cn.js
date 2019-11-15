@@ -94,10 +94,8 @@ const messages = {
     startDownload: '开始下载...',
     progressDownload: '正在下载：$1',
     downloadFirst: '请先缓存图书',
-    welcome: '欢迎访问慕课网<br>学习《实战微信读书——媲美原生APP的企业级Web书城》<br>--------  作者：Sam  --------',
     find: '去找书',
     changeLanguage: '切换语言',
-    studyNow: '去慕课网学习'
   },
   detail: {
     copyright: '版权',
@@ -111,7 +109,7 @@ const messages = {
     read: '阅读',
     listen: '听书',
     addOrRemoveShelf: '加入书架',
-    isAddedToShelf: '已加入书架'
+    isAddedToShelf: '已加入书架',
   },
   speak: {
     voice: '语音朗读',
@@ -120,7 +118,8 @@ const messages = {
     timing: '定时',
     current: '当前章节',
     requestFailed: '请求失败!',
-    apply: '语义解析核心技术由科大讯飞提供'
+    apply: '语义解析核心技术由科大讯飞提供',
+    goBackDetail:'返回详情页'
   },
   book: {
     pulldownAddMark: '下拉添加书签',

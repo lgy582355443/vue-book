@@ -8,12 +8,12 @@
         <div class="icon-wrapper">
           <span class="icon-shelf"></span>
         </div>
-        <div class="icon-wrapper">
+        <!-- <div class="icon-wrapper">
           <span class="icon-cart"></span>
         </div>
         <div class="icon-wrapper" @click="gotoBookStore">
           <span class="icon-more"></span>
-        </div>
+        </div> -->
       </div>
     </div>
   </transition>
@@ -34,9 +34,8 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" rel="stylesheet/scss" scoped>
-@import "../../assets/styles/global";
+<style lang="scss" scoped>
+@import "../../assets/styles/global.scss";
 
 .title-wrapper {
   position: absolute;

@@ -120,7 +120,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global";
+@import "../../assets/styles/global.scss";
 .shelf-search-wrapper {
   position: relative;
   z-index: 105;

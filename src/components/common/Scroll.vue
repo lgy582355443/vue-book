@@ -64,7 +64,8 @@ export default {
 };
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style lang="scss" scoped>
+@import "../../assets/styles/global.scss";
 .scroll-wrapper {
   position: relative;
   z-index: 100;

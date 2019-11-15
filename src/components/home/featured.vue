@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
   import TitleView from '@/components/home/title'
   import { realPx } from '@/utils/utils'
   import { categoryText } from '@/utils/home'
@@ -68,8 +68,8 @@
   }
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
-  @import "../../assets/styles/global";
+<style lang="scss" scoped>
+@import "../../assets/styles/global.scss";
 
   .featured {
     .featured-list {

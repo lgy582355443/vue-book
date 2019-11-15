@@ -20,7 +20,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
   import TitleView from '@/components/home/title'
   import { categoryText, getCategoryName } from '@/utils/home'
 
@@ -50,9 +50,8 @@
     }
   }
 </script>
-
-<style lang="scss" rel="stylesheet/scss" scoped>
-  @import "../../assets/styles/global";
+<style lang="scss" scoped>
+@import "../../assets/styles/global.scss";
 
   .category {
     .category-list {
@@ -62,13 +61,13 @@
       .category-item-wrapper {
         flex: 0 0 50%;
         width: 50%;
-        padding: 0 px2rem(5) px2rem(10) px2rem(5);
+        padding: 0 5px 10px 5px;
         box-sizing: border-box;
         &:nth-child(odd) {
-          padding-left: px2rem(10);
+          padding-left: 10px;
         }
         &:nth-child(even) {
-          padding-right: px2rem(10);
+          padding-right: 10px;
         }
         .category-item {
           display: flex;
@@ -77,28 +76,28 @@
           .img-wrapper {
             flex: 0 0 50%;
             width: 50%;
-            padding: px2rem(20) px2rem(10);
+            padding: 20px 10px;
             box-sizing: border-box;
             .img-group {
               position: relative;
               width: 100%;
-              height: px2rem(60);
+              height: 60px;
               @include left;
               .img {
                 position: absolute;
                 left: 0;
                 top: 0;
                 z-index: 100;
-                width: px2rem(45);
-                height: px2rem(60);
+                width: 45px;
+                height: 60px;
               }
               .img2 {
                 position: absolute;
-                left: px2rem(30);
-                top: px2rem(7.5);
+                left: 30px;
+                top: 7.5px;
                 z-index: 99;
-                width: px2rem(30);
-                height: px2rem(45);
+                width: 30px;
+                height: 45px;
               }
             }
           }
@@ -111,7 +110,7 @@
             }
             .num {
               text-align: center;
-              margin-top: px2rem(5);
+              margin-top: 5px;
             }
           }
         }

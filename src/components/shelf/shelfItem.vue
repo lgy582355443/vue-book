@@ -84,7 +84,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global";
+@import "../../assets/styles/global.scss";
 .shelf-item {
   position: relative;
   width: 100%;

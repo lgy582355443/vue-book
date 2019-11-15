@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
   import TitleView from '@/components/home/title'
   import { realPx } from '@/utils/utils'
   import { StoreHomeMixin } from '../../utils/mixin'
@@ -93,8 +93,8 @@
   }
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
-  @import "../../assets/styles/global";
+<style lang="scss" scoped>
+@import "../../assets/styles/global.scss";
 
   .guess-you-like {
     .guess-you-like-list {

@@ -27,7 +27,6 @@
 
 <script>
 import { ebookMixin } from "@/utils/mixin";
-import { getFontFamily, saveFontFamily } from "../../utils/localStorage";
 export default {
   name: "EbookSettingFontPopup",
   mixins: [ebookMixin],
@@ -38,9 +37,8 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" rel="stylesheet/scss" scoped>
-@import "../../assets/styles/global";
+<style lang="scss" scoped>
+@import "../../assets/styles/global.scss";
 
 .ebook-popup-list {
   position: absolute;

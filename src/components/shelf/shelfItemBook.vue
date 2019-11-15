@@ -15,9 +15,8 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" rel="stylesheet/scss" scoped>
-@import "../../assets/styles/global";
+<style lang="scss" scoped>
+@import "../../assets/styles/global.scss";
 .shelf-item-book {
   width: 100%;
   height: 100%;
@@ -31,7 +30,7 @@ export default {
     bottom: 0;
     width: 0;
     height: 0;
-    border-width: px2rem(15);
+    border-width: 15px;
     border-style: solid;
     border-color: transparent transparent rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.3);
   }
@@ -39,13 +38,13 @@ export default {
     position: absolute;
     left: 0;
     bottom: 0;
-    width: px2rem(30);
-    height: px2rem(30);
-    padding-bottom: px2rem(5);
-    padding-left: px2rem(3);
+    width: 30px;
+    height: 30px;
+    padding-bottom: 5px;
+    padding-left: 3px;
     @include leftBottom;
     .icon-private {
-      font-size: px2rem(12);
+      font-size: 12px;
       color: white;
     }
   }

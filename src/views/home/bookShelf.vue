@@ -17,10 +17,10 @@
 
 <script>
 import ShelfTitle from "../../components/shelf/shelfTitle";
+import Scroll from "../../components/common/Scroll";
 import ShelfSearch from "../../components/shelf/shelfSearch";
 import ShelfList from "../../components/shelf/shelfList";
 import ShelfFooter from "../../components/shelf/shelfFooter";
-import Scroll from "../../components/common/Scroll";
 import { shelfMixin } from "../../utils/mixin";
 
 export default {
@@ -62,7 +62,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global";
+@import "../../assets/styles/global.scss";
 .book-shelf {
   position: relative;
   z-index: 100;

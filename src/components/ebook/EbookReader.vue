@@ -10,11 +10,15 @@
       @mousemove.left="onMouseMove"
       @mouseup.left="onMouseEnd"
     ></div>
+    <div class="empty" v-if="!bookAvailable">
+      <ebook-loading></ebook-loading>
+    </div>
   </div>
 </template>
 
 <script>
 import Epub from "epubjs";
+import EbookLoading from "./EbookLoading";
 import { ebookMixin } from "@/utils/mixin";
 import { flatten } from "../../utils/book";
 import {
@@ -33,7 +37,9 @@ global.ePub = Epub;
 export default {
   name: "EbookReader",
   mixins: [ebookMixin],
-  components: {},
+  components: {
+    EbookLoading
+  },
   props: {},
   data() {
     return {
@@ -53,45 +59,49 @@ export default {
       // this.initGuest();
       this.parseBook();
       //book解析完成后获取locations对象
-      this.book.ready.then(() => {
-        return this.book.locations
-          .generate(
+      this.book.ready
+        .then(() => {
+          return this.book.locations.generate(
             750 * (window.innerWidth / 375) * (getFontSize(this.fileName) / 16)
-          )
-          .then(locations => {
-            // //获取分页
-            // locations.forEach(item => {
-            //   const loc = item.match(/\[(.*)\]!/)[1];
-            //   this.navigation.forEach(nav => {
-            //     if (nav.href) {
-            //       const href = nav.href.match(/^(.*)\.html$/)[1];
-            //       console.log(nav);
-            //       if (href == loc) {
-            //         nav.pagelist.push(item);
-            //       }
-            //     }
-            //   });
-            //   let currentPage = 1;
-            //   this.navigation.forEach((nav, index) => {
-            //     if (index == 0) {
-            //       nav.page = 1;
-            //     } else {
-            //       nav.page = currentPage;
-            //     }
-            //     currentPage += nav.pagelist.length + 1;
-            //   });
-            // });
-            // this.setPageList(location);
-            //加载完成
-            this.setBookAvailable(true);
-            this.refreshLocation();
-          });
-      });
+          );
+        })
+        .then(locations => {
+          // //获取分页
+          // this.navigation.forEach(nav => {
+          //   nav.pagelist = [];
+          // });
+          // locations.forEach(item => {
+          //   const loc = item.match(/\[(.*)\]!/)[1];
+          //   this.navigation.forEach(nav => {
+          //     if (nav.href) {
+          //       const href = nav.href.match(/^(.*)\.html$/);
+          //       if (href) {
+          //         if (href[1] === loc) {
+          //           nav.pagelist.push(item);
+          //         }
+          //       }
+          //     }
+          //   });
+          //   let currentPage = 1;
+          //   this.navigation.forEach((nav, index) => {
+          //     if (index === 0) {
+          //       nav.page = 1;
+          //     } else {
+          //       nav.page = currentPage;
+          //     }
+          //     currentPage += nav.pagelist.length + 1;
+          //   });
+          // });
+          // this.setPageList(location);
+          //加载完成
+          this.setBookAvailable(true);
+          this.refreshLocation();
+        });
     },
 
     //初始化rendition对象
     initRendition() {
-      this.book.rendition = this.book.renderTo("read", {
+      this.rendition = this.book.renderTo("read", {
         width: window.innerWidth,
         height: window.innerHeight,
         method: "default"
@@ -100,15 +110,29 @@ export default {
       const location = getLocation(this.fileName);
       this.display(location, () => {
         this.initTheme();
-        this.initFontFamily();
         this.initFontSize();
+        this.initFontFamily();
         // this.refreshLocation();
         this.parseBook();
       });
       //载入字体文件
-      this.book.rendition.hooks.content.register(contents => {
-        let fontURL = process.env.VUE_APP_RES_URL + "/fonts/fonts.css";
-        contents.addStylesheet(fontURL).then(() => {});
+      this.rendition.hooks.content.register(contents => {
+        // let fontURL = process.env.VUE_APP_RES_URL + "/fonts/fonts.css";
+        // contents.addStylesheet(fontURL).then(() => {});
+        Promise.all([
+          contents.addStylesheet(
+            `${process.env.VUE_APP_RES_URL}/fonts/daysOne.css`
+          ),
+          contents.addStylesheet(
+            `${process.env.VUE_APP_RES_URL}/fonts/cabin.css`
+          ),
+          contents.addStylesheet(
+            `${process.env.VUE_APP_RES_URL}/fonts/montserrat.css`
+          ),
+          contents.addStylesheet(
+            `${process.env.VUE_APP_RES_URL}/fonts/tangerine.css`
+          )
+        ]).then(() => {});
       });
     },
 
@@ -122,7 +146,7 @@ export default {
       } else {
         this.setDefaultTheme(defaultTheme);
       }
-      this.book.rendition.themes.select(this.defaultTheme);
+      this.rendition.themes.select(this.defaultTheme);
       this.setGlobalTheme(this.defaultTheme);
     },
 
@@ -135,7 +159,7 @@ export default {
       } else {
         this.setDefaultFontSize(fontSize);
       }
-      this.book.rendition.themes.fontSize(this.defaultFontSize);
+      this.rendition.themes.fontSize(this.defaultFontSize);
     },
 
     //初始化字体样式
@@ -147,7 +171,7 @@ export default {
       } else {
         this.setDefaultFontFamily(font);
       }
-      this.book.rendition.themes.font(this.defaultFontFamily);
+      this.rendition.themes.font(font);
     },
 
     //解析book,获取封面图片,作者等信息
@@ -161,23 +185,33 @@ export default {
         this.setMetadata(metadata);
       });
       this.book.loaded.navigation.then(nav => {
+        console.log(nav);
         //把目录转化为一维数组
         const navItem = flatten(nav.toc);
+        console.log(navItem);
         //添加level属性,指定每项目录标是哪一级的目录
         function find(item, level = 0) {
+          const parent = navItem.filter(parentItem => {
+            parentItem.id == item.parent;
+          })[0];
           if (!item.parent) {
             return level;
           } else {
-            return find(
-              navItem.filter(parentItem => {
-                parentItem.id == item.parent;
-              })[0],
-              ++level
-            );
+            if (parent) {
+              return find(parent, ++level);
+            }
+            return level;
           }
         }
-        navItem.map(item => {
+        navItem.forEach((item, index) => {
           item.level = find(item);
+          item.total = 0;
+          item.pagelist = [];
+          if (item.href.match(/^(.*)\.html$/)) {
+            item.idhref = item.href.match(/^(.*)\.html$/)[1];
+          } else if (item.href.match(/^(.*)\.xhtml$/)) {
+            item.idhref = item.href.match(/^(.*)\.xhtml$/)[1];
+          }
         });
         this.setNavigation(navItem);
       });
@@ -185,27 +219,31 @@ export default {
 
     //上一页
     prevPage() {
-      if (this.book.rendition) {
-        this.book.rendition.prev().then(() => {
+      if (this.bookAvailable) {
+        this.rendition.prev().then(() => {
           this.refreshLocation();
         });
+        this.hideMenuVisible();
       }
-      this.hideMenuVisible();
     },
 
     //下一页
     nextPage() {
-      if (this.book.rendition) {
-        this.book.rendition.next().then(() => {
+      if (this.bookAvailable) {
+        this.rendition.next().then(() => {
           this.refreshLocation();
         });
+        this.hideMenuVisible();
       }
-      this.hideMenuVisible();
     },
 
     //mask上的手势操作,翻页..
     onMaskClick(e) {
-      if (this.mouseState && (this.mouseState == 2 || this.mouseState == 3)) {
+      if (
+        this.mouseState &&
+        (this.mouseState == 2 || this.mouseState == 3) &&
+        !this.bookAvailable
+      ) {
         return;
       }
       const offsetX = e.offsetX;
@@ -221,6 +259,9 @@ export default {
 
     //下拉book
     move(e) {
+      if (!this.bookAvailable) {
+        return;
+      }
       let offsetY = 0;
       if (this.firstOffsetY) {
         offsetY = e.changedTouches[0].clientY - this.firstOffsetY;
@@ -234,6 +275,9 @@ export default {
 
     //下拉松手
     moveEnd(e) {
+      if (!this.bookAvailable) {
+        return;
+      }
       this.setOffsetY(0);
       this.firstOffsetY = null;
     },
@@ -245,6 +289,9 @@ export default {
     //4-鼠标还原
 
     onMouseEnter(e) {
+      if (!this.bookAvailable) {
+        return;
+      }
       this.mouseState = 1;
       this.mouseStartTime = e.timeStamp;
       e.preventDefault();
@@ -252,6 +299,9 @@ export default {
     },
 
     onMouseMove(e) {
+      if (!this.bookAvailable) {
+        return;
+      }
       if (this.mouseState == 1) {
         this.mouseState = 2;
       } else if (this.mouseState == 2) {
@@ -266,6 +316,9 @@ export default {
     },
 
     onMouseEnd(e) {
+      if (!this.bookAvailable) {
+        return;
+      }
       if (this.mouseState == 2) {
         this.setOffsetY(0);
         this.firstOffsetY = null;
@@ -284,11 +337,11 @@ export default {
 
     // //初始化book手势功能
     // initGuest() {
-    //   this.book.rendition.on("touchstart", event => {
+    //  this.rendition.on("touchstart", event => {
     //     this.touchStartX = event.changedTouches[0].clientX;
     //     this.touchStartTime = event.timeStamp;
     //   });
-    //   this.book.rendition.on("touchend", event => {
+    //  this.rendition.on("touchend", event => {
     //     const offsetX = event.changedTouches[0].clientX - this.touchStartX;
     //     const time = event.timeStamp - this.touchStartTime;
     //     if (time < 500 && offsetX > 40) {
@@ -324,6 +377,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import "../../assets/styles/global.scss";
 .ebook-reader {
   width: 100%;
   height: 100%;
@@ -335,6 +389,18 @@ export default {
     height: 100%;
     width: 100%;
     z-index: 100;
+  }
+  .empty {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 120;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(82, 81, 81);
+    @include center;
+    // font-size: 16px;
+    // color: #333;
   }
 }
 </style>

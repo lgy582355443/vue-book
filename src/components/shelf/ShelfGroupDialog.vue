@@ -200,18 +200,18 @@ export default {
 };
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style lang="scss" scoped>
 @import "../../assets/styles/global.scss";
 
 .dialog-list-wrapper {
   width: 100%;
-  padding: 0 px2rem(20);
+  padding: 0 20px;
   box-sizing: border-box;
-  font-size: px2rem(14);
+  font-size: 14px;
   @include scroll;
   .dialog-list-item {
     display: flex;
-    padding: px2rem(15) 0;
+    padding: 15px 0;
     box-sizing: border-box;
     color: #666;
     &.is-add {
@@ -227,7 +227,7 @@ export default {
       flex: 1;
     }
     .dialog-list-icon-wrapper {
-      flex: 0 0 px2rem(30);
+      flex: 0 0 30px;
       color: $color-blue;
       @include right;
     }
@@ -236,23 +236,23 @@ export default {
 
 .dialog-new-group-wrapper {
   width: 100%;
-  padding: 0 px2rem(20);
+  padding: 0 20px;
   box-sizing: border-box;
   .dialog-input-title-wrapper {
-    font-size: px2rem(10);
-    margin-top: px2rem(20);
+    font-size: 10px;
+    margin-top: 20px;
   }
   .dialog-input-wrapper {
     width: 100%;
-    padding: 0 0 px2rem(30) 0;
+    padding: 0 0 30px 0;
     box-sizing: border-box;
     .dialog-input-inner-wrapper {
       display: flex;
       width: 100%;
-      padding: px2rem(10) 0;
+      padding: 10px 0;
       box-sizing: border-box;
-      border-bottom: px2rem(1) solid #eee;
-      font-size: px2rem(14);
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
       color: #666;
       .dialog-input {
         flex: 1;
@@ -262,7 +262,7 @@ export default {
         }
       }
       .dialog-input-clear-wrapper {
-        flex: 0 0 px2rem(30);
+        flex: 0 0 30px;
         color: #ccc;
         @include center;
         &:active {

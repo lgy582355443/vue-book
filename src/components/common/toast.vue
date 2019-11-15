@@ -52,8 +52,8 @@ export default {
 };
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
-@import "../../assets/styles/global";
+<style lang="scss" scoped>
+@import "../../assets/styles/global.scss";
 .toast-bg-wrapper {
   position: absolute;
   left: 0;
@@ -72,12 +72,12 @@ export default {
     @include center;
     .toast-wrapper {
       width: 60%;
-      line-height: px2rem(20);
-      padding: px2rem(10) px2rem(20);
+      line-height: 20px;
+      padding: 10px 20px;
       box-sizing: border-box;
       background: #ccc;
-      border-radius: px2rem(10);
-      font-size: px2rem(14);
+      border-radius: 10px;
+      font-size: 14px;
       color: white;
       .toast {
         text-align: center;

@@ -12,7 +12,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 // import { px2rem } from '@/utils/utils'
 
 export default {
@@ -100,8 +100,8 @@ export default {
 };
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
-@import "../../assets/styles/global";
+<style lang="scss" scoped>
+@import "../../assets/styles/global.scss";
 
 .ebook-loading {
   position: relative;

@@ -1,9 +1,9 @@
 
 <template>
-  <div class="store-shelf">
+  <div class="store-category">
     <shelf-title :title="shelfCategory.title" ></shelf-title>
     <scroll
-      class="store-shelf-scroll-wrapper"
+      class="store-category-scroll-wrapper"
       :top="0"
       :bottom="scrollBottom"
       @onScroll="onScroll"
@@ -13,17 +13,17 @@
       <shelf-list :top="42" :data="shelfCategory.itemList"></shelf-list>
     </scroll>
     <!-- 分类列表数据为空时展示内容 -->
-    <div class="store-shelf-empty-view" v-else>{{$t('shelf.groupNone')}}</div>
+    <div class="store-category-empty-view" v-else>{{$t('shelf.groupNone')}}</div>
     <shelf-footer></shelf-footer>
   </div>
 </template>
 
 <script>
 import ShelfTitle from "../../components/shelf/shelfTitle";
-import { shelfMixin } from "../../utils/mixin";
 import Scroll from "../../components/common/Scroll";
 import ShelfList from "../../components/shelf/shelfList";
 import ShelfFooter from "../../components/shelf/shelfFooter";
+import { shelfMixin } from "../../utils/mixin";
 
 export default {
   mixins: [shelfMixin],
@@ -73,28 +73,28 @@ export default {
 };
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
-@import "../../assets/styles/global";
+<style lang="scss" scoped>
+@import "../../assets/styles/global.scss";
 
-.store-shelf {
+.store-category{
   position: relative;
   z-index: 100;
   width: 100%;
   height: 100%;
   background: white;
-  .store-shelf-scroll-wrapper {
+  .store-category-scroll-wrapper {
     position: absolute;
     top: 0;
     left: 0;
     z-index: 101;
   }
-  .store-shelf-empty-view {
+  .store-category-empty-view {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    font-size: px2rem(14);
+    font-size: 14px;
     color: #333;
     @include center;
   }

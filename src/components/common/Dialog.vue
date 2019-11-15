@@ -39,8 +39,8 @@
   }
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
-  @import "../../assets/styles/global";
+<style lang="scss" scoped>
+@import "../../assets/styles/global.scss";
 
   .dialog {
     position: fixed;
@@ -52,7 +52,7 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, .2);
-    font-size: px2rem(16);
+    font-size: 16px;
     color: #333;
     @include center;
     .dialog-wrapper {
@@ -62,24 +62,24 @@
       width: 60%;
       max-height: 80%;
       background: white;
-      border-radius: px2rem(10);
+      border-radius: 10px;
       .dialog-title-wrapper {
-        font-size: px2rem(22);
+        font-size: 22px;
         font-weight: bold;
         text-align: center;
-        padding: px2rem(30) 0 px2rem(20) 0;
+        padding: 30px 0 20px 0;
       }
       .dialog-btn-wrapper {
         display: flex;
         width: 100%;
         background: $color-blue;
-        font-size: px2rem(14);
+        font-size: 14px;
         font-weight: bold;
         color: white;
         text-align: center;
-        padding: px2rem(15) 0;
+        padding: 15px 0;
         box-sizing: border-box;
-        border-radius: 0 0 px2rem(10) px2rem(10);
+        border-radius: 0 0 10px 10px;
         .dialog-btn {
           flex: 1;
           &.is-empty {

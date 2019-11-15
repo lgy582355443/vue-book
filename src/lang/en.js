@@ -120,7 +120,8 @@ const messages = {
     timing: 'Timing',
     current: 'Current Section',
     requestFailed: 'Request failed!',
-    apply: 'The core technology of semantic analysis is provided by iFLY TEK'
+    apply: 'The core technology of semantic analysis is provided by iFLY TEK',
+    goBackDetail: 'Back to details page'
   },
   book: {
     pulldownAddMark: 'Pull down to add bookmark',

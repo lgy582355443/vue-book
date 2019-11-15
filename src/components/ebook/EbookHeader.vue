@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
   import { ebookMixin } from '../../utils/mixin'
 
   export default {
@@ -12,8 +12,8 @@
   }
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
-  @import "../../assets/styles/global";
+<style lang="scss" scoped>
+@import "../../assets/styles/global.scss";
 
   .ebook-header {
     position: absolute;

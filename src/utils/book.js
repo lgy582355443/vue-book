@@ -27,8 +27,8 @@ export function themeList(vue) {
       name: 'Default',
       style: {
         body: {
-          'color': '#4c5059',
-          'background': '#cecece',
+          'color': '#424242',
+          'background': '#EBECEC',
           'padding-top': `50px!important`,
           'padding-bottom': `50px!important`
         },
@@ -45,8 +45,8 @@ export function themeList(vue) {
       name: 'Gold',
       style: {
         body: {
-          'color': '#5c5b56',
-          'background': '#c6c2b6',
+          'color': '#605A57',
+          'background': '#FFF6E6',
           'padding-top': `50px!important`,
           'padding-bottom': `50px!important`
         },
@@ -63,8 +63,8 @@ export function themeList(vue) {
       name: 'Eye',
       style: {
         body: {
-          'color': '#404c42',
-          'background': '#a9c1a9',
+          'color': '#3E4937',
+          'background': '#CEEABA',
           'padding-top': `50px!important`,
           'padding-bottom': `50px!important`
         },
@@ -81,8 +81,8 @@ export function themeList(vue) {
       name: 'Night',
       style: {
         body: {
-          'color': '#cecece',
-          'background': '#000000',
+          'color': '#A4A294',
+          'background': '#171B19',
           'padding-top': `50px!important`,
           'padding-bottom': `50px!important`
         },

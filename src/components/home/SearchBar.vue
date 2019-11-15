@@ -1,11 +1,7 @@
 <template>
   <div class="search-main">
     <div class="search-bar" :class="{'hide-title':!titleVisible , 'hide-shadow':!shadowVisible}">
-      <div
-        class="title-icon-back-wrapper"
-        @click="back"
-        :class="{'hide-title':!titleVisible}"
-      >
+      <div class="title-icon-back-wrapper" @click="back" :class="{'hide-title':!titleVisible}">
         <span class="icon-back icon"></span>
       </div>
       <transition name="title-move">
@@ -15,6 +11,9 @@
           </div>
           <div class="title-icon-shake-wrapper" @click="showFlapCard">
             <span class="icon-shake icon"></span>
+          </div>
+          <div class="title-icon-shelf-wrapper" @click="goBookShelf">
+            <span class="icon-shelf icon"></span>
           </div>
         </div>
       </transition>
@@ -120,6 +119,9 @@ export default {
         this.$router.push("/home/shelf");
       }
     },
+    goBookShelf() {
+      this.$router.push("/home/shelf");
+    },
     //隐藏热门搜索
     hidehotSearch() {
       this.hotSearchVisible = false;
@@ -142,8 +144,8 @@ export default {
 };
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
-@import "../../assets/styles/global";
+<style lang="scss" scoped>
+@import "../../assets/styles/global.scss";
 
 .search-bar {
   position: relative;
@@ -194,7 +196,18 @@ export default {
       height: 100%;
       @include center;
       .icon-shake {
-        font-size: 16px;
+        font-size: 20px;
+      }
+    }
+    .title-icon-shelf-wrapper {
+      position: absolute;
+      right: 50px;
+      top: 0;
+      z-index: 110;
+      height: 100%;
+      @include center;
+      .icon-shelf {
+        font-size: 20px;
       }
     }
   }

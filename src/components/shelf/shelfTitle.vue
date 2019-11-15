@@ -5,10 +5,10 @@
         <span class="shelf-title-text">{{title}}</span>
         <span class="shelf-title-sub-text" v-show="isEditMode">{{selectedText}}</span>
       </div>
-      <div class="shelf-title-btn-wrapper shelf-title-left" v-if="showClear">
+      <div class="shelf-title-btn-wrapper shelf-title-left clear-cache" v-if="showClear">
         <span class="shelf-title-btn-text" @click="clearCache">{{$t('shelf.clearCache')}}</span>
       </div>
-      <div class="shelf-title-btn-wrapper shelf-title-left" v-if="showBack">
+      <div class="shelf-title-btn-wrapper shelf-title-left back" v-if="showBack">
         <span class="icon-back" @click="back"></span>
       </div>
       <div class="shelf-title-btn-wrapper shelf-title-right" v-show="showEdit">
@@ -70,7 +70,7 @@ export default {
       return this.currentType === 1;
     },
     showBack() {
-      return this.currentType === 2 && !this.isEditMode;
+      return !this.isEditMode;
     },
 
     showChangeGroup() {
@@ -220,7 +220,13 @@ export default {
     },
 
     back() {
-      this.$router.go(-1);
+      if (this.currentType == 1) {
+        this.$router.push({
+          path: "/home/storeHome"
+        });
+      } else {
+        this.$router.go(-1);
+      }
       this.setIsEditMode(false);
     }
   },
@@ -229,7 +235,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global";
+@import "../../assets/styles/global.scss";
 .shelf-title {
   position: relative;
   z-index: 130;
@@ -268,11 +274,17 @@ export default {
     @include center;
     &.shelf-title-left {
       left: 15px;
-    }
-    .icon-back {
-      font-size: 20px;
-      color: #666;
-      margin-left: 10px;
+      &.clear-cache {
+        left: 30px;
+      }
+      &.back {
+        left: 5px;
+        padding: 0;
+        .icon-back {
+          font-size: 20px;
+          color: #666;
+        }
+      }
     }
     &.shelf-title-right {
       right: 15px;

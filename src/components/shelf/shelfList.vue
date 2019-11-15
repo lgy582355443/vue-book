@@ -49,7 +49,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global";
+@import "../../assets/styles/global.scss";
 .shelf-list {
   position: absolute;
   z-index: 104;

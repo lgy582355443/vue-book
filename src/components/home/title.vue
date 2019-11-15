@@ -5,7 +5,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
   export default {
     props: {
       label: String,
@@ -30,8 +30,8 @@
   }
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
-  @import "../../assets/styles/global";
+<style lang="scss" scoped>
+@import "../../assets/styles/global.scss";
   .home-title-wrapper {
     width: 100%;
     padding: px2rem(15) px2rem(10);

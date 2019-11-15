@@ -1,6 +1,6 @@
 import { mapGetters, mapActions } from 'vuex'
 import { FONT_SIZE_LIST, FONT_FAMILY, themeList, getReadTimeByMinute } from './book'
-import { gotoBookDetail, appendAddToShelf, computeId, removeAddFromShelf } from './home'
+import { gotoBookDetail, appendAddToShelf, computeId, removeAddFromShelf, removeFromBookShelf, addToShelf } from './home'
 import { addCss, removeAllCss } from './utils'
 import { shelfApi } from "@/api/home";
 import * as Storage from './localStorage'
@@ -47,7 +47,7 @@ export const ebookMixin = {
       //   return this.currentBook.navigation.get(sectionInfo.href).label;
       // }
       // }
-      return this.section ? this.navigation[this.section].label : "";
+      return this.section ? this.navigation[this.section].label : ''
     },
 
     //获取已阅读时间
@@ -147,25 +147,25 @@ export const ebookMixin = {
     },
 
     //给book设置样式
-    // switchTheme() {
-    // const rules = this.themeList.filter(theme => theme.name === this.defaultTheme)[0]
-    // if (this.defaultFontFamily && this.defaultFontFamily !== 'Default') {
-    //   rules.style.body['font-family'] = `${this.defaultFontFamily}!important`
-    // } else {
-    //   rules.style.body['font-family'] = `Cabin!important`
-    // }
-    //   this.registerTheme()
-    //   this.setGlobalTheme(this.defaultTheme)
-    //   this.currentBook.rendition.themes.font(this.defaultFontFamily);
-    //   this.currentBook.rendition.themes.select(this.defaultTheme)
-    //   this.currentBook.rendition.themes.fontSize(this.defaultFontSize)
-    // },
+    switchTheme() {
+      const rules = this.themeList.filter(theme => theme.name === this.defaultTheme)[0]
+      if (this.defaultFontFamily && this.defaultFontFamily !== 'Default') {
+        rules.style.body['font-family'] = `${this.defaultFontFamily}!important`
+      } else {
+        rules.style.body['font-family'] = `Cabin!important`
+      }
+      this.registerTheme()
+      this.setGlobalTheme(this.defaultTheme)
+      this.currentBook.rendition.themes.font(this.defaultFontFamily);
+      this.currentBook.rendition.themes.select(this.defaultTheme)
+      this.currentBook.rendition.themes.fontSize(this.defaultFontSize)
+    },
 
     //设置字体大小
     setFontSize(fontSize) {
       this.setDefaultFontSize(fontSize).then(() => {
-        // this.switchTheme()
-        this.currentBook.rendition.themes.fontSize(this.defaultFontSize)
+        this.switchTheme()
+        // this.currentBook.rendition.themes.fontSize(this.defaultFontSize)
         Storage.saveFontSize(this.fileName, fontSize)
       })
     },
@@ -173,8 +173,8 @@ export const ebookMixin = {
     //设置字体样式
     setFontFamily(font) {
       this.setDefaultFontFamily(font).then(() => {
-        // this.switchTheme()
-        this.currentBook.rendition.themes.font(this.defaultFontFamily);
+        this.switchTheme()
+        // this.currentBook.rendition.themes.font(this.defaultFontFamily);
         Storage.saveFontFamily(this.fileName, font)
       })
     },
@@ -182,9 +182,9 @@ export const ebookMixin = {
     //设置主题
     setTheme(theme) {
       this.setDefaultTheme(theme).then(() => {
-        // this.switchTheme()
-        this.currentBook.rendition.themes.select(this.defaultTheme)
-        this.setGlobalTheme(this.defaultTheme)
+        this.switchTheme()
+        // this.currentBook.rendition.themes.select(this.defaultTheme)
+        // this.setGlobalTheme(this.defaultTheme)
         Storage.saveTheme(this.fileName, theme)
       })
     },
@@ -212,14 +212,13 @@ export const ebookMixin = {
     refreshLocation() {
       const currentLocation = this.currentBook.rendition.currentLocation();
       if (currentLocation && currentLocation.start) {
+        this.setSection(currentLocation.start.index);
         //  通过本章第一个字currentLocation.start.cfi
         const startCfi = currentLocation.start.cfi
         //获取百分比
         const progress = this.currentBook.locations.percentageFromCfi(startCfi);
         this.setProgress(Math.floor(progress * 100));
-        this.setSection(currentLocation.start.index);
-        // debugger
-        Storage.saveLocation(this.fileName, startCfi);
+
         //判断当前页是否为书签页
         const bookmark = Storage.getBookmark(this.fileName);
         if (bookmark) {
@@ -231,6 +230,8 @@ export const ebookMixin = {
         } else {
           this.setIsBookmark(false)
         }
+        // debugger
+        Storage.saveLocation(this.fileName, startCfi);
       }
     },
 
@@ -268,7 +269,8 @@ export const shelfMixin = {
       'offsetY',
       'shelfCategory',
       'currentType'
-    ])
+    ]),
+
   },
   methods: {
     ...mapActions([
@@ -285,6 +287,7 @@ export const shelfMixin = {
       gotoBookDetail(this, book)
     },
 
+    //获取书架列表
     getShelfList() {
       let shelfList = Storage.getBookShelf();
       if (!shelfList) {
@@ -305,6 +308,7 @@ export const shelfMixin = {
       }
     },
 
+    //获取当前分组里的内容
     getCategoryList(title) {
       this.getShelfList().then(() => {
         const categoryList = this.shelfList.filter(book => book.type === 2 && book.title === title)[0]

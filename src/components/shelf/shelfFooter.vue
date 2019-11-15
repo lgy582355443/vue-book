@@ -99,7 +99,6 @@ export default {
         download(
           book,
           book => {
-            console.log("下载完毕");
             toast.remove();
             resolve(book);
           },
@@ -322,7 +321,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global";
+@import "../../assets/styles/global.scss";
 .shelf-footer {
   position: fixed;
   bottom: 0;

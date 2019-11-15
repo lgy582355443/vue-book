@@ -11,13 +11,20 @@ const mockBookShelfData = require('./src/mock/bookShelf')
 
 
 module.exports = {
-  publicPath: '/',
+  publicPath: './',
   devServer: {
     before(app) {
       mock(app, '/book/home', mockBookHomeData)
       mock(app, '/book/shelf', mockBookShelfData)
       mock(app, '/book/list', mockBookList)
       mock(app, '/book/flat-list', mockBookFlatList)
+    }
+  },
+  configureWebpack: {
+    performance: {
+      hints: 'warning',
+      maxAssetSize: 734003,
+      maxEntrypointSize: 734003
     }
   }
 }

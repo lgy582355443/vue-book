@@ -78,7 +78,7 @@ export default {
         });
       }
     },
-    
+
     //渲染当前章节的text内容
     displaySection() {
       const sectionInfo = this.currentBook.section(this.section);
@@ -123,8 +123,8 @@ export default {
 };
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
-@import "../../assets/styles/global";
+<style lang="scss" scoped>
+@import "../../assets/styles/global.scss";
 
 .setting-wrapper {
   position: absolute;
@@ -133,6 +133,7 @@ export default {
   z-index: 190;
   width: 100%;
   height: 90px;
+  background-color: #fff;
   box-shadow: 0 -8px 8px rgba(0, 0, 0, 0.15);
   .setting-progress {
     position: relative;
@@ -158,8 +159,8 @@ export default {
         width: 100%;
         -webkit-appearance: none;
         height: 2px;
-        // background: -webkit-linear-gradient(#5d6268, #5d6268) no-repeat, #b4b5b7;
-        // background-size: 0 100%;
+        background: -webkit-linear-gradient(#5d6268, #5d6268) no-repeat, #b4b5b7;
+        background-size: 0 100%;
         margin: 0 10px;
         &:focus {
           outline: none;

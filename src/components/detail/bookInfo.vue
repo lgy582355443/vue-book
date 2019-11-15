@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
   export default {
     props: {
       cover: String,
@@ -27,50 +27,49 @@
     }
   }
 </script>
-
-<style lang="scss" rel="stylesheet/scss" scoped>
-  @import "../../assets/styles/global";
+<style lang="scss" scoped>
+@import "../../assets/styles/global.scss";
   .cover-title-wrapper {
     display: flex;
     width: 100%;
-    padding: px2rem(10) 0;
-    border-bottom: px2rem(1) solid #eee;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
     box-sizing: border-box;
     .cover-title-left-wrapper {
-      flex: 0 0 px2rem(103);
-      padding: px2rem(10) 0 px2rem(10) px2rem(15);
+      flex: 0 0 103px; 
+      padding: 10px 0 10px 15px;
       box-sizing: border-box;
       @include top;
       .cover-img {
-        width: px2rem(103);
-        height: px2rem(146);
+        width: 103px;  
+        height: 146px; 
       }
     }
     .cover-title-right-wrapper {
       flex: 1;
-      padding: px2rem(10) px2rem(15);
+      padding: 10px 15px;
       box-sizing: border-box;
       .detail-cover-title-wrapper {
         .cover-title-text {
-          font-size: px2rem(24);
-          line-height: px2rem(26);
+          font-size: 24px;
+          line-height: 26px;
           font-weight: bold;
           color: #333;
         }
       }
       .cover-author-wrapper {
-        margin-top: px2rem(10);
+        margin-top: 10px;
         .cover-author-text {
-          font-size: px2rem(14);
-          line-height: px2rem(16);
+          font-size: 14px;
+          line-height: 16px;
           color: $color-blue;
         }
       }
       .detail-cover-description-wrapper {
-        margin-top: px2rem(10);
+        margin-top: 10px;
         .detail-cover-description-text {
-          font-size: px2rem(14);
-          line-height: px2rem(16);
+          font-size: 14px;
+          line-height: 16px;
           color: #666;
           word-break: keep-all;
           white-space: normal;

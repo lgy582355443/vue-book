@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import ebook from '../views/ebook/index.vue'
+// import ebook from '../views/ebook/index.vue'
 
 Vue.use(VueRouter)
 
@@ -48,6 +47,10 @@ const routes = [
       {
         path: 'category',
         component: () => import(/* webpackChunkName: "bookCategory" */ '../views/home/bookCategory.vue'),
+      },
+      {
+        path: 'speaking',
+        component: () => import(/* webpackChunkName: "bookSpeaking" */ '../views/home/bookSpeaking.vue'),
       },
     ]
   }

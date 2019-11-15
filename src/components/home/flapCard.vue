@@ -43,7 +43,7 @@
           <div class="author sub-title-medium">{{data?data.author:''}}</div>
           <div class="category">{{categoryText()}}</div>
         </div>
-        <div class="read-btn" @click.stop="showBookDetail(data)">{{$t('home.readNow')}}</div>
+        <div class="read-btn" @click.stop="goBookDetail(data)">{{$t('home.readNow')}}</div>
       </div>
     </div>
     <div class="close-btn-wrapper" @click="close">
@@ -99,6 +99,10 @@ export default {
     close() {
       this.setFlapCardVisible(false);
       this.stopFlapCardAnimation();
+    },
+    goBookDetail(book) {
+      this.showBookDetail(book);
+      this.close();
     },
     //半圆样式
     semiCricelStyle(item, direction) {
@@ -241,7 +245,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global";
+@import "../../assets/styles/global.scss";
 .flap-card-wrapper {
   position: absolute;
   top: 0;
