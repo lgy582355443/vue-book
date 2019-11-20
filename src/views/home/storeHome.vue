@@ -46,7 +46,7 @@ export default {
     return {
       scrollTop: 94,
       random: null,
-      banner: '',
+      banner: "",
       guessYouLike: null,
       recommend: null,
       featured: null,
@@ -69,10 +69,9 @@ export default {
   },
   created() {},
   mounted() {
-    homeApi().then(res => {
-      if (res && res.status == 200) {
-        console.log(res);
-        const data = res.data;
+    homeApi().then(response => {
+      if (response && response.status === 200) {
+        const data = response.data;
         const randomIndex = Math.floor(Math.random() * data.random.length);
         this.random = data.random[randomIndex];
         this.banner = data.banner;

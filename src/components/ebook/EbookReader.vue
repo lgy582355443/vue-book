@@ -44,7 +44,8 @@ export default {
   data() {
     return {
       book: null,
-      mouseState: null
+      mouseState: null,
+      isOnline: false
     };
   },
   watch: {},
@@ -107,14 +108,24 @@ export default {
         method: "default"
         // flow:'scrolled' //滚动模式,兼容不好
       });
-      const location = getLocation(this.fileName);
-      this.display(location, () => {
-        this.initTheme();
-        this.initFontSize();
-        this.initFontFamily();
-        // this.refreshLocation();
-        this.parseBook();
-      });
+      if (this.$route.query.navigation) {
+        this.display(this.$route.query.navigation, () => {
+          this.initTheme();
+          this.initFontSize();
+          this.initFontFamily();
+          // this.refreshLocation();
+          this.parseBook();
+        });
+      } else {
+        const location = getLocation(this.fileName);
+        this.display(location, () => {
+          this.initTheme();
+          this.initFontSize();
+          this.initFontFamily();
+          // this.refreshLocation();
+          this.parseBook();
+        });
+      }
       //载入字体文件
       this.rendition.hooks.content.register(contents => {
         // let fontURL = process.env.VUE_APP_RES_URL + "/fonts/fonts.css";
@@ -176,11 +187,17 @@ export default {
 
     //解析book,获取封面图片,作者等信息
     parseBook() {
-      this.book.loaded.cover.then(cover => {
-        this.book.archive.createUrl(cover).then(url => {
+      if (this.isOnline) {
+        this.book.coverUrl().then(url => {
           this.setCover(url);
         });
-      });
+      } else {
+        this.book.loaded.cover.then(cover => {
+          this.book.archive.createUrl(cover).then(url => {
+            this.setCover(url);
+          });
+        });
+      }
       this.book.loaded.metadata.then(metadata => {
         this.setMetadata(metadata);
       });
@@ -363,14 +380,21 @@ export default {
     getLocalForage(fileName, (err, blob) => {
       if (!err && blob) {
         this.setFileName(books.join("/")).then(() => {
+          this.isOnline = false;
           this.initEpub(blob);
         });
       } else {
-        // let fileName = this.$route.params.fileName.split("|").join("/");
-        this.setFileName(books.join("/")).then(() => {
-          const url = process.env.VUE_APP_EPUB_URL + this.fileName + ".epub";
-          this.initEpub(url);
-        });
+        if (this.$route.query.opf) {
+          this.isOnline = true;
+          this.initEpub(this.$route.query.opf);
+        } else {
+          // let fileName = this.$route.params.fileName.split("|").join("/");
+          this.setFileName(books.join("/")).then(() => {
+            const url = process.env.VUE_APP_EPUB_URL + this.fileName + ".epub";
+            this.isOnline = true;
+            this.initEpub(url);
+          });
+        }
       }
     });
   }

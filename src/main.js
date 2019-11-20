@@ -12,6 +12,7 @@ import 'lib-flexible';
 // import './mock/index';
 import './utils/boost'
 import './utils/create-api'
+import './utils/lazy'
 
 Vue.config.productionTip = false
 

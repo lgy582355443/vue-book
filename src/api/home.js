@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Book } from 'epubjs';
 import { setLocalForage } from '../utils/localForage';
 
 export function homeApi() {

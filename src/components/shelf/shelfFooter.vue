@@ -187,7 +187,7 @@ export default {
         this.removeSelectedBook();
       } else {
         await this.downloadSelectedBook();
-        saveBookShelf(this.shelFlist);
+        saveBookShelf(this.shelfList);
         this.toast({
           text: this.$t("shelf.setDownloadSuccess")
         }).show();

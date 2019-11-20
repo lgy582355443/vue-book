@@ -292,7 +292,6 @@ export const shelfMixin = {
       let shelfList = Storage.getBookShelf();
       if (!shelfList) {
         shelfApi().then(response => {
-          console.log(response, "书架列表");
           if (
             response.status == 200 &&
             response.data &&

@@ -196,13 +196,6 @@ export default {
       this.$refs.toast.show();
     },
 
-    // 阅读电子书
-    readBook() {
-      this.$router.push({
-        path: `/ebook/${this.bookItem.categoryText}|${this.fileName}`
-      });
-    },
-
     // 听书
     trialListening() {
       // 如果电子书已经缓存，从IndexedDB中读取电子书
@@ -227,12 +220,32 @@ export default {
       });
     },
 
+    // 阅读电子书
+    readBook() {
+      this.$router.push({
+        path: `/ebook/${this.bookItem.categoryText}|${this.fileName}`
+      });
+    },
+
     // 通过章节阅读电子书
     read(item) {
-      this.$router.push({
-        path: `/ebook/${this.categoryText}|${this.fileName}`,
-        query: {
-          href: item.href
+      console.log("hhh");
+      getLocalForage(this.bookItem.fileName, (err, blob) => {
+        if (!err && blob && blob instanceof Blob) {
+          this.$router.push({
+            path: `/ebook/${this.categoryText}|${this.bookItem.fileName}`,
+            query: {
+              navigation: item.href
+            }
+          });
+        } else {
+          this.$router.push({
+            path: `/ebook/${this.categoryText}|${this.fileName}`,
+            query: {
+              navigation: item.href,
+              opf: this.opf
+            }
+          });
         }
       });
     },
@@ -458,6 +471,7 @@ export default {
     display: flex;
     width: 100%;
     height: 52px;
+    background-color: #fff;
     box-shadow: 0 -2px -2px 2px rgba(0, 0, 0, 0.1);
     .bottom-btn {
       flex: 1;

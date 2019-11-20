@@ -4,7 +4,12 @@
     :class="{'shelf-item-shadow':data.type == 1 || data.type == 2}"
     @click="onItemClick"
   >
-    <component class="shelf-item-comp" :class="{'is-edit':data.type == 2}" :is="item" :data="data"></component>
+    <component
+      class="shelf-item-comp"
+      :class="{'is-edit':data.type == 2 && isEditMode}"
+      :is="item"
+      :data="data"
+    ></component>
     <div
       class="icon-selected"
       :class="{'is-selected':data.selected}"
