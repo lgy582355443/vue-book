@@ -188,12 +188,10 @@ export default {
     //解析book,获取封面图片,作者等信息
     parseBook() {
       if (this.isOnline) {
-        console.log("xx");
         this.book.coverUrl().then(url => {
           this.setCover(url);
         });
       } else {
-        console.log("bb");
         this.book.loaded.cover.then(cover => {
           this.book.archive.createUrl(cover).then(url => {
             this.setCover(url);
@@ -256,7 +254,7 @@ export default {
       }
     },
 
-    //mask上的手势操作
+    //mask上的手势操作,翻页..
     onMaskClick(e) {
       if (
         this.mouseState &&
@@ -354,7 +352,7 @@ export default {
       e.stopPropagation();
     }
 
-    // //初始化book手势功能(左右滑动翻页)
+    // //初始化book手势功能
     // initGuest() {
     //  this.rendition.on("touchstart", event => {
     //     this.touchStartX = event.changedTouches[0].clientX;
@@ -386,15 +384,14 @@ export default {
           this.initEpub(blob);
         });
       } else {
-        //通过opf在线解析图书
         if (this.$route.query.opf) {
           this.isOnline = true;
           this.initEpub(this.$route.query.opf);
         } else {
-          //下载书籍
           // let fileName = this.$route.params.fileName.split("|").join("/");
           this.setFileName(books.join("/")).then(() => {
-            const url = process.env.VUE_APP_EPUB_URL + this.fileName + ".epub";
+            const url =
+              process.env.VUE_APP_EPUB_URL + "/" + this.fileName + ".epub";
             this.isOnline = false;
             this.initEpub(url);
           });

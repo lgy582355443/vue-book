@@ -393,6 +393,8 @@ export default {
 
 .book-detail {
   width: 100%;
+  height: 100%;
+  overflow: hidden;
   background: white;
   .content-wrapper {
     width: 100%;
@@ -472,7 +474,7 @@ export default {
     width: 100%;
     height: 52px;
     background-color: #fff;
-    box-shadow: 0 -2px -2px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0px 5px rgba(0, 0, 0, 0.3);
     .bottom-btn {
       flex: 1;
       color: $color-blue;

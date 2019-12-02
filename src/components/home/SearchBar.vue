@@ -13,7 +13,7 @@
             <span class="icon-shake icon"></span>
           </div>
           <div class="title-icon-shelf-wrapper" @click="goBookShelf">
-            <span class="icon-shelf icon"></span>
+            <span class="icon-person icon"></span>
           </div>
         </div>
       </transition>
@@ -23,6 +23,7 @@
           <span class="icon-search icon"></span>
           <input
             class="input"
+            ref="searchInput"
             v-model="searchText"
             @click="showHotSearch"
             type="text"
@@ -86,8 +87,9 @@ export default {
   },
   methods: {
     search() {
+      this.$refs.searchInput.blur();
       this.$router.push({
-        path: "/home/list",
+        name: "bookList",
         query: {
           keyword: this.searchText
         }
@@ -116,11 +118,11 @@ export default {
       if (this.hotSearchVisible) {
         this.hidehotSearch();
       } else {
-        this.$router.push("/home/shelf");
+        this.$router.push("/shelf");
       }
     },
     goBookShelf() {
-      this.$router.push("/home/shelf");
+      this.$router.push("/shelf");
     },
     //隐藏热门搜索
     hidehotSearch() {

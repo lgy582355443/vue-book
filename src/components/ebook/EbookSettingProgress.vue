@@ -155,12 +155,12 @@ export default {
       padding: 0 15px;
       box-sizing: border-box;
       .progress {
-        flex: 1;
+        // flex: 1;
         width: 100%;
         -webkit-appearance: none;
         height: 2px;
-        background: -webkit-linear-gradient(#5d6268, #5d6268) no-repeat, #b4b5b7;
-        background-size: 0 100%;
+        // background: -webkit-linear-gradient(#5d6268, #5d6268) no-repeat, #b4b5b7;
+        // background-size: 0 100%;
         margin: 0 10px;
         &:focus {
           outline: none;

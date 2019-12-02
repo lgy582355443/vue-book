@@ -1,18 +1,20 @@
 <template>
   <transition name="host-search">
-    <scroll class="hot-search-wrapper" ref="scroll" :top="52" @onScroll="onScroll">
-      <hot-search
-        :label="$t('home.hotSearch')"
-        :btn="$t('home.change')"
-        :hotSearch="searchList.hotSearch"
-      ></hot-search>
-      <div class="line"></div>
-      <hot-search
-        :label="$t('home.historySearch')"
-        :btn="$t('home.clear')"
-        :hotSearch="searchList.historySearch"
-      ></hot-search>
-    </scroll>
+    <div class="host-list">
+      <scroll class="hot-search-wrapper" ref="scroll" @onScroll="onScroll">
+        <hot-search
+          :label="$t('home.hotSearch')"
+          :btn="$t('home.change')"
+          :hotSearch="searchList.hotSearch"
+        ></hot-search>
+        <div class="line"></div>
+        <hot-search
+          :label="$t('home.historySearch')"
+          :btn="$t('home.clear')"
+          :hotSearch="searchList.historySearch"
+        ></hot-search>
+      </scroll>
+    </div>
   </transition>
 </template>
 
@@ -142,4 +144,15 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.host-list {
+  position: absolute;
+  top: 52px;
+  z-index: 999;
+  height: calc(100% - 52px);
+  width: 100%;
+  background-color: #fff;
+}
+.hot-search-wrapper {
+  height: 100%;
+}
 </style>

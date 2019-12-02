@@ -13,6 +13,9 @@ const routes = [
     path: '/ebook',
     name: 'ebook',
     component: () => import(/* webpackChunkName: "ebook" */ '../views/ebook/index.vue'),
+    meta: {
+      footShow: false
+    },
     children: [
       {
         path: ":fileName",
@@ -24,36 +27,59 @@ const routes = [
   {
     path: '/home',
     name: 'home',
-    redirect: '/home/storeHome',
     component: () => import(/* webpackChunkName: "home" */ '../views/home/index.vue'),
-    children: [
-      {
-        path: 'storeHome',
-        name: 'storeHome',
-        component: () => import(/* webpackChunkName: "storeHome" */ '../views/home/storeHome.vue'),
-      },
-      {
-        path: 'list',
-        component: () => import(/* webpackChunkName: "bookList" */ '../views/home/bookList.vue'),
-      },
-      {
-        path: 'detail',
-        component: () => import(/* webpackChunkName: "bookDetail" */ '../views/home/bookDetail.vue'),
-      },
-      {
-        path: 'shelf',
-        component: () => import(/* webpackChunkName: "bookShelf" */ '../views/home/bookShelf.vue'),
-      },
-      {
-        path: 'category',
-        component: () => import(/* webpackChunkName: "bookCategory" */ '../views/home/bookCategory.vue'),
-      },
-      {
-        path: 'speaking',
-        component: () => import(/* webpackChunkName: "bookSpeaking" */ '../views/home/bookSpeaking.vue'),
-      },
-    ]
-  }
+    meta: {
+      footShow: true
+    },
+  },
+  {
+    path: '/list',
+    name: 'bookList',
+    component: () => import(/* webpackChunkName: "bookList" */ '../views/home/bookList.vue'),
+    meta: {
+      footShow: true
+    },
+  },
+  {
+    path: '/shelf',
+    name: 'shelf',
+    component: () => import(/* webpackChunkName: "shelf" */ '../views/shelf/index.vue'),
+    meta: {
+      footShow: false
+    },
+  },
+  {
+    path: '/shelf/category',
+    name: 'ShelfCategory',
+    component: () => import(/* webpackChunkName: "ShelfCategory" */ '../views/shelf/ShelfCategory.vue'),
+    meta: {
+      footShow: false
+    },
+  },
+  {
+    path: '/detail',
+    name: 'detail',
+    component: () => import(/* webpackChunkName: "detail" */ '../views/detail/index.vue'),
+    meta: {
+      footShow: false
+    }
+  },
+  {
+    path: '/speaking',
+    name: 'speaking',
+    component: () => import(/* webpackChunkName: "speaking" */ '../views/speaking/index.vue'),
+    meta: {
+      footShow: false
+    }
+  },
+  {
+    path: '/my',
+    name: 'my',
+    component: () => import(/* webpackChunkName: "speaking" */ '../views/my/index.vue'),
+    meta: {
+      footShow: true
+    }
+  },
 ]
 
 const router = new VueRouter({

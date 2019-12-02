@@ -1,7 +1,8 @@
 module.exports = {
   'error_code': 0,
   'msg': '获取成功',
-  'data': [{
+  'data': [
+    {
     'id': 1,
     'fileName': '2016_Book_PhysiologyPsychoacousticsAndCo',
     'cover': 'http://47.99.166.157/book/res/img/Biomedicine/978-3-319-25474-6_CoverFigure.jpg',
@@ -6946,6 +6947,7 @@ module.exports = {
     'private': false,
     'cache': false,
     'haveRead': 0
-  }],
+  }
+],
   'total': 465
 }

@@ -30,6 +30,7 @@ export default {
     hide() {
       this.visible = false;
     },
+
     show() {
       this.updateText(this.text);
       clearTimeout(this.task);
@@ -39,14 +40,29 @@ export default {
         this.visible = false;
       }, this.timeout);
     },
+
     //一直显示
-    continueShow() {
+    continueShow(text) {
+      if (text) {
+        this.updateText(text);
+      }
       clearTimeout(this.task);
       this.task = null;
       this.visible = true;
     },
+
     updateText(text) {
       this.showText = text;
+    },
+
+    showToast(text) {
+      this.updateText(text);
+      clearTimeout(this.task);
+      this.task = null;
+      this.visible = true;
+      this.task = setTimeout(() => {
+        this.visible = false;
+      }, this.timeout);
     }
   }
 };
@@ -55,10 +71,10 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/styles/global.scss";
 .toast-bg-wrapper {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
-  z-index: 2500;
+  z-index: 998;
   width: 100%;
   height: 100%;
   background-color: transparent;
@@ -67,7 +83,7 @@ export default {
     top: 50%;
     left: 50%;
     margin: 0 0 0 -50%;
-    z-index: 2500;
+    z-index: 999;
     width: 100%;
     @include center;
     .toast-wrapper {

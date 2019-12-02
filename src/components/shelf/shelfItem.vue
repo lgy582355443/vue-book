@@ -22,7 +22,6 @@
 import ShelfItemBook from "./shelfItemBook";
 import shelfItemCategory from "./shelfItemCategory";
 import shelfItemAdd from "./shelfItemAdd";
-import { gotoStoreHome } from "../../utils/home";
 import { shelfMixin } from "../../utils/mixin";
 
 export default {
@@ -73,13 +72,15 @@ export default {
           this.showBookDetail(this.data);
         } else if (this.data.type == 2) {
           this.$router.push({
-            path: "/home/category",
+            name: "ShelfCategory",
             query: {
               title: this.data.title
             }
           });
         } else {
-          gotoStoreHome(this);
+          this.$router.push({
+            path: "/home"
+          });
         }
       }
     }

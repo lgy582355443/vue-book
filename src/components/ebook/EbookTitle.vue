@@ -5,15 +5,15 @@
         <span class="icon-back"></span>
       </div>
       <div class="right">
-        <div class="icon-wrapper">
+        <div class="icon-wrapper" @click="gotoBookStore">
           <span class="icon-shelf"></span>
         </div>
         <!-- <div class="icon-wrapper">
           <span class="icon-cart"></span>
         </div>
-        <div class="icon-wrapper" @click="gotoBookStore">
+        <div class="icon-wrapper">
           <span class="icon-more"></span>
-        </div> -->
+        </div>-->
       </div>
     </div>
   </transition>
@@ -27,9 +27,13 @@ export default {
   methods: {
     back() {
       this.$router.go(-1);
+      this.hideMenuVisible();
+      this.setBookAvailable(false);
     },
     gotoBookStore() {
-      this.$router.push("/book-store");
+      this.$router.push("/home/shelf");
+      this.hideMenuVisible();
+      this.setBookAvailable(false);
     }
   }
 };

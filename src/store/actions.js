@@ -79,6 +79,9 @@ const actions = {
   },
   setCurrentType({ commit }, type) {
     return commit('SET_CURRENT_TYPE', type)
+  },
+  setWindowHeight({ commit }, height) {
+    return commit('SET_WINDOW_HEIGHT', height)
   }
 }
 

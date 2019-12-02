@@ -47,8 +47,11 @@ export default {
     },
     refresh() {
       if (this.$refs.scrollWrapper) {
-        this.$refs.scrollWrapper.style.height =
-          window.innerHeight - this.top - this.bottom + "px";
+        // this.$refs.scrollWrapper.style.height =
+        //   window.innerHeight - realPx(this.top) - realPx(this.bottom) + "px";
+        this.$refs.scrollWrapper.style.height = `calc(100% - ${realPx(
+          this.bottom
+        )}px - ${realPx(this.top)}px)`;
         this.$refs.scrollWrapper.addEventListener("scroll", this.handleScroll);
       }
     }

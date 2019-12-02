@@ -15,6 +15,7 @@ export function removeLocalStorage(key) {
 }
 
 export function clearLocalStorage() {
+  console.log('清空localstorage');
   return localStorage.clear()
 }
 

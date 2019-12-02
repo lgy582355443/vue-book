@@ -70,7 +70,7 @@ export default {
       return this.currentType === 1;
     },
     showBack() {
-      return !this.isEditMode;
+      return  !this.isEditMode;
     },
 
     showChangeGroup() {
@@ -127,6 +127,7 @@ export default {
 
     //清空缓存
     clearCache() {
+      console.log("清空存储");
       clearLocalStorage();
       clearLocalForage();
       this.setShelfSelected([]);
@@ -222,7 +223,7 @@ export default {
     back() {
       if (this.currentType == 1) {
         this.$router.push({
-          path: "/home/storeHome"
+          path: "/home"
         });
       } else {
         this.$router.go(-1);

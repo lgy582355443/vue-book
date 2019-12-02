@@ -59,7 +59,7 @@ export default {
     },
     goBick() {
       this.$router.push({
-        path: "/home/detail",
+        path: "/detail",
         query: {
           fileName: this.$route.query.fileName
         }

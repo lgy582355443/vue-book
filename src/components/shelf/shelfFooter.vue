@@ -1,36 +1,38 @@
 <template>
-  <div class="shelf-footer" v-show="isEditMode">
-    <div
-      class="shelf-footer-tab-wrapper"
-      v-for="item in tabs"
-      :key="item.index"
-      @click="onTabClick(item)"
-    >
-      <div class="book-shelf-tab" :class="{'is-selected': isSelected}">
-        <div class="icon-private tab-icon" v-if="item.index === 1 && !isPrivate"></div>
-        <div class="icon-private-see tab-icon" v-if="item.index === 1 && isPrivate"></div>
-        <div class="icon-download tab-icon" v-if="item.index === 2 && !isDownload"></div>
-        <div class="icon-download-remove tab-icon" v-if="item.index === 2 && isDownload"></div>
-        <div class="icon-move tab-icon" v-if="item.index === 3"></div>
-        <div class="icon-shelf tab-icon" v-if="item.index === 4"></div>
-        <div class="tab-text" :class="{'remove-text': item.index === 4, }">{{label(item)}}</div>
+  <div class="edit-moadl">
+    <div class="shelf-footer" v-show="isEditMode">
+      <div
+        class="shelf-footer-tab-wrapper"
+        v-for="item in tabs"
+        :key="item.index"
+        @click="onTabClick(item)"
+      >
+        <div class="book-shelf-tab" :class="{'is-selected': isSelected}">
+          <div class="icon-private tab-icon" v-show="item.index === 1 && !isPrivate"></div>
+          <div class="icon-private-see tab-icon" v-show="item.index === 1 && isPrivate"></div>
+          <div class="icon-download tab-icon" v-show="item.index === 2 && !isDownload"></div>
+          <div class="icon-download-remove tab-icon" v-show="item.index === 2 && isDownload"></div>
+          <div class="icon-move tab-icon" v-show="item.index === 3"></div>
+          <div class="icon-shelf tab-icon" v-show="item.index === 4"></div>
+          <div class="tab-text" :class="{'remove-text': item.index === 4, }">{{label(item)}}</div>
+        </div>
       </div>
     </div>
+    <toast ref="toast"></toast>
   </div>
 </template>
 
 <script>
+import toast from "../../components/common/toast";
 import { shelfMixin } from "../../utils/mixin";
-import {
-  saveBookShelf,
-  getBookShelf,
-  removeLocalStorage
-} from "../../utils/localStorage";
+import { saveBookShelf, removeLocalStorage } from "../../utils/localStorage";
 import { download } from "../../api/home";
 import { removeLocalForage } from "../../utils/localForage";
 export default {
   name: "ShelfFooter",
-  components: {},
+  components: {
+    toast
+  },
   props: {},
   mixins: [shelfMixin],
   data() {
@@ -90,16 +92,14 @@ export default {
     },
 
     downloadBook(book) {
-      let text = "";
-      const toast = this.toast({
-        text
-      }).show();
-      toast.continueShow();
+      let text = this.$t("shelf.startDownload");
+      const toast = this.$refs.toast;
+      toast.continueShow(text);
       return new Promise((resolve, reject) => {
         download(
           book,
           book => {
-            toast.remove();
+            toast.hide();
             resolve(book);
           },
           reject,
@@ -123,12 +123,10 @@ export default {
           books.map(book => {
             book.cache = false;
           });
-          saveBookShelf(this.shelFlist);
+          saveBookShelf(this.shelfList);
           let text = this.$t("shelf.removeDownloadSuccess");
-          const toast = this.toast({
-            text
-          }).show();
-          toast.updateText(text);
+          const toast = this.$refs.toast;
+          toast.showToast(text);
         }
       );
     },
@@ -167,13 +165,13 @@ export default {
       });
       this.onComplete();
       if (isPrivate) {
-        this.toast({
-          text: this.$t("shelf.setPrivateSuccess")
-        }).show();
+        let text = this.$t("shelf.setPrivateSuccess");
+        const toast = this.$refs.toast;
+        toast.showToast(text);
       } else {
-        this.toast({
-          text: this.$t("shelf.closePrivateSuccess")
-        }).show();
+        let text = this.$t("shelf.closePrivateSuccess");
+        const toast = this.$refs.toast;
+        toast.showToast(text);
       }
     },
 
@@ -188,9 +186,9 @@ export default {
       } else {
         await this.downloadSelectedBook();
         saveBookShelf(this.shelfList);
-        this.toast({
-          text: this.$t("shelf.setDownloadSuccess")
-        }).show();
+        let text = this.$t("shelf.setDownloadSuccess");
+        const toast = this.$refs.toast;
+        toast.showToast(text);
       }
       // if (!this.isDownload) {
       //   this.toast({
@@ -326,7 +324,7 @@ export default {
   position: fixed;
   bottom: 0;
   left: 0;
-  z-index: 120;
+  z-index: 250;
   display: flex;
   width: 100%;
   height: 48px;

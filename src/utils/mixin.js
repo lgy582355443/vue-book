@@ -147,25 +147,25 @@ export const ebookMixin = {
     },
 
     //给book设置样式
-    switchTheme() {
-      const rules = this.themeList.filter(theme => theme.name === this.defaultTheme)[0]
-      if (this.defaultFontFamily && this.defaultFontFamily !== 'Default') {
-        rules.style.body['font-family'] = `${this.defaultFontFamily}!important`
-      } else {
-        rules.style.body['font-family'] = `Cabin!important`
-      }
-      this.registerTheme()
-      this.setGlobalTheme(this.defaultTheme)
-      this.currentBook.rendition.themes.font(this.defaultFontFamily);
-      this.currentBook.rendition.themes.select(this.defaultTheme)
-      this.currentBook.rendition.themes.fontSize(this.defaultFontSize)
-    },
+    // switchTheme() {
+    //   const rules = this.themeList.filter(theme => theme.name === this.defaultTheme)[0]
+    //   if (this.defaultFontFamily && this.defaultFontFamily !== 'Default') {
+    //     rules.style.body['font-family'] = `${this.defaultFontFamily}!important`
+    //   } else {
+    //     rules.style.body['font-family'] = `Cabin!important`
+    //   }
+    //   this.registerTheme()
+    //   this.setGlobalTheme(this.defaultTheme)
+    //   this.currentBook.rendition.themes.font(this.defaultFontFamily);
+    //   this.currentBook.rendition.themes.select(this.defaultTheme)
+    //   this.currentBook.rendition.themes.fontSize(this.defaultFontSize)
+    // },
 
     //设置字体大小
     setFontSize(fontSize) {
       this.setDefaultFontSize(fontSize).then(() => {
-        this.switchTheme()
-        // this.currentBook.rendition.themes.fontSize(this.defaultFontSize)
+        // this.switchTheme()
+        this.currentBook.rendition.themes.fontSize(this.defaultFontSize)
         Storage.saveFontSize(this.fileName, fontSize)
       })
     },
@@ -173,8 +173,8 @@ export const ebookMixin = {
     //设置字体样式
     setFontFamily(font) {
       this.setDefaultFontFamily(font).then(() => {
-        this.switchTheme()
-        // this.currentBook.rendition.themes.font(this.defaultFontFamily);
+        // this.switchTheme()
+        this.currentBook.rendition.themes.font(this.defaultFontFamily);
         Storage.saveFontFamily(this.fileName, font)
       })
     },
@@ -182,9 +182,9 @@ export const ebookMixin = {
     //设置主题
     setTheme(theme) {
       this.setDefaultTheme(theme).then(() => {
-        this.switchTheme()
-        // this.currentBook.rendition.themes.select(this.defaultTheme)
-        // this.setGlobalTheme(this.defaultTheme)
+        // this.switchTheme()
+        this.currentBook.rendition.themes.select(this.defaultTheme)
+        this.setGlobalTheme(this.defaultTheme)
         Storage.saveTheme(this.fileName, theme)
       })
     },
@@ -244,14 +244,16 @@ export const StoreHomeMixin = {
     ...mapGetters([
       'offsetY',
       'hotSearchOffsetY',
-      'flapCardVisible'
+      'flapCardVisible',
+      'windowHeight'
     ])
   },
   methods: {
     ...mapActions([
       'setOffsetY',
       'setHotSearchOffsetY',
-      'setFlapCardVisible'
+      'setFlapCardVisible',
+      'setWindowHeight',
     ]),
     showBookDetail(book) {
       gotoBookDetail(this, book)
@@ -268,7 +270,7 @@ export const shelfMixin = {
       'shelfTitleVisible',
       'offsetY',
       'shelfCategory',
-      'currentType'
+      'currentType',
     ]),
 
   },
@@ -280,7 +282,8 @@ export const shelfMixin = {
       'setShelfTitleVisible',
       'setOffsetY',
       'setShelfCategory',
-      'setCurrentType'
+      'setCurrentType',
+
     ]),
 
     showBookDetail(book) {
@@ -289,21 +292,17 @@ export const shelfMixin = {
 
     //获取书架列表
     getShelfList() {
-      let shelfList = Storage.getBookShelf();
+      let shelfList = Storage.getBookShelf()
       if (!shelfList) {
         shelfApi().then(response => {
-          if (
-            response.status == 200 &&
-            response.data &&
-            response.data.bookList
-          ) {
-            shelfList = appendAddToShelf(response.data.bookList);
-            Storage.saveBookShelf(shelfList);
-            return this.setShelfList(shelfList);
+          if (response.status === 200 && response.data && response.data.bookList) {
+            shelfList = appendAddToShelf(response.data.bookList)
+            Storage.saveBookShelf(shelfList)
+            return this.setShelfList(shelfList)
           }
-        });
+        })
       } else {
-        return this.setShelfList(shelfList);
+        return this.setShelfList(shelfList)
       }
     },
 
@@ -316,7 +315,7 @@ export const shelfMixin = {
     },
 
     //移出分组
-    moveOutOfGroup(f) {
+    moveOutOfGroup(cb) {
       this.setShelfList(this.shelfList.map(book => {
         if (book.type === 2 && book.itemList) {
           book.itemList = book.itemList.filter(subBook => !subBook.selected)
@@ -334,7 +333,7 @@ export const shelfMixin = {
 
         this.setShelfList(list).then(() => {
           this.simpleToast(this.$t('shelf.moveBookOutSuccess'))
-          if (f) f()
+          if (cb) cb()
         })
       })
     }

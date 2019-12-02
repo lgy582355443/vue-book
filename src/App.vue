@@ -1,10 +1,16 @@
 <template>
   <div id="app">
     <router-view />
+    <!-- <footers v-show="$route.meta.footShow"></footers> -->
   </div>
 </template>
 <script>
-export default {};
+import footers from "./components/common/Footer";
+export default {
+  components: {
+    footers
+  }
+};
 // document.addEventListener("DOMContentLoaded", () => {
 //   const html = document.querySelector("html");
 //   let fontSize = window.innerHeight / 10;
@@ -13,6 +19,12 @@ export default {};
 // });
 </script>
 <style lang="scss">
+@import "@/assets/styles/global.scss";
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
 #app {
   width: 100%;
   height: 100%;

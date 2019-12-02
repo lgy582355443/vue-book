@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     showBookShelf() {
-      this.$router.push("/home/shelf");
+      this.$router.push("/shelf");
     },
     showShadow() {
       this.ifHideShadow = false;

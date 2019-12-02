@@ -22,7 +22,7 @@
       </div>
       <div class="dialog-input-wrapper">
         <div class="dialog-input-inner-wrapper">
-          <input type="text" class="dialog-input" v-model="newGroupName" ref="dialogInput" />
+          <input type="text" class="dialog-input" ref="dialogInput" v-model="newGroupName" />
           <div
             class="dialog-input-clear-wrapper"
             @click="clear"
@@ -190,6 +190,7 @@ export default {
           this.moveToGroup(group);
         });
       }
+      this.$refs.input.blur();
     },
     onComplete() {
       saveBookShelf(this.shelfList);
