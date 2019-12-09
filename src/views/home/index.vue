@@ -2,13 +2,13 @@
   <div class="store-home">
     <search-bar></search-bar>
     <flap-card :data="random"></flap-card>
-    <scroll :top="scrollTop" @onScroll="onScroll" ref="scroll">
+    <scroll :top="scrollTop" @onScroll="onScroll" ref="scroll" :bottom="50">
       <div class="banner-wrapper">
         <div class="banner-img" :style="`backgroundImage:url(${banner})`"></div>
       </div>
       <guess-you-like :data="guessYouLike"></guess-you-like>
       <recommend :data="recommend"></recommend>
-      <featured :data="featured" :titleText="$t('home.featured')" :btnText="$t('home.seeAll')"></featured>
+      <featured :data="featured" :titleText="$t('home.featured')" :btnText="null"></featured>
       <div class="category-list-wrapper" v-for="(item, index) in categoryList" :key="index">
         <category-book class="category-book" :data="item"></category-book>
       </div>
@@ -72,6 +72,7 @@ export default {
     homeApi().then(response => {
       if (response && response.status === 200) {
         const data = response.data;
+        console.log(data);
         const randomIndex = Math.floor(Math.random() * data.random.length);
         this.random = data.random[randomIndex];
         this.banner = data.banner;
@@ -82,7 +83,6 @@ export default {
         this.categories = data.categories;
       }
     });
-    this.setWindowHeight(window.innerHeight);
   }
 };
 </script>

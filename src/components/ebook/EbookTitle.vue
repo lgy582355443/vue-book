@@ -31,7 +31,9 @@ export default {
       this.setBookAvailable(false);
     },
     gotoBookStore() {
-      this.$router.push("/home/shelf");
+      this.$router.push({
+        name: "shelf"
+      });
       this.hideMenuVisible();
       this.setBookAvailable(false);
     }

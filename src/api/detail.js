@@ -1,12 +1,10 @@
-
 import request from '@/api/request';
 
-export function homeApi() {
+
+export function detailApi(data) {
     return request({
         method: 'get',
-        url: `/api/home/homeData`
+        url: `/api/detail/bookDetail`,
+        data
     })
 }
-
-
-

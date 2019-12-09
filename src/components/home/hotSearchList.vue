@@ -146,7 +146,7 @@ export default {
 <style lang="scss" scoped>
 .host-list {
   position: absolute;
-  top: 52px;
+  top: 51px;
   z-index: 999;
   height: calc(100% - 52px);
   width: 100%;

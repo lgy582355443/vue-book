@@ -26,6 +26,7 @@ const book = {
   shelfTitleVisible: state => state.home.shelfTitleVisible,
   shelfCategory: state => state.home.shelfCategory,
   currentType: state => state.home.currentType,
-  windowHeight: state => state.home.windowHeight
+  userList: state => state.user.userList,
+  historyList: state => state.user.historyList,
 }
 export default book

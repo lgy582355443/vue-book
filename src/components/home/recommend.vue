@@ -1,6 +1,6 @@
 <template>
   <div class="recommend">
-    <title-view :label="$t('home.recommend')"></title-view>
+    <title-view :label="$t('home.recommend')" :btn="null"></title-view>
     <div class="recommend-list">
       <div
         class="recommend-item"

@@ -60,7 +60,7 @@
     </scroll>
     <div class="bottom-wrapper">
       <div class="bottom-btn" @click.stop.prevent="readBook()">{{$t('detail.read')}}</div>
-      <div class="bottom-btn" @click.stop.prevent="trialListening()">{{$t('detail.listen')}}</div>
+      <!-- <div class="bottom-btn" @click.stop.prevent="trialListening()">{{$t('detail.listen')}}</div> -->
       <div class="bottom-btn" @click.stop.prevent="addOrRemoveShelf()">
         <span class="icon-check" v-if="inBookShelf"></span>
         {{inBookShelf ? $t('detail.isAddedToShelf') : $t('detail.addOrRemoveShelf')}}
@@ -75,12 +75,17 @@ import DetailTitle from "../../components/detail/detaiTitle";
 import BookInfo from "../../components/detail/bookInfo";
 import Scroll from "../../components/common/Scroll";
 import Toast from "../../components/common/toast";
-import { detailApi } from "../../api/home";
+import { detailApi } from "@/api/detail";
 import { px2rem, realPx } from "../../utils/utils";
 import { getLocalForage } from "../../utils/localForage";
 import { removeFromBookShelf, addToShelf } from "../../utils/home";
 import { shelfMixin } from "../../utils/mixin";
-import { getBookShelf, saveBookShelf } from "../../utils/localStorage";
+import {
+  getBookShelf,
+  saveBookShelf,
+  saveReaderHistory,
+  getReaderHistory
+} from "../../utils/localStorage";
 import Epub from "epubjs";
 
 global.ePub = Epub;
@@ -154,6 +159,16 @@ export default {
       } else {
         return false;
       }
+    },
+
+    // //判断电子书是否在历史列表
+    inHistory() {
+      if (this.bookItem && this.historyList) {
+        const book = this.historyList.find(item => item.id == this.bookItem.id);
+        return book;
+      } else {
+        return false;
+      }
     }
   },
   data() {
@@ -190,6 +205,24 @@ export default {
       }
     },
 
+    //加入历史阅读
+    addReaderHistory() {
+      let historyList = getReaderHistory();
+      if (!historyList) {
+        historyList = [];
+      }
+      if (this.inHistory) {
+        historyList = this.historyList.filter(
+          item => item.id != this.inHistory.id
+        );
+        historyList.unshift(this.inHistory);
+      } else {
+        historyList.unshift(this.bookItem);
+      }
+      this.setHistoryList(historyList);
+      saveReaderHistory(historyList);
+    },
+
     // 展示Toast弹窗
     showToast(text) {
       this.toastText = text;
@@ -222,25 +255,25 @@ export default {
 
     // 阅读电子书
     readBook() {
+      this.addReaderHistory();
       this.$router.push({
-        path: `/ebook/${this.bookItem.categoryText}|${this.fileName}`
+        path: `/ebook/${this.$route.query.category}|${this.$route.query.fileName}`
       });
     },
 
     // 通过章节阅读电子书
     read(item) {
-      console.log("hhh");
-      getLocalForage(this.bookItem.fileName, (err, blob) => {
+      getLocalForage(this.$router.query.fileName, (err, blob) => {
         if (!err && blob && blob instanceof Blob) {
           this.$router.push({
-            path: `/ebook/${this.categoryText}|${this.bookItem.fileName}`,
+            path: `/ebook/${this.$route.query.category}}|${this.$route.query.fileName}`,
             query: {
               navigation: item.href
             }
           });
         } else {
           this.$router.push({
-            path: `/ebook/${this.categoryText}|${this.fileName}`,
+            path: `/ebook/${this.$route.query.category}}|${this.$route.query.fileName}`,
             query: {
               navigation: item.href,
               opf: this.opf
@@ -248,6 +281,7 @@ export default {
           });
         }
       });
+      this.addReaderHistory();
     },
 
     // 电子书目录缩进样式
@@ -272,7 +306,7 @@ export default {
     // 通过opf下载电子书（实现逐章下载，提供电子书访问性能）
     downloadBook() {
       // 拼接opf文件路径
-      const opf = `${process.env.VUE_APP_EPUB_URL}/${this.bookItem.categoryText}/${this.bookItem.fileName}/OEBPS/package.opf`;
+      const opf = `${process.env.VUE_APP_EPUB_URL}/${this.$route.query.categoryText}/${this.$route.query.fileName}/OEBPS/package.opf`;
       this.parseBook(opf);
     },
 

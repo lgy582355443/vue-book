@@ -70,7 +70,7 @@ export default {
       return this.currentType === 1;
     },
     showBack() {
-      return  !this.isEditMode;
+      return this.currentType === 2 && !this.isEditMode;
     },
 
     showChangeGroup() {
@@ -221,13 +221,7 @@ export default {
     },
 
     back() {
-      if (this.currentType == 1) {
-        this.$router.push({
-          path: "/home"
-        });
-      } else {
-        this.$router.go(-1);
-      }
+      this.$router.go(-1);
       this.setIsEditMode(false);
     }
   },
@@ -276,7 +270,7 @@ export default {
     &.shelf-title-left {
       left: 15px;
       &.clear-cache {
-        left: 30px;
+        left: 15px;
       }
       &.back {
         left: 5px;

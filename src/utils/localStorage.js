@@ -59,6 +59,14 @@ export function getBookShelf() {
   return getLocalStorage('shelf');
 }
 
+export function saveReaderHistory(history) {
+  return setLocalStorage('history', history);
+}
+
+export function getReaderHistory() {
+  return getLocalStorage('history');
+}
+
 export function getReadTime(fileName) {
   return getBookObject(fileName, 'time')
 }

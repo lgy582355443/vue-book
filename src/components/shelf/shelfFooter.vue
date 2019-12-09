@@ -26,7 +26,7 @@
 import toast from "../../components/common/toast";
 import { shelfMixin } from "../../utils/mixin";
 import { saveBookShelf, removeLocalStorage } from "../../utils/localStorage";
-import { download } from "../../api/home";
+import { download } from "@/api/download";
 import { removeLocalForage } from "../../utils/localForage";
 export default {
   name: "ShelfFooter",

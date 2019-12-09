@@ -12,8 +12,9 @@
           <div class="title-icon-shake-wrapper" @click="showFlapCard">
             <span class="icon-shake icon"></span>
           </div>
-          <div class="title-icon-shelf-wrapper" @click="goBookShelf">
-            <span class="icon-person icon"></span>
+          <div class="title-icon-lang-wrapper" @click="switchLocale">
+            <span class="icon-cn icon" v-if="lang == 'cn'"></span>
+            <span class="icon-en icon" v-else></span>
           </div>
         </div>
       </transition>
@@ -38,6 +39,7 @@
 </template>
 
 <script>
+import { setLocalStorage } from "../../utils/localStorage";
 import { realPx } from "@/utils/utils";
 import { StoreHomeMixin } from "../../utils/mixin";
 import hotSearchList from "./hotSearchList";
@@ -66,6 +68,11 @@ export default {
       hotSearchVisible: false,
       searchText: null
     };
+  },
+  computed: {
+    lang() {
+      return this.$i18n.locale;
+    }
   },
   watch: {
     offsetY(offsetY) {
@@ -141,6 +148,15 @@ export default {
     //显示随机动画
     showFlapCard() {
       this.setFlapCardVisible(true);
+    },
+    //切换语言
+    switchLocale() {
+      if (this.lang == "en") {
+        this.$i18n.locale = "cn";
+      } else {
+        this.$i18n.locale = "en";
+      }
+      setLocalStorage("locale", this.$i18n.locale);
     }
   }
 };
@@ -201,14 +217,14 @@ export default {
         font-size: 20px;
       }
     }
-    .title-icon-shelf-wrapper {
+    .title-icon-lang-wrapper {
       position: absolute;
       right: 50px;
       top: 0;
       z-index: 110;
       height: 100%;
       @include center;
-      .icon-shelf {
+      .icon {
         font-size: 20px;
       }
     }

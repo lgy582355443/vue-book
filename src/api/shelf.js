@@ -1,12 +1,9 @@
-
 import request from '@/api/request';
 
-export function homeApi() {
+export function shelfApi(data) {
     return request({
         method: 'get',
-        url: `/api/home/homeData`
+        url: `/api/shelf/shelfList`,
+        data
     })
 }
-
-
-

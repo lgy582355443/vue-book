@@ -1,6 +1,7 @@
 const messages = {
   home: {
     title: 'Book Store',
+    home: 'Home',
     hint: 'Computer Science And Software Engineering',
     guessYouLike: 'Guess You Like',
     change: 'Change',
@@ -45,6 +46,7 @@ const messages = {
   },
   shelf: {
     title: 'Book Shelf',
+    shelf: 'shelf',
     edit: 'Edit',
     cancel: 'Cancel',
     search: 'Search',
@@ -141,6 +143,42 @@ const messages = {
     haveRead2: 'already read',
     minutes: 'minutes',
     cancel: 'Cancel'
+  },
+  my: {
+    my: 'My',
+    editUser: 'Modify personal materials',
+    ReaderHistory: 'history',
+    clearHistory: 'clear history',
+    logout: 'log out',
+    userData: 'personal data',
+    changeAvatar: 'change avatar',
+    imgUrl: 'avatar URL',
+    nickname: 'nickname',
+    signature: 'catchword',
+    submit: 'submit',
+    confirm: 'confirm',
+    pictureImageAddress: 'Please enter the picture address',
+    pictureNickname: 'Please enter the picture nickname',
+    pictureSignature: 'Please enter the picture catchword',
+    isEdit: 'updated successfully'
+  },
+  login: {
+    login: 'login',
+    pictureUsername: 'Please enter the picture username',
+    picturePassword: 'Please enter the picture password',
+    forgetPassword: 'forget password',
+    goRegister: 'go to register',
+    goHome: 'back homepage',
+    ThirdPartyLogin: 'Third party login',
+    loginError: 'Incorrect account number or password',
+    register: 'register',
+    doRegister: 'register now',
+    registerMsg: 'Completion of registration represents consent',
+    protocol: 'user agreement',
+    privacy: 'privacy policy ',
+    goLogin: 'Existing account,go to login',
+    registerSuccessfuly: 'registered successfully ',
+    usernameEsist: 'The user name already exists',
   }
 }
 

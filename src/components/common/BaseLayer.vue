@@ -9,7 +9,7 @@
 
 
 <script>
-import BScroll from 'better-scroll';
+import BScroll from "@better-scroll/core";
 import { realPx } from "@/utils/utils";
 export default {
   name: "BaseLayer",
@@ -47,6 +47,7 @@ export default {
   },
 
   mounted() {
+    // this.initHeight();
     this.$nextTick(() => {
       this.$scroll = new BScroll(this.$refs.scrollWrapper, {
         click: true,

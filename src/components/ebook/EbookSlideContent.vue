@@ -43,7 +43,7 @@
     <scroll
       class="slide-contents-list"
       :top="156"
-      :bottom="48"
+      :bottom="0"
       ref="scroll"
       v-show="!searchVisible"
     >
@@ -61,7 +61,7 @@
         <span class="slide-contents-item-page">{{item.page}}</span>
       </div>
     </scroll>
-    <scroll class="slide-search-list" :top="66" :bottom="48" ref="scroll" v-show="searchVisible">
+    <scroll class="slide-search-list" :top="67" ref="scroll" v-show="searchVisible">
       <div
         class="slide-search-item"
         v-for="(item, index) in searchList"
@@ -146,6 +146,7 @@ export default {
 @import "../../assets/styles/global.scss";
 .ebook-slide-contents {
   width: 100%;
+  height: 100%;
   font-size: 0;
   .slide-contents-search-wrapper {
     display: flex;

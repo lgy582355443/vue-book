@@ -200,13 +200,13 @@ export function removeAddFromShelf(list) {
 
 export function gotoStoreHome(vue) {
     vue.$router.push({
-        path: '/home',
+        name: 'home',
     })
 }
 
 export function gotoBookDetail(vue, book) {
     vue.$router.push({
-        path: '/detail',
+        name: 'detail',
         query: {
             fileName: book.fileName,
             category: book.categoryText

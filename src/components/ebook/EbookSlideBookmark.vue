@@ -1,7 +1,7 @@
 <template>
   <div class="ebook-slide-bookmark">
     <div class="slide-bookmark-title">{{$t('book.bookmark')}} · {{bookmark ? bookmark.length : 0}}</div>
-    <scroll class="slide-bookmark-list" :top="48" :bottom="48">
+    <scroll class="slide-bookmark-list" :top="48" :bottom="0">
       <div
         class="slide-bookmark-item"
         v-for="(item, index) in bookmark"
@@ -50,6 +50,8 @@ export default {
 
 .ebook-slide-bookmark {
   width: 100%;
+  height: 100%;
+  overflow: hidden;
   .slide-bookmark-title {
     width: 100%;
     height: 48px;

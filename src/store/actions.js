@@ -80,9 +80,12 @@ const actions = {
   setCurrentType({ commit }, type) {
     return commit('SET_CURRENT_TYPE', type)
   },
-  setWindowHeight({ commit }, height) {
-    return commit('SET_WINDOW_HEIGHT', height)
-  }
+  setUserList({ commit }, list) {
+    return commit('SET_USER_LIST', list)
+  },
+  setHistoryList({ commit }, list) {
+    return commit('SET_HISTORY_LIST', list)
+  },
 }
 
 export default actions

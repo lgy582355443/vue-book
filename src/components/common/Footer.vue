@@ -5,19 +5,19 @@
         <div class="title-icon-wrapper">
           <span class="icon-home icon"></span>
         </div>
-        <p class="footer-title">首页</p>
+        <p class="footer-title">{{$t('home.home')}}</p>
       </router-link>
       <router-link class="footer-icon shelf" :to="{name:'shelf'}" tag="div">
         <div class="title-icon-wrapper">
           <span class="icon-shelf icon"></span>
         </div>
-        <p class="footer-title">书架</p>
+        <p class="footer-title">{{$t('shelf.title')}}</p>
       </router-link>
       <router-link class="footer-icon my" :to="{name:'my'}" tag="div">
         <div class="title-icon-wrapper">
           <span class="icon-my icon"></span>
         </div>
-        <p class="footer-title">我的</p>
+        <p class="footer-title">{{$t('my.my')}}</p>
       </router-link>
     </div>
   </div>

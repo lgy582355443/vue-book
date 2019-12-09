@@ -190,7 +190,6 @@ export default {
           this.moveToGroup(group);
         });
       }
-      this.$refs.input.blur();
     },
     onComplete() {
       saveBookShelf(this.shelfList);

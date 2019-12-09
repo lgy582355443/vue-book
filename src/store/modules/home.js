@@ -8,7 +8,6 @@ const home = {
         shelfTitleVisible: true,
         shelfCategory: [], // 书架分类列表数据
         currentType: 1,// 书架列表为1，书架分组列表为2
-        windowHeight: null,
     },
     mutations: {
         SET_HOT_SEARCH_OFFSETY(state, offsetY) {
@@ -35,9 +34,6 @@ const home = {
         SET_CURRENT_TYPE(state, type) {
             state.currentType = type
         },
-        SET_WINDOW_HEIGHT(state, height) {
-            state.windowHeight = height
-        }
     }
 }
 

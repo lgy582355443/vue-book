@@ -2,7 +2,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { FONT_SIZE_LIST, FONT_FAMILY, themeList, getReadTimeByMinute } from './book'
 import { gotoBookDetail, appendAddToShelf, computeId, removeAddFromShelf, removeFromBookShelf, addToShelf } from './home'
 import { addCss, removeAllCss } from './utils'
-import { shelfApi } from "@/api/home";
+import { shelfApi } from "@/api/shelf";
 import * as Storage from './localStorage'
 
 export const ebookMixin = {
@@ -245,7 +245,6 @@ export const StoreHomeMixin = {
       'offsetY',
       'hotSearchOffsetY',
       'flapCardVisible',
-      'windowHeight'
     ])
   },
   methods: {
@@ -253,7 +252,6 @@ export const StoreHomeMixin = {
       'setOffsetY',
       'setHotSearchOffsetY',
       'setFlapCardVisible',
-      'setWindowHeight',
     ]),
     showBookDetail(book) {
       gotoBookDetail(this, book)
@@ -271,6 +269,7 @@ export const shelfMixin = {
       'offsetY',
       'shelfCategory',
       'currentType',
+      'historyList'
     ]),
 
   },
@@ -283,7 +282,7 @@ export const shelfMixin = {
       'setOffsetY',
       'setShelfCategory',
       'setCurrentType',
-
+      'setHistoryList'
     ]),
 
     showBookDetail(book) {
@@ -337,5 +336,20 @@ export const shelfMixin = {
         })
       })
     }
+  }
+}
+
+export const userMixin = {
+  computed: {
+    ...mapGetters([
+      'historyList',
+      'userList'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'setHistoryList',
+      'setUserList'
+    ])
   }
 }

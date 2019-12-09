@@ -1,6 +1,7 @@
 const messages = {
   home: {
     title: '书城',
+    home: '首页',
     hint: '计算机科学和软件工程',
     guessYouLike: '猜你喜欢',
     change: '换一批',
@@ -119,7 +120,7 @@ const messages = {
     current: '当前章节',
     requestFailed: '请求失败!',
     apply: '语义解析核心技术由科大讯飞提供',
-    goBackDetail:'返回详情页'
+    goBackDetail: '返回详情页'
   },
   book: {
     pulldownAddMark: '下拉添加书签',
@@ -139,6 +140,43 @@ const messages = {
     haveRead2: '已读',
     minutes: '分钟',
     cancel: '取消'
+  },
+  my: {
+    my: '我的',
+    editUser: '修改个人质料',
+    ReaderHistory: '最近阅读',
+    clearHistory: '清除历史',
+    logout: '退出登录',
+    userData: '个人质料',
+    changeAvatar: '更改头像',
+    imgUrl: '头像图片地址',
+    nickname: '昵称',
+    signature: '个性签名',
+    submit: '提交编辑',
+    confirm: '确认',
+    pictureImageAddress: '请输入图片地址',
+    pictureNickname: '请输入昵称',
+    pictureSignature: '请输入个性签名',
+    isEdit: '已修改'
+  },
+  login: {
+    login: '登录',
+    pictureUsername: '请输入用户名',
+    picturePassword: '请输入密码',
+    forgetPassword: '忘记密码',
+    goRegister: '立即注册',
+    goHome: '返回首页',
+    ThirdPartyLogin: '第三方登录',
+    loginError: '账号或密码不正确',
+    register: '注册',
+    doRegister: '立即注册',
+    registerMsg: '完成注册即代表同意',
+    protocol: '用户协议',
+    privacy: '隐私政策',
+    goLogin: '已有账号 去登录',
+    registerSuccessfuly: '注册成功',
+    usernameEsist: '用户名已存在',
+
   }
 }
 

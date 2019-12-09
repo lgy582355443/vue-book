@@ -4,18 +4,19 @@
     <scroll
       class="book-shelf-scrill-wrapper"
       ref="scroll"
-      :bottom="scrollBottom"
+      :bottom="50"
       @onScroll="onScroll"
-      :top="0"
     >
       <shelf-search></shelf-search>
       <shelf-list :data="shelfList"></shelf-list>
     </scroll>
     <shelf-Footer></shelf-Footer>
+    <footers></footers>
   </div>
 </template>
 
 <script>
+import footers from "@/components/common/Footer";
 import ShelfTitle from "../../components/shelf/shelfTitle";
 import Scroll from "../../components/common/Scroll";
 import ShelfSearch from "../../components/shelf/shelfSearch";
@@ -31,7 +32,8 @@ export default {
     Scroll,
     ShelfSearch,
     ShelfList,
-    ShelfFooter
+    ShelfFooter,
+    footers
   },
   props: {},
   data() {
@@ -40,12 +42,12 @@ export default {
     };
   },
   watch: {
-    isEditMode(isEditMode) {
-      this.scrollBottom = isEditMode ? 48 : 0;
-      this.$nextTick(() => {
-        this.$refs.scroll.refresh();
-      });
-    }
+    // isEditMode(isEditMode) {
+    //   this.scrollBottom = isEditMode ? 50 : 0;
+    //   this.$nextTick(() => {
+    //     this.$refs.scroll.refresh();
+    //   });
+    // }
   },
   computed: {},
   methods: {

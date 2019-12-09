@@ -15,8 +15,8 @@
           </div>
           <div class="img-wrapper">
             <div class="img-group">
-              <img class="img" v-lazy="item.img1"/>
-              <img class="img2" v-lazy="item.img2"/>
+              <img class="img" v-lazy="item.img1" />
+              <img class="img2" v-lazy="item.img2" />
             </div>
           </div>
         </div>
@@ -39,7 +39,7 @@ export default {
   methods: {
     showBookCategory(item) {
       this.$router.push({
-        path: "/home/list",
+        name: "bookList",
         query: {
           category: getCategoryName(item.category),
           categoryText: this.categoryText(item.category)
@@ -50,7 +50,9 @@ export default {
       return categoryText(category, this);
     },
     showBookList() {
-      this.$router.push("/home/list");
+      this.$router.push({
+        name: "bookList"
+      });
     }
   }
 };

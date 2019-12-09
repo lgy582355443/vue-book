@@ -83,7 +83,7 @@ import SpeakPlaying from "../../components/speak/SpeakPlaying";
 import Bottom from "../../components/speak/SpeakBottom";
 import SpeakWindow from "../../components/speak/SpeakMask";
 import { findBook, getCategoryName } from "../../utils/home";
-import { flatListApi } from "../../api/home";
+import { flatListApi } from "@/api/bookList";
 import { getLocalForage } from "../../utils/localForage";
 import { realPx } from "../../utils/utils";
 import Epub from "epubjs";

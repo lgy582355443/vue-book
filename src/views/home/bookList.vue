@@ -23,7 +23,7 @@ import SearchTitle from "@/components/detail/detaiTitle";
 import Scroll from "@/components/common/Scroll";
 import Featured from "@/components/home/featured";
 import { realPx } from "@/utils/utils";
-import { listApi } from "@/api/home";
+import { listApi } from "@/api/bookList";
 import { categoryList, categoryText } from "@/utils/home";
 import { StoreHomeMixin } from "../../utils/mixin";
 export default {
