@@ -140,7 +140,8 @@ export default {
     }
   },
   created() {},
-  mounted() {}
+  mounted() {},
+  beforeDestroy() {}
 };
 </script>
 <style lang="scss" scoped>

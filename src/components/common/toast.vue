@@ -31,6 +31,7 @@ export default {
       this.visible = false;
     },
 
+    //显示1.5秒后消失
     show() {
       this.updateText(this.text);
       clearTimeout(this.task);
@@ -55,6 +56,7 @@ export default {
       this.showText = text;
     },
 
+    //显示1.5秒后消失，需要传入text
     showToast(text) {
       this.updateText(text);
       clearTimeout(this.task);

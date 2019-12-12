@@ -2,6 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 
 const service = axios.create({
+    baseURL: process.env.VUE_APP_BASE_URL,
     timeout: 5000
 })
 
@@ -28,7 +29,7 @@ service.interceptors.response.use(
     }
 )
 
-//对与get和post请求做不同处理
+//对与get和post请求做不同处理, post发送From Data
 function http(config) {
     if (config.method.toLowerCase() === 'post') {
         config.data = qs.stringify(config.data, { arrayFormat: 'repeat', allowDots: true });

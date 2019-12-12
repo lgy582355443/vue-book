@@ -1,10 +1,20 @@
 <template>
   <div class="store-home">
-    <search-bar></search-bar>
-    <flap-card :data="random"></flap-card>
+    <search-bar @getRandom="getRandom"></search-bar>
+    <flap-card :randomBook="randomBook"></flap-card>
     <scroll :top="scrollTop" @onScroll="onScroll" ref="scroll" :bottom="50">
       <div class="banner-wrapper">
-        <div class="banner-img" :style="`backgroundImage:url(${banner})`"></div>
+        <swiper
+          class="banner-swiper"
+          :options="swiperOption"
+          ref="mySwiper"
+          v-if="bannerList.length>0"
+        >
+          <swiper-slide v-for="item in bannerList" :key="item.id">
+            <div class="banner-img" :style="`backgroundImage:url(${item.url})`"></div>
+          </swiper-slide>
+          <div class="swiper-pagination" slot="pagination"></div>
+        </swiper>
       </div>
       <guess-you-like :data="guessYouLike"></guess-you-like>
       <recommend :data="recommend"></recommend>
@@ -28,6 +38,10 @@ import flapCard from "../../components/home/flapCard";
 import Scroll from "../../components/common/Scroll";
 import { StoreHomeMixin } from "../../utils/mixin";
 import { homeApi } from "@/api/home";
+
+import "swiper/dist/css/swiper.css";
+import { swiper, swiperSlide } from "vue-awesome-swiper";
+
 export default {
   name: "StoreHome",
   mixins: [StoreHomeMixin],
@@ -39,32 +53,67 @@ export default {
     recommend,
     featured,
     categoryBook,
-    category
+    category,
+    swiper,
+    swiperSlide
   },
   props: {},
   data() {
     return {
       scrollTop: 94,
       random: null,
-      banner: "",
+      bannerList: [],
       guessYouLike: null,
       recommend: null,
       featured: null,
       categoryList: null,
-      categories: null
+      categories: null,
+      randomBook: null,
+      swiperOption: {
+        loop: true,
+        autoplay: true,
+        pagination: {
+          el: ".swiper-pagination"
+        }
+      },
+      swiper: null
     };
   },
   watch: {},
-  computed: {},
+  computed: {
+    // swiper() {
+    //   this.$nextTick(() => {
+    //     return this.$refs.mySwiper.swiper;
+    //   });
+    // }
+  },
   methods: {
     onScroll(offsetY) {
       this.setOffsetY(offsetY);
+      this.setHomeOffsetY(offsetY);
       if (offsetY > 0) {
         this.scrollTop = 52;
       } else {
         this.scrollTop = 94;
       }
       this.$refs.scroll.refresh();
+    },
+
+    getRandom() {
+      const randomIndex = Math.floor(Math.random() * this.random.length);
+      this.randomBook = this.random[randomIndex];
+    },
+
+    reset() {
+      if (this.homeOffsetY > 0) {
+        this.scrollTop = 52;
+      } else {
+        this.scrollTop = 94;
+      }
+      this.$refs.scroll.refresh();
+      this.$nextTick(() => {
+        this.$refs.scroll.scrollTo(0, this.homeOffsetY);
+      });
     }
   },
   created() {},
@@ -73,14 +122,17 @@ export default {
       if (response && response.status === 200) {
         const data = response.data;
         console.log(data);
-        const randomIndex = Math.floor(Math.random() * data.random.length);
-        this.random = data.random[randomIndex];
-        this.banner = data.banner;
+        this.random = data.random;
+        this.bannerList = data.banner;
         this.guessYouLike = data.guessYouLike;
         this.recommend = data.recommend;
         this.featured = data.featured;
         this.categoryList = data.categoryList;
         this.categories = data.categories;
+        this.$nextTick(() => {
+          this.reset();
+          this.swiper = this.$refs.mySwiper.swiper;
+        });
       }
     });
   }
@@ -93,10 +145,11 @@ export default {
   .banner-wrapper {
     width: 100%;
     padding: 10px;
+    height: 150px;
     box-sizing: border-box;
     .banner-img {
       width: 100%;
-      height: 140px;
+      height: 130px;
       background-repeat: no-repeat;
       background-size: 100% 100%;
     }

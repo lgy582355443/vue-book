@@ -6,7 +6,7 @@
         <input
           class="login-input userId"
           type="text"
-          v-model="register.username"
+          v-model.trim="register.userName"
           :placeholder="$t('login.pictureUsername')"
         />
         <div class="icon-wrapper">
@@ -17,7 +17,7 @@
         <input
           class="login-input userPassword"
           :type="`${isShow?'text':'password'}`"
-          v-model="register.password"
+          v-model.trim="register.password"
           :placeholder="$t('login.picturePassword')"
         />
         <div class="icon-wrapper">
@@ -27,24 +27,21 @@
           <span :class="`${isShow?' icon-eye':' icon-biyan'}`"></span>
         </div>
       </div>
-      <!-- <input
-        class="email-input input-item"
-        v-model="register.email"
-        type="text"
-        placeholder="请输入邮箱"
-      />
-      <div class="phoneNumber">
-        <div class="prefix">
-          +86
-          <div class="line"></div>
-        </div>
+      <div class="form-item password-box">
         <input
-          class="phone-input input-item"
-          v-model="register.tel"
-          type="text"
-          placeholder="请输入手机号/邮箱"
+          class="login-input userPassword"
+          :type="`${isShow?'text':'password'}`"
+          v-model.trim="passwordAgain"
+          @blur="verifyPassword"
+          :placeholder="$t('login.picturePasswordAgain')"
         />
-      </div>-->
+        <div class="icon-wrapper">
+          <span class="icon icon-suo"></span>
+        </div>
+        <div class="eye" @click="openPassword">
+          <span :class="`${isShow?' icon-eye':' icon-biyan'}`"></span>
+        </div>
+      </div>
     </div>
 
     <div class="submit" @click="doRegister">{{$t('login.doRegister')}}</div>
@@ -61,6 +58,7 @@
 </template>
 
 <script>
+import { registerApi } from "@/api/user";
 import { userMixin } from "@/utils/mixin";
 export default {
   name: "Register",
@@ -70,15 +68,15 @@ export default {
   data() {
     return {
       register: {
-        username: "",
+        userName: "",
         password: "",
-        userInfo: {
-          nickname: "AuroraReader",
-          avatar:require('../../assets/images/user/avatar.png'),
-          signature: "Welcome to AuroraReader"
-        }
+        sex: "男",
+        nickname: "AuroraReader",
+        slogan: "Welcome to AuroraReader"
       },
-      isShow: false
+      isShow: false,
+      passwordAgain: "",
+      pass: false
     };
   },
   watch: {},
@@ -90,23 +88,40 @@ export default {
     openPassword() {
       this.isShow = !this.isShow;
     },
+
+    //验证两次密码
+    verifyPassword() {
+      if (this.register.password !== this.passwordAgain) {
+        this.pass = false;
+        this.simpleToast("密码匹配失败");
+      } else {
+        this.pass = true;
+      }
+    },
+
     //注册
     doRegister() {
-      let userList = this.userList;
-      const isExist = userList.find(
-        item => item.username === this.register.username
-      );
-      if (!isExist) {
-        userList.push(this.register);
-        this.simpleToast(this.$t("login.registerSuccessfuly"));
-        this.register = this.$options.data().register;
-        setTimeout(() => {
-          this.$router.push({
-            name: "login"
-          });
-        }, 500);
+      if (this.register.userName == "" && this.register.password == "") {
+        this.pass = false;
+        this.simpleToast("用户名和密码不能为空");
+      }
+      if (this.pass) {
+        registerApi(this.register).then(res => {
+          console.log(res);
+          if (res.data.code == 0) {
+            this.simpleToast(this.$t("login.registerSuccessfuly"));
+            this.register = this.$options.data();
+            setTimeout(() => {
+              this.$router.push({
+                name: "login"
+              });
+            }, 500);
+          } else {
+            this.simpleToast(res.data.msg);
+          }
+        });
       } else {
-        this.simpleToast(this.$t("login.usernameEsist"));
+        this.simpleToast("请按规则填写信息");
       }
     }
   }

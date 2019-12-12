@@ -263,7 +263,7 @@ export default {
 
     // 通过章节阅读电子书
     read(item) {
-      getLocalForage(this.$router.query.fileName, (err, blob) => {
+      getLocalForage(this.$route.query.fileName, (err, blob) => {
         if (!err && blob && blob instanceof Blob) {
           this.$router.push({
             path: `/ebook/${this.$route.query.category}}|${this.$route.query.fileName}`,
@@ -355,7 +355,7 @@ export default {
         }).then(response => {
           if (
             response.status === 200 &&
-            response.data.error_code === 0 &&
+            response.data.code === 0 &&
             response.data.data
           ) {
             console.log(response, "书籍详情");

@@ -116,7 +116,10 @@ export default {
     }
   },
   created() {},
-  mounted() {}
+  mounted() {},
+  beforeDestroy() {
+    this.onCancelClick();
+  }
 };
 </script>
 <style lang="scss" scoped>

@@ -85,6 +85,11 @@ export default {
     if (this.task) {
       clearInterval(this.task);
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    this.hideMenuVisible();
+    this.setBookAvailable(false);
+    next();
   }
 };
 </script>

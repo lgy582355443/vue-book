@@ -4,11 +4,14 @@
     <scroll :top="48" @onScroll="onScroll">
       <div class="edit-wrapper">
         <div class="user-avatar">
-          <div class="avatar-img" :style="`background-image:url(${user.userInfo.avatar});`"></div>
-          <div class="btn" @click="editAvatar" v-show="!isChangeAvatar">{{$t('my.changeAvatar')}}</div>
-          <div class="input-wrapper avatar-wrapper" v-show="isChangeAvatar">
-            <div class="edit-tite">{{$t('my.imgUrl')}}</div>
-            <div class="right">
+          <div class="avatar-img" :style="`background-image:url(${avatar});`"></div>
+          <div class="btn" v-show="!isChangeAvatar">
+            {{$t('my.changeAvatar')}}
+            <input type="file" @change="getFile($event)" />
+          </div>
+          <!-- <div class="input-wrapper avatar-wrapper" v-show="isChangeAvatar">
+          <div class="edit-tite">{{$t('my.imgUrl')}}</div>-->
+          <!-- <div class="right">
               <input
                 class="edit-input avatar"
                 type="text"
@@ -16,24 +19,28 @@
                 :placeholder="$t('my.pictureImageAddress')"
               />
               <div class="btn" @click="editAvatar">{{$t('my.confirm')}}</div>
-            </div>
-          </div>
+          </div>-->
+          <!-- </div> -->
         </div>
         <div class="input-wrapper nickname-wrapper">
           <div class="edit-tite">{{$t('my.nickname')}}</div>
           <input
             class="edit-input nickname"
             type="text"
-            v-model="user.userInfo.nickname"
+            v-model="user.nickname"
             :placeholder="$t('my.pictureNickname')"
           />
+        </div>
+        <div class="input-wrapper nickname-wrapper">
+          <div class="edit-tite">{{$t('my.sex')}}</div>
+          <div class="edit-input sex" @click="EditSex">{{user.sex}}</div>
         </div>
         <div class="input-wrapper signature-wrapper">
           <div class="edit-tite">{{$t('my.signature')}}</div>
           <input
             class="edit-input signature"
             type="text"
-            v-model="user.userInfo.signature"
+            v-model="user.slogan"
             :placeholder="$t('my.pictureSignature')"
           />
         </div>
@@ -47,53 +54,95 @@
 import TitleView from "@/components/home/title";
 import scroll from "@/components/common/Scroll";
 import { getToken, setToken } from "../../utils/login";
-import { userMixin } from "@/utils/mixin";
+import { userUpdataApi } from "@/api/user";
 export default {
   name: "UserEdit",
   components: {
     TitleView,
     scroll
   },
-  mixins: [userMixin],
   props: {},
   data() {
     return {
       isShadow: false,
       isChangeAvatar: false,
-      user: {}
+      user: {},
+      avatar: require("../../assets/images/user/avatar.png")
     };
   },
   watch: {},
-  computed: {},
+  computed: {
+    sexPopup() {
+      return [
+        {
+          text: "男",
+          click: () => {
+            this.user.sex = "男";
+            this.popupHide();
+          }
+        },
+        {
+          text: "女",
+          click: () => {
+            this.user.sex = "女";
+            this.popupHide();
+          }
+        }
+      ];
+    }
+  },
   methods: {
     onScroll(offsetY) {
       if (offsetY > 20) {
-        this.showShadow();
+        this.isShadow = true;
       } else {
-        this.hideShadow();
+        this.isShadow = false;
       }
     },
 
-    showShadow() {
-      this.isShadow = true;
-    },
-
-    hideShadow() {
-      this.isShadow = false;
-    },
-
     editAvatar() {
-      this.isChangeAvatar = !this.isChangeAvatar;
+      // this.isChangeAvatar = !this.isChangeAvatar;
+      return;
+    },
+
+    //修改头像
+    getFile(event) {
+      this.file = event.target.files[0]; //获取上传元素信息
+      event.preventDefault();
+      // 只能通过formData方式来传输文件
+      var formData = new FormData();
+      formData.append("file", this.file);
+
+      // let config = {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data"
+      //   }
+      // };
+      axios.post(process.env.VUE_APP_BASE_URL + "/api/user/avatar", formData);
+      // .then(function(res) {
+      //   console.log(res.data.code);
+      //   if (res.data.code == "0") {
+      //     /*这里做处理*/
+      //     // that.init(); //   给avatar赋上新的值，否则要刷新获取
+      //   }
+      // });
+    },
+
+    EditSex() {
+      this.popupShow(this.$t("my.popupSex"), this.sexPopup);
     },
 
     submit() {
-      setToken(this.user);
-      let userList = this.userList.filter(
-        item => item.username !== this.user.username
-      );
-      userList.push(this.user);
-      this.setUserList(userList);
-      this.simpleToast(this.$t("my.isEdit"));
+      delete this.user.loginTime;
+      userUpdataApi(this.user).then(res => {
+        console.log(res);
+        if (res.data.code == 0) {
+          setToken(res.data.data);
+          this.simpleToast(this.$t("my.isEdit"));
+        } else {
+          this.simpleToast(this.$t("my.EditFailed"));
+        }
+      });
     }
   },
   created() {
@@ -103,6 +152,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import "@/assets/styles/global.scss";
 .user-edit-main {
   width: 100%;
   height: 100%;
@@ -156,6 +206,10 @@ export default {
         &::placeholder {
           font-size: 12px;
           color: #9f9f9f;
+        }
+        &.sex {
+          display: flex;
+          align-items: center;
         }
       }
       .right {

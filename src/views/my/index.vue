@@ -2,9 +2,9 @@
   <div class="my-main">
     <div class="header-box">
       <div class="user">
-        <div class="user-avatar" :style="`background-image: url(${user.userInfo.avatar});`"></div>
-        <div class="user-name">{{user.userInfo.nickname}}</div>
-        <div class="user-signature">{{user.userInfo.signature}}</div>
+        <div class="user-avatar" :style="`background-image: url(${avatar});`"></div>
+        <div class="user-name">{{user.nickname}}</div>
+        <div class="user-signature">{{user.slogan}}</div>
       </div>
     </div>
     <div class="btn">
@@ -30,14 +30,16 @@
 </template>
 
 <script>
-import { getToken, removeToken } from "../../utils/login";
+import axios from "axios";
+import { getToken, removeToken, setToken } from "../../utils/login";
 export default {
-  name: "my",
+  name: "My",
   components: {},
   props: {},
   data() {
     return {
-      user: {}
+      user: {},
+      avatar: require("../../assets/images/user/avatar.png")
     };
   },
   watch: {},
@@ -60,10 +62,13 @@ export default {
       this.$router.push({
         name: "UserEdit"
       });
-    }
+    },
+
   },
   created() {
     this.user = getToken();
+    this.user.loginTime = new Date();
+    setToken(this.user);
   },
   mounted() {}
 };

@@ -151,13 +151,15 @@ const messages = {
     changeAvatar: '更改头像',
     imgUrl: '头像图片地址',
     nickname: '昵称',
+    sex:'性别',
     signature: '个性签名',
     submit: '提交编辑',
     confirm: '确认',
     pictureImageAddress: '请输入图片地址',
     pictureNickname: '请输入昵称',
     pictureSignature: '请输入个性签名',
-    isEdit: '已修改'
+    isEdit: '已修改',
+    EditFailed:'更新失败'
   },
   login: {
     login: '登录',
@@ -176,7 +178,8 @@ const messages = {
     goLogin: '已有账号 去登录',
     registerSuccessfuly: '注册成功',
     usernameEsist: '用户名已存在',
-
+    picturePasswordAgain: '请再次输入密码',
+    popupSex:'请选择性别',
   }
 }
 

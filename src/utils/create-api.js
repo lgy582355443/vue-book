@@ -20,6 +20,12 @@ Vue.mixin({
                 $props: settings
             })
         },
+        dialog(settings) {
+            return this.$createGroupDialog({
+                $props: settings
+            })
+        },
+
         simpleToast(text) {
             const toast = this.toast({
                 text: text
@@ -27,10 +33,18 @@ Vue.mixin({
             toast.show()
             toast.updateText(text)
         },
-        dialog(settings) {
-            return this.$createGroupDialog({
-                $props: settings
+
+        popupShow(title, btn) {
+            const popup = this.popup({
+                title,
+                btn
             })
+            popup.show();
+        },
+
+        popupHide() {
+            const popup = this.popup();
+            popup.hide();
         }
     }
 })

@@ -1,5 +1,6 @@
 const home = {
     state: {
+        homeOffsetY: 0,
         hotSearchOffsetY: 0,
         flapCardVisible: false,
         isEditMode: false,
@@ -10,6 +11,9 @@ const home = {
         currentType: 1,// 书架列表为1，书架分组列表为2
     },
     mutations: {
+        SET_HOME_OFFSETY(state, offsetY) {
+            state.homeOffsetY = offsetY
+        },
         SET_HOT_SEARCH_OFFSETY(state, offsetY) {
             state.hotSearchOffsetY = offsetY
         },

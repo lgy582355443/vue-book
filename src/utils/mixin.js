@@ -243,6 +243,7 @@ export const StoreHomeMixin = {
   computed: {
     ...mapGetters([
       'offsetY',
+      'homeOffsetY',
       'hotSearchOffsetY',
       'flapCardVisible',
     ])
@@ -250,6 +251,7 @@ export const StoreHomeMixin = {
   methods: {
     ...mapActions([
       'setOffsetY',
+      'setHomeOffsetY',
       'setHotSearchOffsetY',
       'setFlapCardVisible',
     ]),
@@ -343,13 +345,11 @@ export const userMixin = {
   computed: {
     ...mapGetters([
       'historyList',
-      'userList'
     ])
   },
   methods: {
     ...mapActions([
       'setHistoryList',
-      'setUserList'
     ])
   }
 }

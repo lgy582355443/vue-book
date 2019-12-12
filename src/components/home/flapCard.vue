@@ -36,14 +36,14 @@
     >
       <div class="book-card-wrapper">
         <div class="img-wrapper">
-          <img class="img" :src="data?data.cover:''" />
+          <img class="img" :src="randomBook?randomBook.cover:''" />
         </div>
         <div class="content-wrapper">
-          <div class="title">{{data?data.title:''}}</div>
-          <div class="author sub-title-medium">{{data?data.author:''}}</div>
+          <div class="title">{{randomBook?randomBook.title:''}}</div>
+          <div class="author sub-title-medium">{{randomBook?randomBook.author:''}}</div>
           <div class="category">{{categoryText()}}</div>
         </div>
-        <div class="read-btn" @click.stop="goBookDetail(data)">{{$t('home.readNow')}}</div>
+        <div class="read-btn" @click.stop="goBookDetail(randomBook)">{{$t('home.readNow')}}</div>
       </div>
     </div>
     <div class="close-btn-wrapper" @click="close">
@@ -59,7 +59,7 @@ export default {
   name: "FlapCard",
   components: {},
   props: {
-    data: Object
+    randomBook: Object
   },
   mixins: [StoreHomeMixin],
   data() {
@@ -87,7 +87,8 @@ export default {
       this.pointList.push("point" + i);
     }
   },
-  mounted() {},
+  mounted() {
+  },
   methods: {
     categoryText() {
       if (this.data) {

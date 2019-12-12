@@ -59,6 +59,9 @@ const actions = {
   setHotSearchOffsetY({ commit }, offsetY) {
     return commit('SET_HOT_SEARCH_OFFSETY', offsetY)
   },
+  setHomeOffsetY({ commit }, offsetY) {
+    return commit('SET_HOME_OFFSETY', offsetY)
+  },
   setFlapCardVisible({ commit }, visible) {
     return commit('SET_FLAP_CARD_VISIBLE', visible)
   },
@@ -79,9 +82,6 @@ const actions = {
   },
   setCurrentType({ commit }, type) {
     return commit('SET_CURRENT_TYPE', type)
-  },
-  setUserList({ commit }, list) {
-    return commit('SET_USER_LIST', list)
   },
   setHistoryList({ commit }, list) {
     return commit('SET_HISTORY_LIST', list)

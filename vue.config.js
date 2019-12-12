@@ -23,14 +23,14 @@ module.exports = {
     //   mock(app, '/book/flat-list', mockBookFlatList)
     // }
 
-    proxy: {
-      '^/api': { //拦截所有以'/api'开始的请求
-        target: process.env.VUE_APP_BOOK_URL,
-        changeOrigin: true,
-        pathRewrite: {
-        }
-      },
-    },
+    // proxy: {
+    //   '^/api': { //拦截所有以'/api'开始的请求
+    //     target: process.env.VUE_APP_BASE_URL,
+    //     changeOrigin: true,
+    //     pathRewrite: {
+    //     }
+    //   },
+    // },
     
   },
   configureWebpack: {

@@ -155,12 +155,15 @@ const messages = {
     imgUrl: 'avatar URL',
     nickname: 'nickname',
     signature: 'catchword',
+    sex: 'gender',
     submit: 'submit',
     confirm: 'confirm',
     pictureImageAddress: 'Please enter the picture address',
     pictureNickname: 'Please enter the picture nickname',
     pictureSignature: 'Please enter the picture catchword',
-    isEdit: 'updated successfully'
+    isEdit: 'updated successfully',
+    EditFailed: 'updated failed',
+    popupSex: 'Please select gender'
   },
   login: {
     login: 'login',

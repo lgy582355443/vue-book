@@ -44,16 +44,10 @@ export default {
     },
     onScroll(offsetY) {
       if (offsetY > 20) {
-        this.showShadow();
+        this.isShadow = true;
       } else {
-        this.hideShadow();
+        this.isShadow = false;
       }
-    },
-    showShadow() {
-      this.isShadow = true;
-    },
-    hideShadow() {
-      this.isShadow = false;
     }
   },
   created() {

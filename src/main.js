@@ -31,7 +31,14 @@ new Vue({
 router.beforeEach(async (to, from, next) => {
   const hasToken = getToken();
   if (hasToken) {
-    next()
+    const nowDate = new Date().getTime();
+    const oldDate = new Date(hasToken.loginTime).getTime();
+    //如果超过3天没有登录，重新登录
+    if (nowDate - oldDate > 259200000) {
+      next({ path: "/login" })
+    } else {
+      next()
+    }
   } else {
     if (!to.meta.isLogin) {
       next()

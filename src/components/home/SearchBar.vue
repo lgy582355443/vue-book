@@ -34,7 +34,7 @@
         </div>
       </div>
     </div>
-    <hot-search-list v-show="hotSearchVisible" ref="hotSearchList"></hot-search-list>
+    <hot-search-list v-if="hotSearchVisible" ref="hotSearchList"></hot-search-list>
   </div>
 </template>
 
@@ -75,7 +75,7 @@ export default {
     }
   },
   watch: {
-    offsetY(offsetY) {
+    homeOffsetY(offsetY) {
       if (offsetY > 0) {
         this.hideTitle();
         this.showShadow();
@@ -148,6 +148,7 @@ export default {
     //显示随机动画
     showFlapCard() {
       this.setFlapCardVisible(true);
+      this.$emit("getRandom");
     },
     //切换语言
     switchLocale() {
@@ -156,7 +157,18 @@ export default {
       } else {
         this.$i18n.locale = "en";
       }
+
       setLocalStorage("locale", this.$i18n.locale);
+    }
+  },
+  created() {},
+  mounted() {
+    if (this.homeOffsetY > 0) {
+      this.hideTitle();
+      this.showShadow();
+    } else {
+      this.showTitle();
+      this.hideShadow();
     }
   }
 };

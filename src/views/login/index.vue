@@ -7,7 +7,7 @@
           <input
             class="login-input userId"
             type="text"
-            v-model="login.username"
+            v-model="login.userName"
             :placeholder="$t('login.pictureUsername')"
           />
           <div class="icon-wrapper">
@@ -35,10 +35,12 @@
       </div>
       <router-link class="register" :to="{name:'register'}" tag="div">{{$t('login.goRegister')}}</router-link>
       <router-link class="gobick" :to="{name:'home'}" tag="div">
-        <span class="icon-back"></span>{{$t('login.goHome')}}
+        <span class="icon-back"></span>
+        {{$t('login.goHome')}}
       </router-link>
       <div class="third">
-        <div class="line"></div>{{$t('login.ThirdPartyLogin')}}
+        <div class="line"></div>
+        {{$t('login.ThirdPartyLogin')}}
         <div class="line"></div>
       </div>
       <div class="icon-list">
@@ -57,8 +59,8 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
 import { setToken } from "../../utils/login";
+import { loginApi } from "@/api/user";
 export default {
   name: "Login",
   components: {},
@@ -66,8 +68,8 @@ export default {
   data() {
     return {
       login: {
-        username:'admin',
-        password:'123'
+        userName: "admin",
+        password: "123"
       },
       message: "",
       messageShow: false,
@@ -76,24 +78,23 @@ export default {
   },
   watch: {},
   computed: {
-    ...mapGetters(["userList"])
   },
   methods: {
-    ...mapActions(["setUserList"]),
+
     //登录
     doLogin() {
-      const user = this.userList.find(
-        item => item.username == this.login.username
-      );
-      if (user && user.password == this.login.password) {
-        setToken(user);
-        this.login = this.$options.data().login;
-        this.$router.push({
-          name: "my"
-        });
-      } else {
-        this.simpleToast(this.$t('login.loginError'));
-      }
+      loginApi(this.login).then(res => {
+        console.log(res);
+        if (res.data.code == 0) {
+          setToken(res.data.data);
+          this.login = this.$options.data().login;
+          this.$router.push({
+            name: "my"
+          });
+        } else {
+          this.simpleToast(this.$t("login.loginError"));
+        }
+      });
     },
     //显示密码
     openPassword() {
