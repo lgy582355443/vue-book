@@ -59,7 +59,7 @@
 
 <script>
 import { registerApi } from "@/api/user";
-import { userMixin } from "@/utils/mixin";
+import { userMixin } from "@/mixins/my";
 export default {
   name: "Register",
   mixins: [userMixin],

@@ -20,7 +20,7 @@
 <script>
 import Scroll from "@/components/common/Scroll";
 import { getBookmark } from "@/utils/localStorage";
-import { ebookMixin } from "@/utils/mixin";
+import { ebookMixin } from "@/mixins/ebook";
 
 export default {
   mixins: [ebookMixin],

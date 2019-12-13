@@ -22,7 +22,7 @@ import Scroll from "../../components/common/Scroll";
 import ShelfSearch from "../../components/shelf/shelfSearch";
 import ShelfList from "../../components/shelf/shelfList";
 import ShelfFooter from "../../components/shelf/shelfFooter";
-import { shelfMixin } from "../../utils/mixin";
+import { shelfMixin } from "@/mixins/shelf";
 
 export default {
   name: "BookShelf",

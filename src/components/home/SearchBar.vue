@@ -40,8 +40,7 @@
 
 <script>
 import { setLocalStorage } from "../../utils/localStorage";
-import { realPx } from "@/utils/utils";
-import { StoreHomeMixin } from "../../utils/mixin";
+import { StoreHomeMixin } from "@/mixins/home";
 import hotSearchList from "./hotSearchList";
 
 export default {

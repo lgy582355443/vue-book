@@ -1,7 +1,7 @@
 <template>
-  <div class="shelf-list" :style="{top: shelfListTop}">
+  <div class="shelf-list-main" :style="`top: ${top}px;`">
     <transition-group name="list" tag="div" appear class="shelf-list-item-animation">
-      <div class="shelf-list-item-wrapper" v-for="item in data" :key="item.id">
+      <div class="shelf-list-item-wrapper" v-for="item in data" :key="item.shelf_id">
         <shelf-item :data="item" :style="`height:${itemHeight}`"></shelf-item>
         <div class="shelf-list-title-wrapper">
           <span class="shelf-list-title title-small">{{item.title}}</span>
@@ -12,14 +12,14 @@
 </template>
 
 <script>
-import { shelfMixin } from "../../utils/mixin";
-import shelfItem from "./shelfItem";
+import { shelfMixin } from "@/mixins/shelf";
+import ShelfItem from "./shelfItem";
 import { realPx, px2rem } from "../../utils/utils";
 export default {
   name: "ShelfList",
   mixins: [shelfMixin],
   components: {
-    shelfItem
+    ShelfItem
   },
   props: {
     top: {
@@ -34,13 +34,10 @@ export default {
   watch: {},
   computed: {
     itemHeight() {
-      //图片250px *350px
+      //图片原始尺寸：250px *350px
       //转化rem后的比例 w/250 = h/350
       //h = w*350/250
-      return ((window.innerWidth - realPx(120)) / 3 / 250) * 350 + "px";
-    },
-    shelfListTop() {
-      return px2rem(this.top) + "rem";
+      return (window.innerWidth - 120) / 3 / 250 * 350 + "px";
     }
   },
   methods: {},
@@ -50,7 +47,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "../../assets/styles/global.scss";
-.shelf-list {
+.shelf-list-main {
   position: absolute;
   z-index: 104;
   width: 100%;

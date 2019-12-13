@@ -25,7 +25,7 @@ import Featured from "@/components/home/featured";
 import { realPx } from "@/utils/utils";
 import { listApi } from "@/api/bookList";
 import { categoryList, categoryText } from "@/utils/home";
-import { StoreHomeMixin } from "../../utils/mixin";
+import { StoreHomeMixin } from "@/mixins/home";
 export default {
   components: {
     SearchTitle,

@@ -36,7 +36,7 @@ import category from "../../components/home/category";
 import SearchBar from "../../components/home/SearchBar";
 import flapCard from "../../components/home/flapCard";
 import Scroll from "../../components/common/Scroll";
-import { StoreHomeMixin } from "../../utils/mixin";
+import { StoreHomeMixin } from "../../mixins/home";
 import { homeApi } from "@/api/home";
 
 import "swiper/dist/css/swiper.css";

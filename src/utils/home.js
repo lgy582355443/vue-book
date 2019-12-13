@@ -1,4 +1,4 @@
-import { getLocalStorage, saveBookShelf, getBookShelf } from './localStorage';
+
 //随机推荐的翻转卡片
 export const flapCardList = [
     {
@@ -184,26 +184,6 @@ export const categoryList = {
     'Statistics': 22
 }
 
-//书架列表中最后一个添加按钮
-export function appendAddToShelf(list) {
-    list.push({
-        id: -1,
-        type: 3
-    })
-    return list
-}
-
-//排除最后一个添加按钮,获取书架列表
-export function removeAddFromShelf(list) {
-    return list.filter(item => item.type !== 3)
-}
-
-export function gotoStoreHome(vue) {
-    vue.$router.push({
-        name: 'home',
-    })
-}
-
 export function gotoBookDetail(vue, book) {
     vue.$router.push({
         name: 'detail',
@@ -213,71 +193,3 @@ export function gotoBookDetail(vue, book) {
         }
     })
 }
-
-//重新排序ID
-export function computeId(list) {
-    return list.map((book, index) => {
-        if (book.type !== 3) {
-            book.id = index + 1
-            if (book.itemList) {
-                book.itemList = computeId(book.itemList)
-            }
-        }
-        return book
-    })
-}
-
-//添加到书架
-export function addToShelf(book) {
-    let shelfList = getBookShelf()
-    shelfList = removeAddFromShelf(shelfList)
-    book.type = 1
-    shelfList.push(book)
-    shelfList = computeId(shelfList)
-    shelfList = appendAddToShelf(shelfList)
-    saveBookShelf(shelfList)
-}
-
-//移除出书架
-export function removeFromBookShelf(book) {
-    return getBookShelf().filter(item => {
-        if (item.itemList) {
-            item.itemList = removeAddFromShelf(item.itemList)
-        }
-        return item.fileName !== book.fileName
-    })
-}
-
-export function flatBookList(bookList) {
-    if (bookList) {
-        let orgBookList = bookList.filter(item => {
-            return item.type !== 3
-        })
-        const categoryList = bookList.filter(item => {
-            return item.type === 2
-        })
-        categoryList.forEach(item => {
-            const index = orgBookList.findIndex(v => {
-                return v.id === item.id
-            })
-            if (item.itemList) {
-                item.itemList.forEach(subItem => {
-                    orgBookList.splice(index, 0, subItem)
-                })
-            }
-        })
-        orgBookList.forEach((item, index) => {
-            item.id = index + 1
-        })
-        orgBookList = orgBookList.filter(item => item.type !== 2)
-        return orgBookList
-    } else {
-        return []
-    }
-}
-
-export function findBook(fileName) {
-    const bookList = getLocalStorage('shelf')
-    return flatBookList(bookList).find(item => item.fileName === fileName)
-}
-

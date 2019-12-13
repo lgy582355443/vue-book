@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { StoreHomeMixin } from "../../utils/mixin";
+import { StoreHomeMixin } from "@/mixins/home";
 import { categoryText } from "@/utils/home";
 export default {
   name: "FeaturedItem",

@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { shelfMixin } from "../../utils/mixin";
+import { shelfMixin } from "@/mixins/shelf";
 import { clearLocalStorage, saveBookShelf } from "../../utils/localStorage";
 import { clearLocalForage } from "../../utils/localForage";
 export default {
@@ -133,9 +133,7 @@ export default {
       this.setShelfSelected([]);
       this.setShelfList([]);
       this.getShelfList();
-      this.toast({
-        text: this.$t("shelf.clearCacheSuccess")
-      }).show();
+      this.simpleToast(this.$t("shelf.clearCacheSuccess"));
     },
 
     //创建-修改分组popup

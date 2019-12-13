@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { StoreHomeMixin } from "../../utils/mixin";
+import { StoreHomeMixin } from "@/mixins/home";
 import { flapCardList, categoryText } from "../../utils/home";
 export default {
   name: "FlapCard",

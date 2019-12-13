@@ -34,7 +34,7 @@
   // import EbookSpeakingIcon from './EbookSpeakingIcon'
 
   import EbookSlide from './EbookSlide'
-  import { ebookMixin } from '@/utils/mixin'
+  import { ebookMixin } from '@/mixins/ebook'
 
   export default {
     mixins: [ebookMixin],

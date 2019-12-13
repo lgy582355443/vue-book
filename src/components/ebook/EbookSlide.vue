@@ -36,7 +36,7 @@
 import EbookLoading from "./EbookLoading";
 import EbookSlideContent from "./EbookSlideContent";
 import EbookBookmark from "./EbookSlideBookmark";
-import { ebookMixin } from "../../utils/mixin";
+import { ebookMixin } from "@/mixins/ebook";
 
 export default {
   mixins: [ebookMixin],

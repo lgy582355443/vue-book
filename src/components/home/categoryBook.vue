@@ -27,7 +27,7 @@
 <script>
 import TitleView from "@/components/home/title";
 import { categoryText, getCategoryName } from "@/utils/home";
-import { StoreHomeMixin } from "../../utils/mixin";
+import { StoreHomeMixin } from "@/mixins/home";
 
 export default {
   mixins: [StoreHomeMixin],

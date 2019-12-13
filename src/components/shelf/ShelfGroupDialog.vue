@@ -10,7 +10,7 @@
         v-if="(item.edit === 2 && isInGroup) || item.edit !== 2 || !item.edit"
       >
         <div class="dialog-list-item-text">{{item.title}}</div>
-        <div class="dialog-list-icon-wrapper" v-if="isInGroup && shelfCategory.id === item.id">
+        <div class="dialog-list-icon-wrapper" v-if="isInGroup && shelfCategory.shelf_id === item.shelf_id">
           <span class="icon-check"></span>
         </div>
       </div>
@@ -47,8 +47,8 @@
 
 <script>
 import EbookDialog from "../common/Dialog";
-import { shelfMixin } from "../../utils/mixin";
-import { removeAddFromShelf, appendAddToShelf } from "../../utils/home";
+import { shelfMixin } from "@/mixins/shelf";
+import { removeAddFromShelf, appendAddToShelf } from "../../utils/shelf";
 import { saveBookShelf } from "../../utils/localStorage";
 
 export default {
@@ -153,7 +153,7 @@ export default {
           group.itemList = [...group.itemList, ...this.shelfSelected];
         }
         group.itemList.forEach((item, index) => {
-          item.id = index + 1;
+          item.shelf_id = index + 1;
         });
         this.simpleToast(
           this.$t("shelf.moveBookInSuccess").replace("$1", group.title)
@@ -177,7 +177,7 @@ export default {
         this.onComplete();
       } else {
         const group = {
-          id: this.shelfList[this.shelfList.length - 2].id + 1,
+          shelf_id: this.shelfList[this.shelfList.length - 2].shelf_id + 1,
           itemList: [],
           selected: false,
           title: this.newGroupName,

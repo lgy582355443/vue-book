@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import { ebookMixin } from '../../utils/mixin'
+  import { ebookMixin } from '@/mixins/ebook'
 
   export default {
     mixins: [ebookMixin]

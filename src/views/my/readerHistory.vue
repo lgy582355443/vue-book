@@ -20,7 +20,7 @@ import TitleView from "@/components/home/title";
 import HistoryItem from "@/components/home/featuredItem";
 import scroll from "@/components/common/Scroll";
 import { getReaderHistory, saveReaderHistory } from "@/utils/localStorage";
-import { userMixin } from "@/utils/mixin";
+import { userMixin } from "@/mixins/my";
 export default {
   name: "ReaderHistory",
   components: {

@@ -31,17 +31,6 @@ export default {
       this.visible = false;
     },
 
-    //显示1.5秒后消失
-    show() {
-      this.updateText(this.text);
-      clearTimeout(this.task);
-      this.task = null;
-      this.visible = true;
-      this.task = setTimeout(() => {
-        this.visible = false;
-      }, this.timeout);
-    },
-
     //一直显示
     continueShow(text) {
       if (text) {

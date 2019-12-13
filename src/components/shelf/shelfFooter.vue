@@ -18,21 +18,17 @@
         </div>
       </div>
     </div>
-    <toast ref="toast"></toast>
   </div>
 </template>
 
 <script>
-import toast from "../../components/common/toast";
-import { shelfMixin } from "../../utils/mixin";
+import { shelfMixin } from "@/mixins/shelf";
 import { saveBookShelf, removeLocalStorage } from "../../utils/localStorage";
 import { download } from "@/api/download";
 import { removeLocalForage } from "../../utils/localForage";
 export default {
   name: "ShelfFooter",
-  components: {
-    toast
-  },
+  components: {},
   props: {},
   mixins: [shelfMixin],
   data() {
@@ -93,13 +89,12 @@ export default {
 
     downloadBook(book) {
       let text = this.$t("shelf.startDownload");
-      const toast = this.$refs.toast;
-      toast.continueShow(text);
+      this.continueShow(text);
       return new Promise((resolve, reject) => {
         download(
           book,
           book => {
-            toast.hide();
+            this.toastHide();
             resolve(book);
           },
           reject,
@@ -111,7 +106,7 @@ export default {
               "$1",
               `${book.fileName}.epub(${progress})`
             );
-            toast.updateText(text);
+            this.toastUpdata(text);
           }
         );
       });
@@ -124,9 +119,7 @@ export default {
             book.cache = false;
           });
           saveBookShelf(this.shelfList);
-          let text = this.$t("shelf.removeDownloadSuccess");
-          const toast = this.$refs.toast;
-          toast.showToast(text);
+          this.simpleToast(this.$t("shelf.removeDownloadSuccess"));
         }
       );
     },
@@ -147,10 +140,6 @@ export default {
       this.onComplete();
     },
 
-    hidePopup() {
-      this.popupMenu.hide();
-    },
-
     onComplete() {
       this.hidePopup();
       this.setIsEditMode(false);
@@ -165,13 +154,9 @@ export default {
       });
       this.onComplete();
       if (isPrivate) {
-        let text = this.$t("shelf.setPrivateSuccess");
-        const toast = this.$refs.toast;
-        toast.showToast(text);
+        this.simpleToast(this.$t("shelf.setPrivateSuccess"));
       } else {
-        let text = this.$t("shelf.closePrivateSuccess");
-        const toast = this.$refs.toast;
-        toast.showToast(text);
+        this.simpleToast(this.$t("shelf.closePrivateSuccess"));
       }
     },
 
@@ -186,67 +171,53 @@ export default {
       } else {
         await this.downloadSelectedBook();
         saveBookShelf(this.shelfList);
-        let text = this.$t("shelf.setDownloadSuccess");
-        const toast = this.$refs.toast;
-        toast.showToast(text);
+        this.simpleToast(this.$t("shelf.setDownloadSuccess"));
       }
       // if (!this.isDownload) {
-      //   this.toast({
-      //     text: this.$t("shelf.removeDownloadSuccess")
-      //   }).show();
+      //   this.simpleToast(this.$t("shelf.removeDownloadSuccess"))
       // } else {
-      //   this.toast({
-      //     text: this.$t("shelf.setDownloadSuccess")
-      //   }).show();
+      //   this.simpleToast(this.$t("shelf.setDownloadSuccess"))
       // }
     },
 
     showPrivate() {
-      this.popupMenu = this.popup({
-        title: this.isPrivate
+      this.popupShow(
+        this.isPrivate
           ? this.$t("shelf.closePrivateSuccess")
           : this.$t("shelf.setPrivateTitle"),
-        btn: [
+        [
           {
             text: this.isPrivate
               ? this.$t("shelf.cancel")
               : this.$t("shelf.open"),
-            click: () => {
-              this.setPrivate();
-            }
+            click: this.setPrivate
           },
           {
             text: this.$t("shelf.cancel"),
-            click: () => {
-              this.hidePopup();
-            }
+            click: this.popupHide
           }
         ]
-      }).show();
+      );
     },
 
     showDownload() {
-      this.popupMenu = this.popup({
-        title: this.isDownload
+      this.popupShow(
+        this.isDownload
           ? this.$t("shelf.removeDownloadTitle")
           : this.$t("shelf.setDownloadTitle"),
-        btn: [
+        [
           {
             text: this.isDownload
               ? this.$t("shelf.delete")
               : this.$t("shelf.open"),
-            click: () => {
-              this.setDownload();
-            }
+            click: this.setDownload
           },
           {
             text: this.$t("shelf.cancel"),
-            click: () => {
-              this.hidePopup();
-            }
+            click: this.popupHide
           }
         ]
-      }).show();
+      );
     },
 
     showRemove() {
@@ -262,24 +233,17 @@ export default {
           this.$t("shelf.selectedBooks")
         );
       }
-      this.popupMenu = this.popup({
-        title: title,
-        btn: [
-          {
-            text: this.$t("shelf.removeBook"),
-            type: "danger",
-            click: () => {
-              this.removeSelected();
-            }
-          },
-          {
-            text: this.$t("shelf.cancel"),
-            click: () => {
-              this.hidePopup();
-            }
-          }
-        ]
-      }).show();
+      this.popupShow(title, [
+        {
+          text: this.$t("shelf.removeBook"),
+          type: "danger",
+          click: this.removeSelected
+        },
+        {
+          text: this.$t("shelf.cancel"),
+          click: this.popupHide
+        }
+      ]);
     },
 
     onTabClick(item) {

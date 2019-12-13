@@ -24,7 +24,7 @@
 <script>
 import TitleView from "@/components/home/title";
 import { realPx } from "@/utils/utils";
-import { StoreHomeMixin } from "../../utils/mixin";
+import { StoreHomeMixin } from "@/mixins/home";
 
 export default {
   mixins: [StoreHomeMixin],

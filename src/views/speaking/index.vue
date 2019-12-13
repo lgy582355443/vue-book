@@ -82,7 +82,8 @@ import Scroll from "../../components/common/Scroll";
 import SpeakPlaying from "../../components/speak/SpeakPlaying";
 import Bottom from "../../components/speak/SpeakBottom";
 import SpeakWindow from "../../components/speak/SpeakMask";
-import { findBook, getCategoryName } from "../../utils/home";
+import { getCategoryName } from "../../utils/home";
+import { findBook } from "../../utils/shelf";
 import { flatListApi } from "@/api/bookList";
 import { getLocalForage } from "../../utils/localForage";
 import { realPx } from "../../utils/utils";
@@ -237,7 +238,6 @@ export default {
       currentPlayingTime: 0,
       totalPlayingTime: 0,
       playStatus: 0, // 0 - 未播放，1 - 播放中，2 - 暂停中
-      toastText: "",
       isOnline: false
     };
   },
@@ -267,10 +267,10 @@ export default {
           // 自动播放MP3
           this.continuePlay();
         } else {
-          this.showToast("播放失败，未生成链接");
+          this.simpleToast("播放失败，未生成链接");
         }
       } else {
-        this.showToast("播放失败");
+        this.simpleToast("播放失败");
       }
       /*
         axios.create({
@@ -293,14 +293,14 @@ export default {
                 this.continuePlay()
               })
             } else {
-              this.showToast(response.data.msg)
+              this.simpleToast(response.data.msg)
             }
           } else {
-            this.showToast('请求失败')
+            this.simpleToast('请求失败')
           }
         }).catch(err => {
           console.log(err)
-          this.showToast('播放失败')
+          this.simpleToast('播放失败')
         })
         */
     },
@@ -544,9 +544,7 @@ export default {
       });
       return arr;
     },
-    showToast(text) {
-      this.simpleToast(text);
-    },
+
     onPlayingCardClick() {
       this.$refs.speakWindow.show();
     }

@@ -20,7 +20,7 @@
 
 <script>
 import Scroll from "@/components/common/Scroll";
-import { StoreHomeMixin } from "../../utils/mixin";
+import { StoreHomeMixin } from "@/mixins/home";
 import hotSearch from "./hotSearch";
 export default {
   name: "HotSearchList",

@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { ebookMixin } from "@/utils/mixin";
+import { ebookMixin } from "@/mixins/ebook";
 import { saveTheme, getTheme } from "../../utils/localStorage";
 
 export default {

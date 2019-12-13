@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { ebookMixin } from "@/utils/mixin";
+import { ebookMixin } from "@/mixins/ebook";
 import { getFontSize, saveFontSize } from "../../utils/localStorage";
 
 export default {

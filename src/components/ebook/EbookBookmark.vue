@@ -15,7 +15,7 @@
 <script>
  import { realPx } from '@/utils/utils';
 import BookMark from "@/components/common/Bookmark";
-import { ebookMixin } from "../../utils/mixin";
+import { ebookMixin } from "@/mixins/ebook";
 import { saveBookmark, getBookmark } from "../../utils/localStorage";
 
 const BLUE = "#0e47c2";

@@ -1,6 +1,4 @@
-import { getReadTime, getLocalStorage, setLocalStorage, removeLocalStorage } from './localStorage'
-import { removeLocalForage } from './localForage'
-import { realPx } from './utils'
+import { getReadTime, setLocalStorage } from './localStorage'
 
 export const FONT_SIZE_LIST = [
   { fontSize: 14 },
@@ -92,7 +90,7 @@ export function themeList(vue) {
         '.epubjs-hl': {
           'fill': 'red', 'fill-opacity': '0.3', 'mix-blend-mode': 'multiply'
         }
-      } 
+      }
     }
   ]
 }
@@ -107,93 +105,7 @@ export function getReadTimeByMinute(fileName) {
   }
 }
 
-const BOOK_SHELF_KEY = 'bookShelf'
-
-//加入书架
-export function addToShelf(book) {
-  let bookList = getLocalStorage(BOOK_SHELF_KEY)
-  bookList = clearAddFromBookList(bookList)
-  book.type = 1
-  bookList.push(book)
-  bookList.forEach((item, index) => {
-    item.id = index + 1
-  })
-  appendAddToBookList(bookList)
-  setLocalStorage(BOOK_SHELF_KEY, bookList)
-}
-
-
-export function appendAddToBookList(bookList) {
-  bookList.push({
-    cover: '',
-    title: '',
-    type: 3,
-    id: Number.MAX_SAFE_INTEGER
-  })
-}
-
-
-export function clearAddFromBookList(bookList) {
-  return bookList.filter(item => {
-    return item.type !== 3
-  })
-}
-
-export function removeFromBookShelf(bookItem) {
-  let bookList = getLocalStorage(BOOK_SHELF_KEY)
-  bookList = bookList.filter(item => {
-    if (item.itemList) {
-      item.itemList = item.itemList.filter(subItem => subItem.fileName !== bookItem.fileName)
-    }
-    return item.fileName !== bookItem.fileName
-  })
-  setLocalStorage(BOOK_SHELF_KEY, bookList)
-}
-
-export function flatBookList(bookList) {
-  if (bookList) {
-    let orgBookList = bookList.filter(item => {
-      return item.type !== 3
-    })
-    const categoryList = bookList.filter(item => {
-      return item.type === 2
-    })
-    categoryList.forEach(item => {
-      const index = orgBookList.findIndex(v => {
-        return v.id === item.id
-      })
-      if (item.itemList) {
-        item.itemList.forEach(subItem => {
-          orgBookList.splice(index, 0, subItem)
-        })
-      }
-    })
-    orgBookList.forEach((item, index) => {
-      item.id = index + 1
-    })
-    orgBookList = orgBookList.filter(item => item.type !== 2)
-    return orgBookList
-  } else {
-    return []
-  }
-}
-
-export function findBook(fileName) {
-  const bookList = getLocalStorage(BOOK_SHELF_KEY)
-  return flatBookList(bookList).find(item => item.fileName === fileName)
-}
-
-export function removeBookCache(fileName) {
-  return new Promise((resolve, reject) => {
-    removeLocalStorage(fileName)
-    removeLocalStorage(`${fileName}-info`)
-    removeLocalForage(fileName, () => {
-      console.log(`[${fileName}]删除成功...`)
-      resolve()
-    }, reject)
-  })
-}
-
+//切换语言
 export function switchLocale(vue) {
   if (vue.$i18n.locale === 'en') {
     vue.$i18n.locale = 'cn'
@@ -201,13 +113,6 @@ export function switchLocale(vue) {
     vue.$i18n.locale = 'en'
   }
   setLocalStorage('locale', vue.$i18n.locale)
-}
-
-export function reset(vue) {
-  vue.$store.dispatch('setMenuVisible', false)
-  vue.$store.dispatch('setSettingVisible', 0)
-  vue.$store.dispatch('setFontFamilyVisible', false)
-  vue.$store.dispatch('setSpeakingIconBottom', realPx(58))
 }
 
 //把书籍目录数组转为一维数组

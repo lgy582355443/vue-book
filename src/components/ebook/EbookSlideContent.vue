@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { ebookMixin } from "../../utils/mixin";
+import { ebookMixin } from "@/mixins/ebook";
 import Scroll from "../common/Scroll";
 
 export default {

@@ -42,7 +42,7 @@
 
 <script>
 import { setLocalStorage } from "../../utils/localStorage";
-import { shelfMixin } from "../../utils/mixin";
+import { shelfMixin } from "@/mixins/shelf";
 export default {
   name: "ShelfSearch",
   components: {},

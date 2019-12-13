@@ -18,7 +18,7 @@ import EbookBookmark from "@/components/ebook/EbookBookmark";
 import EbookTitle from "@/components/ebook/EbookTitle";
 import EbookMenu from "@/components/ebook/EbookMenu";
 import EbookReader from "../../components/ebook/EbookReader";
-import { ebookMixin } from "@/utils/mixin";
+import { ebookMixin } from "../../mixins/ebook";
 import { getReadTime, saveReadTime } from "../../utils/localStorage";
 
 export default {

@@ -23,7 +23,7 @@ import ShelfTitle from "../../components/shelf/shelfTitle";
 import Scroll from "../../components/common/Scroll";
 import ShelfList from "../../components/shelf/shelfList";
 import ShelfFooter from "../../components/shelf/shelfFooter";
-import { shelfMixin } from "../../utils/mixin";
+import { shelfMixin } from "@/mixins/shelf";
 
 export default {
   mixins: [shelfMixin],

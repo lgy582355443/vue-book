@@ -1,6 +1,6 @@
 <template>
   <div
-    class="shelf-item"
+    class="shelf-item-main"
     :class="{'shelf-item-shadow':data.type == 1 || data.type == 2}"
     @click="onItemClick"
   >
@@ -22,7 +22,7 @@
 import ShelfItemBook from "./shelfItemBook";
 import shelfItemCategory from "./shelfItemCategory";
 import shelfItemAdd from "./shelfItemAdd";
-import { shelfMixin } from "../../utils/mixin";
+import { shelfMixin } from "@/mixins/shelf";
 
 export default {
   name: "ShelfItem",
@@ -57,6 +57,7 @@ export default {
     }
   },
   methods: {
+    
     onItemClick() {
       if (this.isEditMode) {
         this.data.selected = !this.data.selected;
@@ -91,7 +92,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "../../assets/styles/global.scss";
-.shelf-item {
+.shelf-item-main {
   position: relative;
   width: 100%;
   height: 100%;

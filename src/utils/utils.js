@@ -1,8 +1,10 @@
+//px转换rem
 export function px2rem(px) {
   const ratio = 375 / 10
   return px / ratio
 }
 
+//px转换rem(有限制)
 export function realPx(px) {
   const maxWidth = window.innerWidth > 500 ? 500 : window.innerWidth
   return px * (maxWidth / 375)
@@ -35,6 +37,8 @@ export function removeAllCss() {
   removeCss(`${process.env.VUE_APP_RES_URL}/theme/theme_night.css`)
 }
 
+
+//分辨设备
 export function os() {
   const ua = navigator.userAgent
   const isWindowsPhone = /(?:Windows Phone)/.test(ua)

@@ -19,7 +19,7 @@
 <script>
 import Epub from "epubjs";
 import EbookLoading from "./EbookLoading";
-import { ebookMixin } from "@/utils/mixin";
+import { ebookMixin } from "@/mixins/ebook";
 import { flatten } from "../../utils/book";
 import {
   getFontFamily,

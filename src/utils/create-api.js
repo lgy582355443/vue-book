@@ -28,13 +28,32 @@ Vue.mixin({
 
         simpleToast(text) {
             const toast = this.toast({
-                text: text
+                text
             })
-            toast.show()
-            toast.updateText(text)
+            toast.showToast(text)
         },
 
-        popupShow(title, btn) {
+        //一直显示
+        continueShow(text) {
+            const toast = this.toast({
+                text
+            })
+            toast.continueShow(text)
+        },
+
+        toastHide() {
+            const toast = this.toast();
+            toast.hide();
+        },
+
+        toastUpdata(text) {
+            const toast = this.toast({
+                text
+            });
+            toast.updateText(text);
+        },
+
+        popupShow(title,btn) {
             const popup = this.popup({
                 title,
                 btn

@@ -66,7 +66,6 @@
         {{inBookShelf ? $t('detail.isAddedToShelf') : $t('detail.addOrRemoveShelf')}}
       </div>
     </div>
-    <toast :text="toastText" ref="toast"></toast>
   </div>
 </template>
 
@@ -74,12 +73,11 @@
 import DetailTitle from "../../components/detail/detaiTitle";
 import BookInfo from "../../components/detail/bookInfo";
 import Scroll from "../../components/common/Scroll";
-import Toast from "../../components/common/toast";
 import { detailApi } from "@/api/detail";
 import { px2rem, realPx } from "../../utils/utils";
 import { getLocalForage } from "../../utils/localForage";
-import { removeFromBookShelf, addToShelf } from "../../utils/home";
-import { shelfMixin } from "../../utils/mixin";
+import { removeFromBookShelf, addToShelf } from "../../utils/shelf";
+import { shelfMixin } from "@/mixins/shelf";
 import {
   getBookShelf,
   saveBookShelf,
@@ -95,8 +93,7 @@ export default {
   components: {
     DetailTitle,
     Scroll,
-    BookInfo,
-    Toast
+    BookInfo
   },
   computed: {
     // 获取电子书摘要
@@ -183,7 +180,6 @@ export default {
       audio: null,
       randomLocation: null,
       description: null,
-      toastText: "",
       trialText: null,
       categoryText: null,
       opf: null
@@ -202,6 +198,36 @@ export default {
         // 如果电子书不存在于书架，则添加电子书到书架
         addToShelf(this.bookItem);
         this.setShelfList(getBookShelf());
+
+        function updataShelf(arr) {
+          let updataArr = [];
+          arr.forEach((item, index) => {
+            if (item.type == 1) {
+              updataArr.push({
+                id: item.id,
+                shelf_id: item.shelf_id,
+                type: item.type
+              });
+            } else if (item.type == 2) {
+              updataArr.push({
+                shelf_id: item.shelf_id,
+                type: item.type,
+                title: item.title
+              });
+              updataArr[index].itemList = [];
+              item.itemList.forEach(itemc => {
+                updataArr[index].itemList.push({
+                  id: itemc.id,
+                  shelf_id: itemc.shelf_id,
+                  type: itemc.type
+                });
+              });
+            }
+          });
+          console.log(updataArr);
+        }
+
+        updataShelf(this.shelfList);
       }
     },
 
@@ -221,12 +247,6 @@ export default {
       }
       this.setHistoryList(historyList);
       saveReaderHistory(historyList);
-    },
-
-    // 展示Toast弹窗
-    showToast(text) {
-      this.toastText = text;
-      this.$refs.toast.show();
     },
 
     // 听书
@@ -290,6 +310,7 @@ export default {
         marginLeft: (item.deep - 1) * px2rem(20) + "rem"
       };
     },
+    
     // 将目录从多维转为一维
     doFlatNavigation(content, deep = 1) {
       const arr = [];
@@ -375,7 +396,7 @@ export default {
             this.parseBook(this.opf);
           } else {
             // 请求失败时打印错误提示
-            this.showToast(response.data.msg);
+            this.simpleToast(response.data.msg);
           }
         });
       }
@@ -405,7 +426,7 @@ export default {
 
     // 处理用户滚动事件，确定标题阴影的显示状态
     onScroll(offsetY) {
-      if (offsetY > realPx(42)) {
+      if (offsetY > 42) {
         this.$refs.title.showShadow();
       } else {
         this.$refs.title.hideShadow();

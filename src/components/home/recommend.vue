@@ -22,7 +22,7 @@
 
 <script>
 import TitleView from "@/components/home/title";
-import { StoreHomeMixin } from "../../utils/mixin";
+import { StoreHomeMixin } from "@/mixins/home";
 
 export default {
   mixins: [StoreHomeMixin],
