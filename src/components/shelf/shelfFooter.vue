@@ -141,7 +141,7 @@ export default {
     },
 
     onComplete() {
-      this.hidePopup();
+      this.popupHide();
       this.setIsEditMode(false);
       saveBookShelf(this.shelfList);
     },

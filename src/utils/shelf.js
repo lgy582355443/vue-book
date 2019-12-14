@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage, removeLocalStorage } from './localStorage'
+import { getLocalStorage, setLocalStorage, removeLocalStorage, getBookShelf, saveBookShelf } from './localStorage'
 import { removeLocalForage } from './localForage'
 
 

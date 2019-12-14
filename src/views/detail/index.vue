@@ -198,37 +198,8 @@ export default {
         // 如果电子书不存在于书架，则添加电子书到书架
         addToShelf(this.bookItem);
         this.setShelfList(getBookShelf());
-
-        function updataShelf(arr) {
-          let updataArr = [];
-          arr.forEach((item, index) => {
-            if (item.type == 1) {
-              updataArr.push({
-                id: item.id,
-                shelf_id: item.shelf_id,
-                type: item.type
-              });
-            } else if (item.type == 2) {
-              updataArr.push({
-                shelf_id: item.shelf_id,
-                type: item.type,
-                title: item.title
-              });
-              updataArr[index].itemList = [];
-              item.itemList.forEach(itemc => {
-                updataArr[index].itemList.push({
-                  id: itemc.id,
-                  shelf_id: itemc.shelf_id,
-                  type: itemc.type
-                });
-              });
-            }
-          });
-          console.log(updataArr);
-        }
-
-        updataShelf(this.shelfList);
       }
+      this.updataShelf();
     },
 
     //加入历史阅读
@@ -310,7 +281,7 @@ export default {
         marginLeft: (item.deep - 1) * px2rem(20) + "rem"
       };
     },
-    
+
     // 将目录从多维转为一维
     doFlatNavigation(content, deep = 1) {
       const arr = [];

@@ -40,13 +40,7 @@
         <div class="slide-contents-book-time">{{getReadTimeText}}</div>
       </div>
     </div>
-    <scroll
-      class="slide-contents-list"
-      :top="156"
-      :bottom="0"
-      ref="scroll"
-      v-show="!searchVisible"
-    >
+    <scroll class="slide-contents-list" :top="156" :bottom="0" ref="scroll" v-show="!searchVisible">
       <div
         class="slide-contents-item"
         v-for="(item, index) in navigation"

@@ -1,11 +1,9 @@
 import { mapGetters, mapActions } from 'vuex'
-import { FONT_SIZE_LIST, FONT_FAMILY, themeList, getReadTimeByMinute } from '@/utils/book'
 import { gotoBookDetail } from '@/utils/home'
 import { removeAddFromShelf, computeId, appendAddToShelf } from '@/utils/shelf'
-import { addCss, removeAllCss } from '@/utils/utils'
-import { shelfApi } from "@/api/shelf";
+import { getShelfApi, updataShelfApi } from "@/api/shelf"
+import { getToken } from '@/utils/login'
 import * as Storage from '@/utils/localStorage'
-
 export const shelfMixin = {
     computed: {
         ...mapGetters([
@@ -36,13 +34,62 @@ export const shelfMixin = {
             gotoBookDetail(this, book)
         },
 
+        //只保留 shelfList 部分属性，用于上传服务器
+        getShelfIdList(arr) {
+            let updataArr = [];
+            arr.forEach((item, index) => {
+                if (item.type == 1) {
+                    updataArr.push({
+                        id: item.id,
+                        shelf_id: item.shelf_id,
+                        private: item.private,
+                        haveRead: item.haveRead,
+                        type: item.type
+                    });
+                } else if (item.type == 2) {
+                    updataArr.push({
+                        shelf_id: item.shelf_id,
+                        type: item.type,
+                        title: item.title
+                    });
+                    updataArr[index].itemList = [];
+                    item.itemList.forEach(itemc => {
+                        updataArr[index].itemList.push({
+                            id: itemc.id,
+                            shelf_id: itemc.shelf_id,
+                            private: itemc.private,
+                            haveRead: itemc.haveRead,
+                            type: itemc.type
+                        });
+                    });
+                }
+            });
+            return updataArr;
+        },
+
+        //更新数据库书架信息
+        updataShelf() {
+            const params = {
+                userId: getToken().id,
+                shelfList: JSON.stringify(this.getShelfIdList(this.shelfList))
+            }
+            updataShelfApi(params).then(res => {
+                if (res.status === 200 && res.data && res.data.shelfList) {
+                    shelfList = appendAddToShelf(res.data.shelfList)
+                    Storage.saveBookShelf(shelfList)
+                }
+            })
+        },
+
         //获取书架列表
         getShelfList() {
             let shelfList = Storage.getBookShelf()
+            const user = getToken();
             if (!shelfList) {
-                shelfApi().then(response => {
-                    if (response.status === 200 && response.data && response.data.bookList) {
-                        shelfList = appendAddToShelf(response.data.bookList)
+                getShelfApi({ userId: user.id }).then(res => {
+                    console.log(res);
+                    if (res.status === 200 && res.data && res.data.shelfList) {
+                        shelfList = appendAddToShelf(res.data.shelfList)
                         Storage.saveBookShelf(shelfList)
                         return this.setShelfList(shelfList)
                     }

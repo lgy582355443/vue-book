@@ -31,7 +31,7 @@
 
 <script>
 import { shelfMixin } from "@/mixins/shelf";
-import { clearLocalStorage, saveBookShelf } from "../../utils/localStorage";
+import { removeLocalStorage, saveBookShelf } from "../../utils/localStorage";
 import { clearLocalForage } from "../../utils/localForage";
 export default {
   name: "ShelfTitle",
@@ -128,7 +128,7 @@ export default {
     //清空缓存
     clearCache() {
       console.log("清空存储");
-      clearLocalStorage();
+      removeLocalStorage("shelf");
       clearLocalForage();
       this.setShelfSelected([]);
       this.setShelfList([]);
