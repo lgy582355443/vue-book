@@ -1,56 +1,18 @@
 import { getLocalStorage, setLocalStorage, removeLocalStorage, getBookShelf, saveBookShelf } from './localStorage'
 import { removeLocalForage } from './localForage'
 
-
-//添加书架列表中最后一个添加按钮
-export function appendAddToShelf(list) {
-    list.push({
-        shelf_id: -1,
-        type: 3
-    })
-    return list
-}
-
-//排除最后一个添加按钮,获取书架列表
-export function removeAddFromShelf(list) {
-    return list.filter(item => item.type !== 3)
-}
-
 //重新排序shelf_id
 export function computeId(list) {
     return list.map((book, index) => {
-        if (book.type !== 3) {
-            book.shelf_id = index + 1
-            if (book.itemList) {
-                book.itemList = computeId(book.itemList)
-            }
+        book.shelf_id = index + 1
+        if (book.itemList) {
+            book.itemList = computeId(book.itemList)
         }
         return book
     })
 }
 
-//添加到书架
-export function addToShelf(book) {
-    let shelfList = getBookShelf()
-    shelfList = removeAddFromShelf(shelfList)
-    book.type = 1
-    shelfList.push(book)
-    shelfList = computeId(shelfList)
-    shelfList = appendAddToShelf(shelfList)
-    saveBookShelf(shelfList)
-}
-
-//移除出书架
-export function removeFromBookShelf(book) {
-    return getBookShelf().filter(item => {
-        if (item.itemList) {
-            item.itemList = removeAddFromShelf(item.itemList)
-        }
-        return item.fileName !== book.fileName
-    })
-}
-
-//获取书架里的所有书籍（数组）
+//获取书架里的所有书籍（一维数组）
 export function flatBookList(bookList) {
     if (bookList) {
         let orgBookList = bookList.filter(item => {

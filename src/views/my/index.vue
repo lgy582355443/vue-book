@@ -31,7 +31,8 @@
 
 <script>
 import axios from "axios";
-import { getToken, removeToken, setToken } from "../../utils/login";
+import { getToken, removeToken, setToken } from "@/utils/login";
+import { clearLocalStorage } from "@/utils/localStorage";
 export default {
   name: "My",
   components: {},
@@ -52,7 +53,7 @@ export default {
     },
 
     doLogout() {
-      removeToken();
+      clearLocalStorage();
       this.$router.push({
         name: "login"
       });
@@ -62,8 +63,7 @@ export default {
       this.$router.push({
         name: "UserEdit"
       });
-    },
-
+    }
   },
   created() {
     this.user = getToken();

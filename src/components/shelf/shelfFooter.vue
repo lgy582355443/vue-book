@@ -23,7 +23,11 @@
 
 <script>
 import { shelfMixin } from "@/mixins/shelf";
-import { saveBookShelf, removeLocalStorage } from "../../utils/localStorage";
+import {
+  saveBookShelf,
+  removeLocalStorage,
+  getBookShelf
+} from "../../utils/localStorage";
 import { download } from "@/api/download";
 import { removeLocalForage } from "../../utils/localForage";
 export default {
@@ -79,6 +83,7 @@ export default {
     }
   },
   methods: {
+    //缓存选中的书籍
     async downloadSelectedBook() {
       for (let i = 0; i < this.shelfSelected.length; i++) {
         await this.downloadBook(this.shelfSelected[i]).then(book => {
@@ -87,6 +92,7 @@ export default {
       }
     },
 
+    //缓存书籍
     downloadBook(book) {
       let text = this.$t("shelf.startDownload");
       this.continueShow(text);
@@ -112,6 +118,7 @@ export default {
       });
     },
 
+    //删除选中的书架的离线缓存
     removeSelectedBook() {
       Promise.all(this.shelfSelected.map(book => this.removeBook(book))).then(
         books => {
@@ -124,6 +131,7 @@ export default {
       );
     },
 
+    //删除缓存
     removeBook(book) {
       return new Promise((resolve, reject) => {
         removeLocalStorage(`${book.categoryText}/${book.fileName}-info`);
@@ -132,18 +140,13 @@ export default {
       });
     },
 
+    //从书架列表移除被选中的
     removeSelected() {
-      this.shelfSelected.forEach(selected => {
-        this.setShelfList(this.shelfList.filter(book => book !== selected));
+      this.setSelectedRemoveFromShelf().then(() => {
+        this.updataShelf();
+        this.onComplete();
+        this.setShelfSelected([]);
       });
-      this.setShelfSelected([]);
-      this.onComplete();
-    },
-
-    onComplete() {
-      this.popupHide();
-      this.setIsEditMode(false);
-      saveBookShelf(this.shelfList);
     },
 
     //私密阅读
@@ -152,6 +155,8 @@ export default {
       this.shelfSelected.forEach(book => {
         book.private = isPrivate;
       });
+      this.updataShelf();
+      this.setShelfSelected([]);
       this.onComplete();
       if (isPrivate) {
         this.simpleToast(this.$t("shelf.setPrivateSuccess"));
@@ -160,11 +165,8 @@ export default {
       }
     },
 
-    //缓存
+    //缓存或删除缓存
     async setDownload() {
-      // this.shelfSelected.forEach(book => {
-      //   book.cache = !this.isDownload;
-      // });
       this.onComplete();
       if (this.isDownload) {
         this.removeSelectedBook();
@@ -173,13 +175,18 @@ export default {
         saveBookShelf(this.shelfList);
         this.simpleToast(this.$t("shelf.setDownloadSuccess"));
       }
-      // if (!this.isDownload) {
-      //   this.simpleToast(this.$t("shelf.removeDownloadSuccess"))
-      // } else {
-      //   this.simpleToast(this.$t("shelf.setDownloadSuccess"))
-      // }
+      this.updataShelf();
+      this.setShelfSelected([]);
     },
 
+    //重置
+    onComplete() {
+      this.popupHide();
+      this.setIsEditMode(false);
+      saveBookShelf(this.shelfList);
+    },
+
+    //开启或关闭私密阅读弹出框
     showPrivate() {
       this.popupShow(
         this.isPrivate
@@ -200,6 +207,7 @@ export default {
       );
     },
 
+    //删除或下载书本离线缓存弹出框
     showDownload() {
       this.popupShow(
         this.isDownload
@@ -220,6 +228,7 @@ export default {
       );
     },
 
+    //弹出移出书架弹出框
     showRemove() {
       let title;
       if (this.shelfSelected.length == 1) {

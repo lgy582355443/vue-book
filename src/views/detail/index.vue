@@ -85,6 +85,7 @@ import {
   getReaderHistory
 } from "../../utils/localStorage";
 import Epub from "epubjs";
+import { getToken } from "../../utils/login";
 
 global.ePub = Epub;
 
@@ -170,6 +171,7 @@ export default {
   },
   data() {
     return {
+      user: null,
       bookItem: null,
       book: null,
       metadata: null,
@@ -188,18 +190,22 @@ export default {
   methods: {
     //加入书架
     addOrRemoveShelf() {
-      // 如果电子书存在于书架，则从书架中移除电子书
-      if (this.inBookShelf) {
-        this.setShelfList(removeFromBookShelf(this.bookItem)).then(() => {
-          // 将书架数据保存到LocalStorage
-          saveBookShelf(this.shelfList);
-        });
+      if (this.user) {
+        // 如果电子书存在于书架，则从书架中移除电子书
+        if (this.inBookShelf) {
+          this.setRemoveFromShelf(this.bookItem).then(() => {
+            this.updataShelf();
+          });
+        } else {
+          // 如果电子书不存在于书架，则添加电子书到书架
+          this.setAddToShelf(this.bookItem).then(() => {
+            this.updataShelf();
+          });
+        }
       } else {
-        // 如果电子书不存在于书架，则添加电子书到书架
-        addToShelf(this.bookItem);
-        this.setShelfList(getBookShelf());
+        this.simpleToast(this.$t("login.nologin"));
+        return;
       }
-      this.updataShelf();
     },
 
     //加入历史阅读
@@ -407,7 +413,8 @@ export default {
 
   mounted() {
     this.init();
-    if (!this.shelfList || this.shelfList.length === 0) {
+    this.user = getToken();
+    if ((!this.shelfList || this.shelfList.length === 0) && this.user) {
       this.getShelfList();
     }
   }

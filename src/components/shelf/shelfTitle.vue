@@ -55,7 +55,7 @@ export default {
     }
   },
   computed: {
-    //分组是否为空
+    //分组里的书籍列表(itemList)是否为空,空为true
     emptyCategory() {
       return (
         !this.shelfCategory ||
@@ -127,7 +127,6 @@ export default {
 
     //清空缓存
     clearCache() {
-      console.log("清空存储");
       removeLocalStorage("shelf");
       clearLocalForage();
       this.setShelfSelected([]);
@@ -157,27 +156,14 @@ export default {
 
     //删除分组
     deleteGroup() {
-      if (!this.emptyCategory) {
-        //把分组里的图书全设为选中
-        this.setShelfSelected(this.shelfCategory.itemList);
-        //把所有图书移出分组
-        this.moveOutOfGroup(this.onComplete);
-      } else {
-        this.onComplete();
-      }
-    },
-
-    onComplete() {
-      this.hidePopup();
-      this.setShelfList(
-        this.shelfList.filter(book => book.id !== this.shelfCategory.id)
-      ).then(() => {
-        saveBookShelf(this.shelfList);
-        this.$router.go(-1);
+      this.setDeleteGroup(this.shelfCategory).then(() => {
         this.setIsEditMode(false);
+        this.updataShelf();
+        this.$router.go(-1);
       });
     },
 
+    //更改分组名弹窗
     changeGroupName() {
       this.hidePopup();
       this.dialog({
@@ -187,6 +173,7 @@ export default {
       }).show();
     },
 
+    //删除分组时的popup警示，是否确认删除
     showDeleteGroup() {
       this.hidePopup();
       setTimeout(() => {
@@ -210,6 +197,7 @@ export default {
       this.popupMenu.hide();
     },
 
+    //用于创建popup里单个按钮需要的参数和事件
     createPopupBtn(text, onClick, type = "normal") {
       return {
         text: text,
@@ -235,7 +223,7 @@ export default {
   width: 100%;
   height: 42px;
   background: #fff;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0px 5px #cccc;
   &.hide-shadow {
     box-shadow: none;
   }

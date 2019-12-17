@@ -88,6 +88,7 @@ const messages = {
     deleteGroupTitle: '删除分组后，分组内的书籍将会自动移出分组',
     groupNone: '当前分组暂无书籍',
     groupName: '分组名',
+    sameName:'已有相同的名字，请重新命名',
     confirm: '确定',
     moveBookInSuccess: '成功移入$1',
     moveBookOutSuccess: '成功移出分组',
@@ -162,6 +163,7 @@ const messages = {
     EditFailed:'更新失败'
   },
   login: {
+    nologin:'未登录',
     login: '登录',
     pictureUsername: '请输入用户名',
     picturePassword: '请输入密码',

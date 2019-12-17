@@ -1,4 +1,5 @@
 const actions = {
+  //ebook
   setFontFamilyVisible: ({ commit }, visible) => {
     return commit('SET_FONT_FAMILY_VISIBLE', visible)
   },
@@ -53,6 +54,7 @@ const actions = {
   setIsBookmark({ commit }, isBookmark) {
     return commit('SET_IS_BOOKMARK', isBookmark)
   },
+  //home
   setOffsetY({ commit }, offsetY) {
     return commit('SET_OFFSETY', offsetY)
   },
@@ -65,6 +67,7 @@ const actions = {
   setFlapCardVisible({ commit }, visible) {
     return commit('SET_FLAP_CARD_VISIBLE', visible)
   },
+  //shelf
   setIsEditMode({ commit }, isEditMode) {
     return commit('SET_IS_EDIT_MODE', isEditMode)
   },
@@ -83,6 +86,34 @@ const actions = {
   setCurrentType({ commit }, type) {
     return commit('SET_CURRENT_TYPE', type)
   },
+  setCurrentType({ commit }, type) {
+    return commit('SET_CURRENT_TYPE', type)
+  },
+  setAddToShelf({ commit }, book) {
+    return commit('ADD_TO_SHELF', book)
+  },
+  setRemoveFromShelf({ commit }, book) {
+    return commit('REMOVE_FROM_SHELF', book)
+  },
+  setSelectedRemoveFromShelf({ commit }) {
+    return commit('SELECTED_REMOVE_FROM_SHELF')
+  },
+  setSelectRemoveFromGroup({ commit }) {
+    return commit('SELECTED_REMOVE_FROM_GROUP')
+  },
+  setDeleteGroup({ commit }, group) {
+    return commit('DELETE_GROUP', group)
+  },
+  setSelectedMoveToGroup({ commit }, group) {
+    return commit('SELECTED_MOVE_TO_GROUP', group)
+  },
+  setSelectedMoveToNewGroup({ commit }, group) {
+    return commit('SELECTED_MOVE_TO_NEW_GROUP', group)
+  },
+  setChangeGroupName({ commit }, newName) {
+    return commit('CHANGE_GROUP_NAME', newName)
+  },
+  //my
   setHistoryList({ commit }, list) {
     return commit('SET_HISTORY_LIST', list)
   },

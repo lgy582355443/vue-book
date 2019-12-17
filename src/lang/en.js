@@ -89,6 +89,7 @@ const messages = {
     deleteGroupTitle: 'After deleting a group, the books in the group will be automatically moved out of the group',
     groupNone: 'There are no books in the current group',
     groupName: 'Group Name',
+    sameName: "You can't have the same name",
     confirm: 'Confirm',
     moveBookInSuccess: 'Move book(s) into $1 successfully',
     moveBookOutSuccess: 'Move book(s) out of the group successfully',
@@ -166,6 +167,7 @@ const messages = {
     popupSex: 'Please select gender'
   },
   login: {
+    nologin: 'Not logged in',
     login: 'login',
     pictureUsername: 'Please enter the picture username',
     picturePassword: 'Please enter the picture password',

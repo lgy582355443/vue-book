@@ -21,7 +21,6 @@
 <script>
 import ShelfItemBook from "./shelfItemBook";
 import shelfItemCategory from "./shelfItemCategory";
-import shelfItemAdd from "./shelfItemAdd";
 import { shelfMixin } from "@/mixins/shelf";
 
 export default {
@@ -29,8 +28,7 @@ export default {
   mixins: [shelfMixin],
   components: {
     ShelfItemBook,
-    shelfItemCategory,
-    shelfItemAdd
+    shelfItemCategory
   },
   props: {
     data: Object
@@ -38,8 +36,7 @@ export default {
   data() {
     return {
       book: ShelfItemBook,
-      category: shelfItemCategory,
-      add: shelfItemAdd
+      category: shelfItemCategory
     };
   },
   watch: {},
@@ -47,17 +44,14 @@ export default {
     item() {
       if (this.data.type == 1) {
         return this.book;
+      } else if (this.data.type == 2) {
+        return this.category;
       } else {
-        if (this.data.type == 2) {
-          return this.category;
-        } else {
-          return this.add;
-        }
+        return;
       }
     }
   },
   methods: {
-    
     onItemClick() {
       if (this.isEditMode) {
         this.data.selected = !this.data.selected;
@@ -79,9 +73,7 @@ export default {
             }
           });
         } else {
-          this.$router.push({
-            path: "/home"
-          });
+          return;
         }
       }
     }

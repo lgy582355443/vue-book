@@ -77,10 +77,8 @@ export default {
     };
   },
   watch: {},
-  computed: {
-  },
+  computed: {},
   methods: {
-
     //登录
     doLogin() {
       loginApi(this.login).then(res => {
@@ -88,9 +86,7 @@ export default {
         if (res.data.code == 0) {
           setToken(res.data.data);
           this.login = this.$options.data().login;
-          this.$router.push({
-            name: "my"
-          });
+          this.$router.go(-1);
         } else {
           this.simpleToast(this.$t("login.loginError"));
         }

@@ -1,5 +1,5 @@
 <template>
-  <ebook-dialog :title="title" ref="dialog">
+  <shelf-dialog :title="title" ref="dialog">
     <div class="dialog-list-wrapper" v-if="!ifNewGroup">
       <div
         class="dialog-list-item"
@@ -10,7 +10,10 @@
         v-if="(item.edit === 2 && isInGroup) || item.edit !== 2 || !item.edit"
       >
         <div class="dialog-list-item-text">{{item.title}}</div>
-        <div class="dialog-list-icon-wrapper" v-if="isInGroup && shelfCategory.shelf_id === item.shelf_id">
+        <div
+          class="dialog-list-icon-wrapper"
+          v-if="isInGroup && shelfCategory.shelf_id === item.shelf_id"
+        >
           <span class="icon-check"></span>
         </div>
       </div>
@@ -42,20 +45,19 @@
         v-if="ifNewGroup"
       >{{$t('shelf.confirm')}}</div>
     </div>
-  </ebook-dialog>
+  </shelf-dialog>
 </template>
 
 <script>
-import EbookDialog from "../common/Dialog";
+import ShelfDialog from "../common/Dialog";
 import { shelfMixin } from "@/mixins/shelf";
-import { removeAddFromShelf, appendAddToShelf } from "../../utils/shelf";
 import { saveBookShelf } from "../../utils/localStorage";
 
 export default {
   name: "GroupDialog",
   mixins: [shelfMixin],
   components: {
-    EbookDialog
+    ShelfDialog
   },
   props: {
     showNewGroup: {
@@ -94,9 +96,11 @@ export default {
     category() {
       return this.shelfList.filter(item => item.type === 2);
     },
+    //组成group弹窗里显示的列表
     categoryList() {
       return [...this.defaultCategory, ...this.category];
     },
+
     title() {
       if (!this.ifNewGroup) {
         return this.$t("shelf.moveBook");
@@ -125,10 +129,13 @@ export default {
 
     onGroupClick(item) {
       if (item.edit && item.edit === 1) {
+        //新建分组
         this.ifNewGroup = true;
       } else if (item.edit && item.edit === 2) {
+        //移出分组
         this.moveOutFromGroup(item);
       } else {
+        //移动到
         this.moveToGroup(item);
       }
     },
@@ -137,34 +144,24 @@ export default {
       this.newGroupName = "";
     },
 
-    //移入书架
+    //移入分组，参数：分组对象
     moveToGroup(group) {
-      this.setShelfList(
-        this.shelfList.filter(book => {
-          if (book.itemList) {
-            book.itemList = book.itemList.filter(
-              subBook => this.shelfSelected.indexOf(subBook) < 0
-            );
-          }
-          return this.shelfSelected.indexOf(book) < 0;
-        })
-      ).then(() => {
-        if (group && group.itemList) {
-          group.itemList = [...group.itemList, ...this.shelfSelected];
-        }
-        group.itemList.forEach((item, index) => {
-          item.shelf_id = index + 1;
-        });
+      this.setSelectedMoveToGroup(group).then(() => {
+        this.onComplete();
+        this.updataShelf();
         this.simpleToast(
           this.$t("shelf.moveBookInSuccess").replace("$1", group.title)
         );
-        this.onComplete();
       });
     },
 
     //移出分组
     moveOutFromGroup() {
-      this.moveOutOfGroup(this.onComplete);
+      this.setSelectRemoveFromGroup().then(() => {
+        this.onComplete();
+        this.updataShelf();
+        this.simpleToast(this.$t("shelf.moveBookOutSuccess"));
+      });
     },
 
     //新建分组
@@ -173,26 +170,30 @@ export default {
         return;
       }
       if (this.showNewGroup) {
-        this.shelfCategory.title = this.newGroupName;
-        this.onComplete();
+        this.setChangeGroupName(this.newGroupName).then(() => {
+          this.updataShelf();
+          this.onComplete();
+        });
       } else {
+        if (this.shelfList.some(item => item.title == this.newGroupName)) {
+          this.simpleToast(this.$t("shelf.sameName"));
+          return;
+        }
         const group = {
-          shelf_id: this.shelfList[this.shelfList.length - 2].shelf_id + 1,
+          shelf_id: this.shelfList[this.shelfList.length - 1].shelf_id + 1,
           itemList: [],
           selected: false,
           title: this.newGroupName,
           type: 2
         };
-        let list = removeAddFromShelf(this.shelfList);
-        list.push(group);
-        list = appendAddToShelf(list);
-        this.setShelfList(list).then(() => {
-          this.moveToGroup(group);
+        this.setSelectedMoveToNewGroup(group).then(() => {
+          this.updataShelf();
+          this.onComplete();
         });
       }
     },
+
     onComplete() {
-      saveBookShelf(this.shelfList);
       this.hide();
       this.setIsEditMode(false);
     }

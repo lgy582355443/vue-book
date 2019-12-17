@@ -1,5 +1,5 @@
 <template>
-  <div class="shelf-item-add">
+  <div class="shelf-item-add" @click="goHome">
     <span class="icon-add"></span>
   </div>
 </template>
@@ -14,7 +14,13 @@ export default {
   },
   watch: {},
   computed: {},
-  methods: {},
+  methods: {
+    goHome() {
+      this.$router.push({
+        name: "home"
+      });
+    }
+  },
   created() {},
   mounted() {}
 };

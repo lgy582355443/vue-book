@@ -1,7 +1,7 @@
 
 <template>
   <div class="store-category">
-    <shelf-title :title="shelfCategory.title" ></shelf-title>
+    <shelf-title :title="shelfCategory.title"></shelf-title>
     <scroll
       class="store-category-scroll-wrapper"
       :top="0"
@@ -64,19 +64,20 @@ export default {
       this.setOffsetY(offsetY);
     }
   },
-  mounted() {
+  created() {
     // 获取分类列表数据
     this.getCategoryList(this.$route.query.title);
-    // 标记currentType为2，对于不同的currentType，ShelfTitle将呈现不同状态
+    // 标记currentType为2，currentType=1在书架页，2为在分组页，ShelfTitle将呈现不同状态
     this.setCurrentType(2);
-  }
+  },
+  mounted() {}
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../../assets/styles/global.scss";
 
-.store-category{
+.store-category {
   position: relative;
   z-index: 100;
   width: 100%;

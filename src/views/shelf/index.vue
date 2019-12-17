@@ -1,12 +1,7 @@
 <template>
   <div class="book-shelf">
     <shelf-title :title="$t('shelf.title')"></shelf-title>
-    <scroll
-      class="book-shelf-scrill-wrapper"
-      ref="scroll"
-      :bottom="50"
-      @onScroll="onScroll"
-    >
+    <scroll class="book-shelf-scrill-wrapper" ref="scroll" :bottom="50" @onScroll="onScroll">
       <shelf-search></shelf-search>
       <shelf-list :data="shelfList"></shelf-list>
     </scroll>
@@ -55,12 +50,12 @@ export default {
       this.setOffsetY(offsetY);
     }
   },
-  created() {},
-  mounted() {
+  created() {
     this.getShelfList();
     this.setShelfCategory([]);
     this.setCurrentType(1);
-  }
+  },
+  mounted() {}
 };
 </script>
 <style lang="scss" scoped>

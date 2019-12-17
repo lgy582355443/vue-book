@@ -1,9 +1,9 @@
 import { mapGetters, mapActions } from 'vuex'
 import { gotoBookDetail } from '@/utils/home'
-import { removeAddFromShelf, computeId, appendAddToShelf } from '@/utils/shelf'
+import { computeId } from '@/utils/shelf'
 import { getShelfApi, updataShelfApi } from "@/api/shelf"
 import { getToken } from '@/utils/login'
-import * as Storage from '@/utils/localStorage'
+import { saveBookShelf, getBookShelf } from '@/utils/localStorage'
 export const shelfMixin = {
     computed: {
         ...mapGetters([
@@ -27,7 +27,15 @@ export const shelfMixin = {
             'setOffsetY',
             'setShelfCategory',
             'setCurrentType',
-            'setHistoryList'
+            'setHistoryList',
+            'setAddToShelf',
+            'setRemoveFromShelf',
+            'setSelectedRemoveFromShelf',
+            'setSelectRemoveFromGroup',
+            'setDeleteGroup',
+            'setSelectedMoveToGroup',
+            'setSelectedMoveToNewGroup',
+            'setChangeGroupName'
         ]),
 
         showBookDetail(book) {
@@ -62,6 +70,8 @@ export const shelfMixin = {
                             type: itemc.type
                         });
                     });
+                } else {
+                    return;
                 }
             });
             return updataArr;
@@ -69,67 +79,43 @@ export const shelfMixin = {
 
         //更新数据库书架信息
         updataShelf() {
-            const params = {
-                userId: getToken().id,
-                shelfList: JSON.stringify(this.getShelfIdList(this.shelfList))
-            }
-            updataShelfApi(params).then(res => {
-                if (res.status === 200 && res.data && res.data.shelfList) {
-                    shelfList = appendAddToShelf(res.data.shelfList)
-                    Storage.saveBookShelf(shelfList)
+            const user = getToken();
+            if (user && user.id && user.loginTime) {
+                const params = {
+                    userId: user.id,
+                    shelfList: JSON.stringify(this.getShelfIdList(this.shelfList))
                 }
-            })
+                updataShelfApi(params)
+                saveBookShelf(this.shelfList)
+            } else {
+                this.$router.push({
+                    name: 'login'
+                })
+            }
         },
 
         //获取书架列表
         getShelfList() {
-            let shelfList = Storage.getBookShelf()
+            let shelfList = getBookShelf()
             const user = getToken();
             if (!shelfList) {
                 getShelfApi({ userId: user.id }).then(res => {
-                    console.log(res);
                     if (res.status === 200 && res.data && res.data.shelfList) {
-                        shelfList = appendAddToShelf(res.data.shelfList)
-                        Storage.saveBookShelf(shelfList)
-                        return this.setShelfList(shelfList)
+                        saveBookShelf(res.data.shelfList)
+                        return this.setShelfList(res.data.shelfList)
                     }
                 })
             } else {
                 return this.setShelfList(shelfList)
             }
-            console.log(shelfList);
         },
 
         //获取当前分组里的内容
         getCategoryList(title) {
             this.getShelfList().then(() => {
-                const categoryList = this.shelfList.filter(book => book.type === 2 && book.title === title)[0]
+                const categoryList = this.shelfList.find(book => book.type === 2 && book.title === title)
                 this.setShelfCategory(categoryList)
             })
         },
-
-        //移出分组
-        moveOutOfGroup(cb) {
-            this.setShelfList(this.shelfList.map(book => {
-                if (book.type === 2 && book.itemList) {
-                    book.itemList = book.itemList.filter(subBook => !subBook.selected)
-                }
-                return book
-            })).then(() => {
-                //排除最后书架列表最后一项(添加书籍按钮)
-                let list = removeAddFromShelf(this.shelfList);
-                //分类里选中的和书架中的列表合并
-                list = [].concat(list, ...this.shelfSelected);
-                //添加最后一项(添加书籍按钮)
-                list = appendAddToShelf(list);
-                //排序ID
-                list = computeId(list);
-
-                this.setShelfList(list).then(() => {
-                    this.simpleToast(this.$t('shelf.moveBookOutSuccess'))
-                    if (cb) cb()
-                })
-            })
-        }
     }
 }
