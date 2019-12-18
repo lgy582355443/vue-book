@@ -2,7 +2,7 @@
   <div class="my-main">
     <div class="header-box">
       <div class="user">
-        <div class="user-avatar" :style="`background-image: url(${avatar});`"></div>
+        <div class="user-avatar" :style="`background-image: url(${user.avatar});`"></div>
         <div class="user-name">{{user.nickname}}</div>
         <div class="user-signature">{{user.slogan}}</div>
       </div>
@@ -39,8 +39,12 @@ export default {
   props: {},
   data() {
     return {
-      user: {},
-      avatar: require("../../assets/images/user/avatar.png")
+      user: {
+        sex: "男",
+        nickname: "AuroraReader",
+        slogan: "Welcome to AuroraReader",
+        avatar: require("../../assets/images/user/avatar.png")
+      }
     };
   },
   watch: {},

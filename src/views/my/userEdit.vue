@@ -4,23 +4,11 @@
     <scroll :top="48" @onScroll="onScroll">
       <div class="edit-wrapper">
         <div class="user-avatar">
-          <div class="avatar-img" :style="`background-image:url(${avatar});`"></div>
-          <div class="btn" v-show="!isChangeAvatar">
-            {{$t('my.changeAvatar')}}
-            <input type="file" @change="getFile($event)" />
+          <div class="avatar-img" :style="`background-image:url(${user.avatar});`"></div>
+          <div class="btn">
+            <div class="btn-text">{{$t('my.changeAvatar')}}</div>
+            <input class="updata-btn" type="file" accept="image/*" @change="getFile($event)" />
           </div>
-          <!-- <div class="input-wrapper avatar-wrapper" v-show="isChangeAvatar">
-          <div class="edit-tite">{{$t('my.imgUrl')}}</div>-->
-          <!-- <div class="right">
-              <input
-                class="edit-input avatar"
-                type="text"
-                v-model="user.userInfo.avatar"
-                :placeholder="$t('my.pictureImageAddress')"
-              />
-              <div class="btn" @click="editAvatar">{{$t('my.confirm')}}</div>
-          </div>-->
-          <!-- </div> -->
         </div>
         <div class="input-wrapper nickname-wrapper">
           <div class="edit-tite">{{$t('my.nickname')}}</div>
@@ -51,10 +39,11 @@
 </template>
 
 <script>
+import axios from "axios";
 import TitleView from "@/components/home/title";
 import scroll from "@/components/common/Scroll";
 import { getToken, setToken } from "../../utils/login";
-import { userUpdataApi } from "@/api/user";
+import { userUpdataApi, changeAvatarApi } from "@/api/user";
 export default {
   name: "UserEdit",
   components: {
@@ -65,9 +54,9 @@ export default {
   data() {
     return {
       isShadow: false,
-      isChangeAvatar: false,
-      user: {},
-      avatar: require("../../assets/images/user/avatar.png")
+      user: {
+        avatar: require("../../assets/images/user/avatar.png")
+      }
     };
   },
   watch: {},
@@ -100,32 +89,28 @@ export default {
       }
     },
 
-    editAvatar() {
-      // this.isChangeAvatar = !this.isChangeAvatar;
-      return;
+    changeAvatar() {
+      this.getFile(event);
     },
 
     //修改头像
     getFile(event) {
+      console.log(event);
+      const userId = getToken().id;
       this.file = event.target.files[0]; //获取上传元素信息
+      // avatar = window.URL.createObjectURL(this.file);
       event.preventDefault();
-      // 只能通过formData方式来传输文件
-      var formData = new FormData();
+      // 只能通过formData方式来传输文件;
+      let formData = new FormData();
       formData.append("file", this.file);
 
-      // let config = {
-      //   headers: {
-      //     "Content-Type": "multipart/form-data"
-      //   }
-      // };
-      axios.post(process.env.VUE_APP_BASE_URL + "/api/user/avatar", formData);
-      // .then(function(res) {
-      //   console.log(res.data.code);
-      //   if (res.data.code == "0") {
-      //     /*这里做处理*/
-      //     // that.init(); //   给avatar赋上新的值，否则要刷新获取
-      //   }
-      // });
+      changeAvatarApi(userId, formData).then(res => {
+        if (res.data.code == 0) {
+          console.log(res);
+          this.user.avatar = res.data.fileUrl;
+          setToken(this.user);
+        }
+      });
     },
 
     EditSex() {
@@ -134,10 +119,16 @@ export default {
 
     submit() {
       delete this.user.loginTime;
+      //只保留文件名
+      this.user.avatar = this.user.avatar.substring(
+        this.user.avatar.lastIndexOf("/") + 1
+      );
       userUpdataApi(this.user).then(res => {
-        console.log(res);
         if (res.data.code == 0) {
-          setToken(res.data.data);
+          console.log(res);
+          let user = res.data.data;
+          this.user = user;
+          setToken(user);
           this.simpleToast(this.$t("my.isEdit"));
         } else {
           this.simpleToast(this.$t("my.EditFailed"));
@@ -179,9 +170,27 @@ export default {
         border: 3px solid #fff;
       }
       .btn {
+        position: relative;
+        width: 70px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        overflow: hidden;
         font-size: 16px;
-        padding: 17px 0;
         color: rgb(245, 182, 81);
+        .btn-text {
+          position: absolute;
+          left: 0;
+          top: 0;
+          z-index: 20;
+        }
+        .updata-btn {
+          position: absolute;
+          left: 0;
+          top: 0;
+          opacity: 0;
+          z-index: 30;
+        }
       }
     }
     .input-wrapper {
@@ -211,13 +220,6 @@ export default {
           display: flex;
           align-items: center;
         }
-      }
-      .right {
-        flex: 0 0 70%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 30px;
       }
     }
     .submit {

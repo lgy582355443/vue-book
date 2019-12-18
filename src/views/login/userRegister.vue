@@ -72,7 +72,8 @@ export default {
         password: "",
         sex: "男",
         nickname: "AuroraReader",
-        slogan: "Welcome to AuroraReader"
+        slogan: "Welcome to AuroraReader",
+        avatar: process.env.VUE_APP_RES_URL + "/user/avatar/avatar.png"
       },
       isShow: false,
       passwordAgain: "",

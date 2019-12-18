@@ -84,7 +84,8 @@ export default {
       loginApi(this.login).then(res => {
         console.log(res);
         if (res.data.code == 0) {
-          setToken(res.data.data);
+          let user = res.data.data;
+          setToken(user);
           this.login = this.$options.data().login;
           this.$router.go(-1);
         } else {
