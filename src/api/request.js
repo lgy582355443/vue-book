@@ -9,6 +9,7 @@ const service = axios.create({
 //请求拦截
 service.interceptors.request.use(
     config => {
+        console.log(config);
         return config
     },
     error => {
@@ -21,6 +22,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     response => {
         // const res = response.data
+        console.log(response);
         return response
     },
     error => {
@@ -29,7 +31,7 @@ service.interceptors.response.use(
     }
 )
 
-//对与get和post请求做不同处理, post发送From Data
+//对与get和post请求做不同处理,axios默认post发送json格式
 function http(config) {
     if (config.method.toLowerCase() === 'post') {
         config.data = qs.stringify(config.data, { arrayFormat: 'repeat', allowDots: true });

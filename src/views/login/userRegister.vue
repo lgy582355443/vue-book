@@ -147,7 +147,7 @@ export default {
     overflow: hidden;
     .form-item {
       position: relative;
-      width: 260px;
+      width: 70%;
       height: 40px;
       margin: 20px auto;
       .icon-wrapper {
