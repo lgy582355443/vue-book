@@ -1,10 +1,10 @@
 
-const TokenKey = 'ADMIN';
+const TokenKey = 'Token';
 
 export function getToken() {
-    var info = window.localStorage.getItem(TokenKey);
-    if (info) {
-        return JSON.parse(info);
+    var token = window.localStorage.getItem(TokenKey);
+    if (token) {
+        return JSON.parse(token);
     } else {
         return null;
     }
@@ -12,8 +12,8 @@ export function getToken() {
 
 export function setToken(token) {
     //只能存字符串
-    var userInfo = JSON.stringify(token);
-    window.localStorage.setItem(TokenKey, userInfo);
+    var token = JSON.stringify(token);
+    window.localStorage.setItem(TokenKey, token);
 }
 
 export function removeToken() {

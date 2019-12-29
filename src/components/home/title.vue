@@ -5,7 +5,7 @@
     </div>
     <div class="label">{{label}}</div>
     <div
-      class="btn"
+      class="title-btn"
       v-if="btn"
       :class="{'touch': ifOnTouch}"
       @touchstart="onTouchStart"
@@ -51,9 +51,8 @@ export default {
   }
 };
 </script>
-
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
+@import "@/assets/styles/global.scss";
 .home-title-wrapper {
   width: 100%;
   padding: 15px 10px;
@@ -69,7 +68,7 @@ export default {
     color: #333;
     font-weight: bold;
   }
-  .btn {
+  .title-btn {
     font-size: 14px;
     color: rgba(64, 158, 255, 1);
     &.touch {

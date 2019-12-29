@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { setToken } from "../../utils/login";
+import { saveUserInfo } from "../../utils/localStorage";
 import { loginApi } from "@/api/user";
 export default {
   name: "Login",
@@ -85,7 +85,7 @@ export default {
         console.log(res);
         if (res.data.code == 0) {
           let user = res.data.data;
-          setToken(user);
+          saveUserInfo(user);
           this.login = this.$options.data().login;
           this.$router.go(-1);
         } else {

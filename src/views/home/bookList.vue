@@ -27,6 +27,7 @@ import { listApi } from "@/api/bookList";
 import { categoryList, categoryText } from "@/utils/home";
 import { StoreHomeMixin } from "@/mixins/home";
 export default {
+  name: "BookList",
   components: {
     SearchTitle,
     Scroll,

@@ -1,5 +1,5 @@
 <template>
-  <div class="category-book">
+  <div class="category-book-main">
     <title-view
       :label="categoryText(data.category)"
       :btn="$t('home.seeAll')"
@@ -55,9 +55,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
+@import "@/assets/styles/global.scss";
 
-.category-book {
+.category-book-main {
   .category-book-list {
     width: 100%;
     @include top;

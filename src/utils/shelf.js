@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage, removeLocalStorage, getBookShelf, saveBookShelf } from './localStorage'
+import { getLocalStorage, setLocalStorage, removeLocalStorage} from './localStorage'
 import { removeLocalForage } from './localForage'
 
 //重新排序shelf_id

@@ -3,8 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import i18n from './lang'
-import { getToken } from './utils/login'
-import { clearLocalStorage } from './utils/localStorage'
+import { clearLocalStorage, getUserInfo } from './utils/localStorage'
 
 import './assets/styles/icon.css'
 import './assets/styles/reset.scss'
@@ -30,10 +29,10 @@ new Vue({
 
 //登录守卫
 router.beforeEach(async (to, from, next) => {
-  const hasToken = getToken();
-  if (hasToken && hasToken.loginTime) {
+  const UserInfo = getUserInfo();
+  if (UserInfo && UserInfo.loginTime) {
     const nowDate = new Date().getTime();
-    const oldDate = new Date(hasToken.loginTime).getTime();
+    const oldDate = new Date(UserInfo.loginTime).getTime();
     //如果超过3天没有登录，重新登录
     if (nowDate - oldDate > 259200000) {
       clearLocalStorage();

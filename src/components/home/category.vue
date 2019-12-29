@@ -1,5 +1,5 @@
 <template>
-  <div class="category">
+  <div class="category-main">
     <title-view :label="$t('home.category')" :btn="$t('home.seeAll')" @onClick="showBookList"></title-view>
     <div class="category-list">
       <div
@@ -59,8 +59,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "../../assets/styles/global.scss";
-
-.category {
+.category-main {
   .category-list {
     display: flex;
     flex-flow: row wrap;

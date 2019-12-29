@@ -6,11 +6,8 @@
   </div>
 </template>
 
-
-
 <script>
 import BScroll from "@better-scroll/core";
-import { realPx } from "@/utils/utils";
 export default {
   name: "BaseLayer",
   props: {

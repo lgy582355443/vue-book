@@ -42,7 +42,10 @@
 import axios from "axios";
 import TitleView from "@/components/home/title";
 import scroll from "@/components/common/Scroll";
-import { getToken, setToken } from "../../utils/login";
+import {
+  getUserInfo,
+  saveUserInfo,
+} from "@/utils/localStorage";
 import { userUpdataApi, changeAvatarApi } from "@/api/user";
 export default {
   name: "UserEdit",
@@ -96,7 +99,7 @@ export default {
     //修改头像
     getFile(event) {
       console.log(event);
-      const userId = getToken().id;
+      const userId = getUserInfo().id;
       this.file = event.target.files[0]; //获取上传元素信息
       // avatar = window.URL.createObjectURL(this.file);
       event.preventDefault();
@@ -108,7 +111,7 @@ export default {
         if (res.data.code == 0) {
           console.log(res);
           this.user.avatar = res.data.fileUrl;
-          setToken(this.user);
+          saveUserInfo(this.user);
         }
       });
     },
@@ -128,7 +131,7 @@ export default {
           console.log(res);
           let user = res.data.data;
           this.user = user;
-          setToken(user);
+          saveUserInfo(user);
           this.simpleToast(this.$t("my.isEdit"));
         } else {
           this.simpleToast(this.$t("my.EditFailed"));
@@ -137,7 +140,7 @@ export default {
     }
   },
   created() {
-    this.user = getToken();
+    this.user = getUserInfo();
   },
   mounted() {}
 };
@@ -148,6 +151,9 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  ::v-deep .label {
+    flex: 0 0 60%;
+  }
   .edit-wrapper {
     box-sizing: border-box;
     padding: 10px 20px;
@@ -235,8 +241,5 @@ export default {
       letter-spacing: 3px;
     }
   }
-}
-::v-deep .label {
-  flex: 0 0 60%;
 }
 </style>

@@ -76,16 +76,15 @@ import Scroll from "../../components/common/Scroll";
 import { detailApi } from "@/api/detail";
 import { px2rem, realPx } from "../../utils/utils";
 import { getLocalForage } from "../../utils/localForage";
-import { removeFromBookShelf, addToShelf } from "../../utils/shelf";
 import { shelfMixin } from "@/mixins/shelf";
 import {
   getBookShelf,
   saveBookShelf,
   saveReaderHistory,
-  getReaderHistory
+  getReaderHistory,
+  getUserInfo
 } from "../../utils/localStorage";
 import Epub from "epubjs";
-import { getToken } from "../../utils/login";
 
 global.ePub = Epub;
 
@@ -413,7 +412,7 @@ export default {
 
   mounted() {
     this.init();
-    this.user = getToken();
+    this.user = getUserInfo();
     if ((!this.shelfList || this.shelfList.length === 0) && this.user) {
       this.getShelfList();
     }

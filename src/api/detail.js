@@ -1,8 +1,8 @@
-import request from '@/api/request';
+import {http} from '@/api/request';
 
 
 export function detailApi(data) {
-    return request({
+    return http({
         method: 'get',
         url: `/api/detail/bookDetail`,
         data

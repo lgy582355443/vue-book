@@ -107,6 +107,9 @@ export default {
         this.simpleToast("用户名和密码不能为空");
       }
       if (this.pass) {
+        this.register.avatar = this.register.avatar.substring(
+          this.register.avatar.lastIndexOf("/") + 1
+        );
         registerApi(this.register).then(res => {
           console.log(res);
           if (res.data.code == 0) {

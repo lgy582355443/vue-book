@@ -1,7 +1,7 @@
-import request from '@/api/request';
+import { http } from '@/api/request';
 
 export function getShelfApi(data) {
-    return request({
+    return http({
         method: 'get',
         url: `/api/shelf/shelfList`,
         data
@@ -9,7 +9,7 @@ export function getShelfApi(data) {
 }
 
 export function updataShelfApi(data) {
-    return request({
+    return http({
         method: 'get',
         url: `/api/shelf/updata`,
         data

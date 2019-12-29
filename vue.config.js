@@ -1,3 +1,4 @@
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 //本地数据mock
 // function mock(app, url, data) {
@@ -12,9 +13,8 @@
 
 // const isProduction = process.env.NODE_ENV === 'production';
 
-const CompressionWebpackPlugin = require('compression-webpack-plugin')
-
 module.exports = {
+  //打包路径
   publicPath: './',
 
   // 生产环境是否生成 sourceMap 文件
@@ -42,8 +42,10 @@ module.exports = {
     //   mock(app, '/book/list', mockBookList)
     //   mock(app, '/book/flat-list', mockBookFlatList)
     // }
+
     // proxy: {
-    //   '^/api': { //拦截所有以'/api'开始的请求
+    //拦截所有以'/api'开始的请求
+    //   '^/api': { 
     //     target: process.env.VUE_APP_BASE_URL,
     //     changeOrigin: true,
     //     pathRewrite: {
@@ -67,14 +69,14 @@ module.exports = {
   },
 
   configureWebpack: config => {
-    //打包的大小限制
+    //打包的大小限制的警告
     config.performance = {
       hints: 'warning',
       maxAssetSize: 524288 * 10,
       maxEntrypointSize: 524288 * 10
     };
 
-    // gzip压缩
+    // 生成gzip压缩文件
     const productionGzipExtensions = ['html', 'js', 'css']
     config.plugins.push(
       new CompressionWebpackPlugin({
@@ -85,7 +87,7 @@ module.exports = {
         ),
         threshold: 10240, // 只有大小大于该值的资源会被处理 10k
         minRatio: 0.8, // 只有压缩率小于这个值的资源才会被处理
-        deleteOriginalAssets: false // 删除原文件
+        deleteOriginalAssets: false // 是否删除原文件
       })
     )
   }

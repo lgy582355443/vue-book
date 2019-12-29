@@ -1,5 +1,5 @@
 <template>
-  <div class="featured">
+  <div class="featured-main">
     <title-view
       :label="titleText"
       v-if="titleVisible && data && data.length > 0"
@@ -67,9 +67,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
+@import "@/assets/styles/global.scss";
 
-.featured {
+.featured-main {
   .featured-list {
     width: 100%;
     padding: 0 10px;

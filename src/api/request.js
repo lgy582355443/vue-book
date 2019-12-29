@@ -1,7 +1,9 @@
 import axios from 'axios'
 import qs from 'qs'
+import { getToken, setToken, removeToken } from '../utils/login'
+import Router from '../router/index'
 
-const service = axios.create({
+export const service = axios.create({
     baseURL: process.env.VUE_APP_BASE_URL,
     timeout: 5000
 })
@@ -9,7 +11,10 @@ const service = axios.create({
 //请求拦截
 service.interceptors.request.use(
     config => {
-        console.log(config);
+        const token = getToken();
+        if (token) {
+            config.headers['Authorization'] = token;
+        }
         return config
     },
     error => {
@@ -22,17 +27,27 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     response => {
         // const res = response.data
-        console.log(response);
+        if (response.data.token) {
+            setToken(response.data.token);
+        }
+        if (response.data.code == -1) {
+            removeToken();
+            Router.push({ name: 'login' })
+        }
         return response
     },
     error => {
         console.log('err' + error) // for debug
+        if (error.response.status === 403) {
+            removeToken();
+            Router.push({ name: 'login' })
+        }
         return Promise.reject(error)
     }
 )
 
 //对与get和post请求做不同处理,axios默认post发送json格式
-function http(config) {
+export function http(config) {
     if (config.method.toLowerCase() === 'post') {
         config.data = qs.stringify(config.data, { arrayFormat: 'repeat', allowDots: true });
     } else {
@@ -41,4 +56,3 @@ function http(config) {
     return service(config)
 }
 
-export default http

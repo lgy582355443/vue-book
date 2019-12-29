@@ -13,12 +13,10 @@
 </template>
 
 <script>
-// import { px2rem } from '@/utils/utils'
-
 export default {
   data() {
     return {
-      data: [[ , {}, {}], [{}, {}, {}]],
+      data: [[{}, {}, {}], [{}, {}, {}]],
       maskWidth: [
         { value: 0 },
         { value: 0 },
@@ -36,7 +34,8 @@ export default {
         { value: 16 }
       ],
       add: true,
-      end: false
+      end: false,
+      task: null
     };
   },
   methods: {},

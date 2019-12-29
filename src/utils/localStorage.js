@@ -58,6 +58,14 @@ export function getBookShelf() {
   return getLocalStorage('shelf');
 }
 
+export function saveUserInfo(info) {
+  return setLocalStorage('UserInfo', info);
+}
+
+export function getUserInfo() {
+  return getLocalStorage('UserInfo');
+}
+
 export function saveReaderHistory(history) {
   return setLocalStorage('history', history);
 }

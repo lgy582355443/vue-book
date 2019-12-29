@@ -1,8 +1,7 @@
-import request from '@/api/request';
-import axios from 'axios'
+import { http, service } from '@/api/request';
 
 export function loginApi(data) {
-    return request({
+    return http({
         method: 'post',
         url: `/api/user/login`,
         data
@@ -10,7 +9,7 @@ export function loginApi(data) {
 }
 
 export function registerApi(data) {
-    return request({
+    return http({
         method: 'post',
         url: `/api/user/register`,
         data
@@ -18,7 +17,7 @@ export function registerApi(data) {
 }
 
 export function userUpdataApi(data) {
-    return request({
+    return http({
         method: 'post',
         url: `/api/user/updata`,
         data
@@ -27,12 +26,12 @@ export function userUpdataApi(data) {
 
 
 export function changeAvatarApi(userId, data) {
-    return axios({
+    return service({
         method: "post",
         url: process.env.VUE_APP_BASE_URL + "/api/user/avatar/" + userId,
         data,
-        headers: {
-            "Content-Type": "multipart/form-data"
-        }
+        // headers: {
+        //     "Content-Type": "multipart/form-data"
+        // }
     })
 }

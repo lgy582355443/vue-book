@@ -22,7 +22,6 @@
 <script>
 import { realPx } from "@/utils/utils";
 
-
 export default {
   name: "HotSearch",
   props: {

@@ -1,9 +1,8 @@
 import { mapGetters, mapActions } from 'vuex'
 import { gotoBookDetail } from '@/utils/home'
-import { computeId } from '@/utils/shelf'
 import { getShelfApi, updataShelfApi } from "@/api/shelf"
-import { getToken } from '@/utils/login'
-import { saveBookShelf, getBookShelf } from '@/utils/localStorage'
+
+import { saveBookShelf, getBookShelf, getUserInfo } from '@/utils/localStorage'
 export const shelfMixin = {
     computed: {
         ...mapGetters([
@@ -79,7 +78,7 @@ export const shelfMixin = {
 
         //更新数据库书架信息
         updataShelf() {
-            const user = getToken();
+            const user = getUserInfo();
             if (user && user.id && user.loginTime) {
                 const params = {
                     userId: user.id,
@@ -97,7 +96,7 @@ export const shelfMixin = {
         //获取书架列表
         getShelfList() {
             let shelfList = getBookShelf()
-            const user = getToken();
+            const user = getUserInfo();
             if (!shelfList) {
                 getShelfApi({ userId: user.id }).then(res => {
                     if (res.status === 200 && res.data && res.data.shelfList) {

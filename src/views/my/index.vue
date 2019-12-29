@@ -31,8 +31,11 @@
 
 <script>
 import axios from "axios";
-import { getToken, removeToken, setToken } from "@/utils/login";
-import { clearLocalStorage } from "@/utils/localStorage";
+import {
+  getUserInfo,
+  saveUserInfo,
+  clearLocalStorage
+} from "@/utils/localStorage";
 export default {
   name: "My",
   components: {},
@@ -70,9 +73,9 @@ export default {
     }
   },
   created() {
-    this.user = getToken();
+    this.user = getUserInfo();
     this.user.loginTime = new Date();
-    setToken(this.user);
+    saveUserInfo(this.user);
   },
   mounted() {}
 };
