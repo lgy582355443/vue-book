@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import { realPx } from "@/utils/utils";
 
 export default {
   name: "HotSearch",
@@ -32,7 +31,7 @@ export default {
   methods: {},
   mounted() {
     this.$refs.searchText.forEach(item => {
-      item.style.width = window.innerWidth - realPx(20) - realPx(40) + "px";
+      item.style.width = window.innerWidth - 20 - 40 + "px";
     });
   }
 };

@@ -61,12 +61,12 @@ export default {
   .category-book-list {
     width: 100%;
     @include top;
-    padding: 0 px2rem(5);
+    padding: 0 5px;
     box-sizing: border-box;
     .category-book-item {
       flex: 0 0 25%;
       width: 25%;
-      padding: 0 px2rem(5);
+      padding: 0 5px;
       box-sizing: border-box;
       .img-wrapper {
         @include center;
@@ -76,9 +76,9 @@ export default {
       }
       .content-wrapper {
         width: 100%;
-        margin-top: px2rem(10);
+        margin-top: 10px;
         .num {
-          margin-top: px2rem(5);
+          margin-top: 5px;
         }
       }
     }

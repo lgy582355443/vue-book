@@ -106,17 +106,17 @@ export default {
 .guess-you-like {
   .guess-you-like-list {
     width: 100%;
-    padding: 0 px2rem(10);
+    padding: 0 10px;
     box-sizing: border-box;
     .guess-you-like-item {
       display: flex;
-      margin-top: px2rem(15);
+      margin-top: 15px;
       &:first-child {
-        margin-top: px2rem(5);
+        margin-top: 5px;
       }
       .img-wrapper {
         flex: 0 0 20%;
-        padding: px2rem(10) px2rem(10) px2rem(10) 0;
+        padding: 10px 10px 10px 0;
         box-sizing: border-box;
         .img {
           width: 100%;
@@ -124,13 +124,13 @@ export default {
       }
       .content-wrapper {
         flex: 1;
-        padding: px2rem(10) 0;
+        padding: 10px 0;
         box-sizing: border-box;
         .author {
-          margin-top: px2rem(15);
+          margin-top: 15px;
         }
         .result {
-          margin-top: px2rem(5);
+          margin-top: 5px;
         }
       }
     }

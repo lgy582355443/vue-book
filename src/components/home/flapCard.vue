@@ -87,8 +87,7 @@ export default {
       this.pointList.push("point" + i);
     }
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     categoryText() {
       if (this.data) {
@@ -361,9 +360,8 @@ export default {
   .book-card {
     position: relative;
     width: 65%;
-    // height: 70%;
     box-sizing: border-box;
-    border-radius: px2rem(15);
+    border-radius: 15px;
     background: white;
     &.animation {
       animation: scale 0.3s ease-in both;
@@ -379,53 +377,49 @@ export default {
       }
     }
     .book-card-wrapper {
+      position: relative;
       width: 100%;
       height: 100%;
-      margin-bottom: px2rem(30);
       @include columnTop;
       .img-wrapper {
         width: 100%;
-        margin-top: px2rem(20);
+        margin-top: 20px;
         @include center;
         .img {
-          width: px2rem(90);
-          height: px2rem(130);
+          width: 90px;
+          height: 130px;
         }
       }
       .content-wrapper {
-        padding: 0 px2rem(20);
-        margin-top: px2rem(20);
+        padding: 0 20px;
+        margin-top: 20px;
         .title {
           color: #333;
           font-weight: bold;
-          font-size: px2rem(18);
-          line-height: px2rem(20);
-          max-height: px2rem(40);
+          font-size: 18px;
+          line-height: 20px;
+          max-height: 40px;
           text-align: center;
           @include ellipsis2(2);
         }
         .author {
-          margin-top: px2rem(10);
+          margin-top: 10px;
           text-align: center;
         }
         .category {
           color: #999;
-          font-size: px2rem(14);
-          margin-top: px2rem(10);
+          font-size: 14px;
+          margin-top: 10px;
           text-align: center;
         }
       }
       .read-btn {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        z-index: 1100;
         width: 100%;
-        border-radius: 0 0 px2rem(15) px2rem(15);
-        padding: px2rem(15) 0;
+        border-radius: 0 0 15px 15px;
+        padding: 15px 0;
         text-align: center;
         color: white;
-        font-size: px2rem(14);
+        font-size: 14px;
         background: $color-blue;
       }
     }

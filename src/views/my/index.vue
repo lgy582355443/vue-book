@@ -74,7 +74,6 @@ export default {
   },
   created() {
     this.user = getUserInfo();
-    this.user.loginTime = new Date();
     saveUserInfo(this.user);
   },
   mounted() {}

@@ -104,6 +104,7 @@ export default {
       this.randomBook = this.random[randomIndex];
     },
 
+    //返回之前的滚动位置
     reset() {
       if (this.homeOffsetY > 0) {
         this.scrollTop = 52;
@@ -130,12 +131,15 @@ export default {
         this.categoryList = data.categoryList;
         this.categories = data.categories;
         this.$nextTick(() => {
-          this.reset();
           this.swiper = this.$refs.mySwiper.swiper;
         });
       }
     });
-  }
+  },
+  activated() {
+    this.reset();
+  },
+  deactivated() {}
 };
 </script>
 <style lang="scss" scoped>

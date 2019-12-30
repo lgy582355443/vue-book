@@ -11,8 +11,6 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin')
 // const mockBookFlatList = require('./src/mock/bookFlatList')
 // const mockBookShelfData = require('./src/mock/bookShelf')
 
-// const isProduction = process.env.NODE_ENV === 'production';
-
 module.exports = {
   //打包路径
   publicPath: './',
@@ -20,9 +18,9 @@ module.exports = {
   // 生产环境是否生成 sourceMap 文件
   productionSourceMap: false,
 
-  css: {
+  // css: {
     //提取css代码到文件
-    extract: true
+    // extract: true
     // css预设器配置项
     // loaderOptions: {
     //   sass: {
@@ -32,9 +30,9 @@ module.exports = {
     //         `
     //   }
     // },
-  },
+  // },
 
-  devServer: {
+  // devServer: {
     // before(app) {
     //   本地数据mock
     //   mock(app, '/book/home', mockBookHomeData)
@@ -52,7 +50,7 @@ module.exports = {
     //     }
     //   },
     // }, 
-  },
+  // },
 
   chainWebpack: config => {
     // 移除 prefetch 插件
@@ -75,6 +73,14 @@ module.exports = {
       maxAssetSize: 524288 * 10,
       maxEntrypointSize: 524288 * 10
     };
+
+    //去除console
+    if (process.env.NODE_ENV === 'production') {
+      config.optimization.minimizer[0].options.terserOptions.compress.warnings = false
+      config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
+      config.optimization.minimizer[0].options.terserOptions.compress.drop_debugger = true
+      config.optimization.minimizer[0].options.terserOptions.compress.pure_funcs = ['console.log']
+    }
 
     // 生成gzip压缩文件
     const productionGzipExtensions = ['html', 'js', 'css']

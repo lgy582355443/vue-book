@@ -1,4 +1,5 @@
 import axios from 'axios'
+import vue from '../main'
 import qs from 'qs'
 import { getToken, setToken, removeToken } from '../utils/login'
 import Router from '../router/index'
@@ -38,10 +39,7 @@ service.interceptors.response.use(
     },
     error => {
         console.log('err' + error) // for debug
-        if (error.response.status === 403) {
-            removeToken();
-            Router.push({ name: 'login' })
-        }
+       
         return Promise.reject(error)
     }
 )

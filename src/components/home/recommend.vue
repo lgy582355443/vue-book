@@ -42,12 +42,12 @@ export default {
   .recommend-list {
     width: 100%;
     @include top;
-    padding: 0 px2rem(5);
+    padding: 0 5px;
     box-sizing: border-box;
     .recommend-item {
       flex: 0 0 33.33%;
       width: 33.33%;
-      padding: 0 px2rem(5);
+      padding: 0 5px;
       box-sizing: border-box;
       .img-wrapper {
         @include center;
@@ -57,13 +57,13 @@ export default {
       }
       .content-wrapper {
         width: 100%;
-        margin-top: px2rem(10);
+        margin-top: 10px;
         @include columnCenter;
         .title {
           text-align: center;
         }
         .num {
-          margin-top: px2rem(5);
+          margin-top: 5px;
         }
       }
     }

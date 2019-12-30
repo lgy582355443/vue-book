@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <transition :name="transitionName">
-      <router-view />
+      <keep-alive include="StoreHome">
+        <router-view></router-view>
+      </keep-alive>
     </transition>
     <footers v-if="$route.meta.footShow"></footers>
   </div>

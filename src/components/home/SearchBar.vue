@@ -175,7 +175,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../assets/styles/global.scss";
-
 .search-bar {
   position: relative;
   width: 100%;

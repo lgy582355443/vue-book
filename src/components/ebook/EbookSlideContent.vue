@@ -132,7 +132,8 @@ export default {
       };
     }
   },
-  mounted() {}
+  mounted() {},
+  created() {}
 };
 </script>
 

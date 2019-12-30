@@ -87,7 +87,7 @@ export default {
           let user = res.data.data;
           saveUserInfo(user);
           this.login = this.$options.data().login;
-          this.$router.go(-1);
+          this.$router.push({name:'my'});
         } else {
           this.simpleToast(this.$t("login.loginError"));
         }
