@@ -130,20 +130,6 @@ export default {
       this.rendition.hooks.content.register(contents => {
         let fontURL = process.env.VUE_APP_RES_URL + "/fonts/fonts.css";
         contents.addStylesheet(fontURL).then(() => {});
-        // Promise.all([
-        //   contents.addStylesheet(
-        //     `${process.env.VUE_APP_RES_URL}/fonts/daysOne.css`
-        //   ),
-        //   contents.addStylesheet(
-        //     `${process.env.VUE_APP_RES_URL}/fonts/cabin.css`
-        //   ),
-        //   contents.addStylesheet(
-        //     `${process.env.VUE_APP_RES_URL}/fonts/montserrat.css`
-        //   ),
-        //   contents.addStylesheet(
-        //     `${process.env.VUE_APP_RES_URL}/fonts/tangerine.css`
-        //   )
-        // ]).then(() => {});
       });
     },
 

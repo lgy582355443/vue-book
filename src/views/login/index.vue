@@ -1,69 +1,74 @@
 <template>
   <div class="login-main">
-    <div class="container">
-      <div class="title">{{$t('login.login')}}</div>
-      <div class="login-form">
-        <div class="form-item user-name-box">
-          <input
-            class="login-input userId"
-            type="text"
-            v-model="login.userName"
-            :placeholder="$t('login.pictureUsername')"
-          />
-          <div class="icon-wrapper">
-            <span class="icon icon-zhanghao"></span>
+    <scroll>
+      <div class="container">
+        <div class="title">{{$t('login.login')}}</div>
+        <div class="login-form">
+          <div class="form-item user-name-box">
+            <input
+              class="login-input userId"
+              type="text"
+              v-model="login.userName"
+              :placeholder="$t('login.pictureUsername')"
+            />
+            <div class="icon-wrapper">
+              <span class="icon icon-zhanghao"></span>
+            </div>
+          </div>
+          <div class="form-item password-box">
+            <input
+              class="login-input userPassword"
+              :type="`${isShow?'text':'password'}`"
+              v-model="login.password"
+              :placeholder="$t('login.picturePassword')"
+            />
+            <div class="icon-wrapper">
+              <span class="icon icon-suo"></span>
+            </div>
+            <div class="eye" @click="openPassword">
+              <span :class="`${isShow?' icon-eye':' icon-biyan'}`"></span>
+            </div>
+          </div>
+          <div class="login-btn" @click="doLogin">{{$t('login.login')}}</div>
+          <div class="guide">
+            <div class="guide-item">{{$t('login.forgetPassword')}}</div>
           </div>
         </div>
-        <div class="form-item password-box">
-          <input
-            class="login-input userPassword"
-            :type="`${isShow?'text':'password'}`"
-            v-model="login.password"
-            :placeholder="$t('login.picturePassword')"
-          />
-          <div class="icon-wrapper">
-            <span class="icon icon-suo"></span>
+        <router-link class="register" :to="{name:'register'}" tag="div">{{$t('login.goRegister')}}</router-link>
+        <router-link class="gobick" :to="{name:'home'}" tag="div">
+          <span class="icon-back"></span>
+          {{$t('login.goHome')}}
+        </router-link>
+        <div class="third">
+          <div class="line"></div>
+          {{$t('login.ThirdPartyLogin')}}
+          <div class="line"></div>
+        </div>
+        <div class="icon-list">
+          <div class="icon-item qq">
+            <span class="icon icon-qqq"></span>
           </div>
-          <div class="eye" @click="openPassword">
-            <span :class="`${isShow?' icon-eye':' icon-biyan'}`"></span>
+          <div class="icon-item wb">
+            <span class="icon icon-wb"></span>
+          </div>
+          <div class="icon-item wx">
+            <span class="icon icon-wxx"></span>
           </div>
         </div>
-        <div class="login-btn" @click="doLogin">{{$t('login.login')}}</div>
-        <div class="guide">
-          <div class="guide-item">{{$t('login.forgetPassword')}}</div>
-        </div>
       </div>
-      <router-link class="register" :to="{name:'register'}" tag="div">{{$t('login.goRegister')}}</router-link>
-      <router-link class="gobick" :to="{name:'home'}" tag="div">
-        <span class="icon-back"></span>
-        {{$t('login.goHome')}}
-      </router-link>
-      <div class="third">
-        <div class="line"></div>
-        {{$t('login.ThirdPartyLogin')}}
-        <div class="line"></div>
-      </div>
-      <div class="icon-list">
-        <div class="icon-item qq">
-          <span class="icon icon-qqq"></span>
-        </div>
-        <div class="icon-item wb">
-          <span class="icon icon-wb"></span>
-        </div>
-        <div class="icon-item wx">
-          <span class="icon icon-wxx"></span>
-        </div>
-      </div>
-    </div>
+    </scroll>
   </div>
 </template>
 
 <script>
+import scroll from "../../components/common/Scroll";
 import { saveUserInfo } from "../../utils/localStorage";
 import { loginApi } from "@/api/user";
 export default {
   name: "Login",
-  components: {},
+  components: {
+    scroll
+  },
   props: {},
   data() {
     return {
@@ -87,7 +92,7 @@ export default {
           let user = res.data.data;
           saveUserInfo(user);
           this.login = this.$options.data().login;
-          this.$router.push({name:'my'});
+          this.$router.push({ name: "my" });
         } else {
           this.simpleToast(this.$t("login.loginError"));
         }
@@ -105,7 +110,10 @@ export default {
 <style lang="scss" scoped>
 .login-main {
   height: 100%;
+  width: 100%;
+  overflow: hidden;
   .container {
+    height: 100%;
     width: 100%;
     .title {
       width: 270px;

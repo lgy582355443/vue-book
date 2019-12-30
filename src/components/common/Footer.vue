@@ -55,6 +55,7 @@ export default {
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      padding: 0 30px;
       .title-icon-wrapper {
         font-size: 18px;
         color: rgb(144, 144, 144);

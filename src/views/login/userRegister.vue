@@ -1,69 +1,74 @@
 <template>
   <div class="register-main">
-    <div class="title">{{$t('login.register')}}</div>
-    <div class="input-list">
-      <div class="form-item user-name-box">
-        <input
-          class="login-input userId"
-          type="text"
-          v-model.trim="register.userName"
-          :placeholder="$t('login.pictureUsername')"
-        />
-        <div class="icon-wrapper">
-          <span class="icon icon-zhanghao"></span>
+    <scroll>
+      <div class="title">{{$t('login.register')}}</div>
+      <div class="input-list">
+        <div class="form-item user-name-box">
+          <input
+            class="login-input userId"
+            type="text"
+            v-model.trim="register.userName"
+            :placeholder="$t('login.pictureUsername')"
+          />
+          <div class="icon-wrapper">
+            <span class="icon icon-zhanghao"></span>
+          </div>
+        </div>
+        <div class="form-item password-box">
+          <input
+            class="login-input userPassword"
+            :type="`${isShow?'text':'password'}`"
+            v-model.trim="register.password"
+            :placeholder="$t('login.picturePassword')"
+          />
+          <div class="icon-wrapper">
+            <span class="icon icon-suo"></span>
+          </div>
+          <div class="eye" @click="openPassword">
+            <span :class="`${isShow?' icon-eye':' icon-biyan'}`"></span>
+          </div>
+        </div>
+        <div class="form-item password-box">
+          <input
+            class="login-input userPassword"
+            :type="`${isShow?'text':'password'}`"
+            v-model.trim="passwordAgain"
+            @blur="verifyPassword"
+            :placeholder="$t('login.picturePasswordAgain')"
+          />
+          <div class="icon-wrapper">
+            <span class="icon icon-suo"></span>
+          </div>
+          <div class="eye" @click="openPassword">
+            <span :class="`${isShow?' icon-eye':' icon-biyan'}`"></span>
+          </div>
         </div>
       </div>
-      <div class="form-item password-box">
-        <input
-          class="login-input userPassword"
-          :type="`${isShow?'text':'password'}`"
-          v-model.trim="register.password"
-          :placeholder="$t('login.picturePassword')"
-        />
-        <div class="icon-wrapper">
-          <span class="icon icon-suo"></span>
-        </div>
-        <div class="eye" @click="openPassword">
-          <span :class="`${isShow?' icon-eye':' icon-biyan'}`"></span>
-        </div>
-      </div>
-      <div class="form-item password-box">
-        <input
-          class="login-input userPassword"
-          :type="`${isShow?'text':'password'}`"
-          v-model.trim="passwordAgain"
-          @blur="verifyPassword"
-          :placeholder="$t('login.picturePasswordAgain')"
-        />
-        <div class="icon-wrapper">
-          <span class="icon icon-suo"></span>
-        </div>
-        <div class="eye" @click="openPassword">
-          <span :class="`${isShow?' icon-eye':' icon-biyan'}`"></span>
-        </div>
-      </div>
-    </div>
 
-    <div class="submit" @click="doRegister">{{$t('login.doRegister')}}</div>
-    <div class="userText">
-      {{$t('login.registerMsg')}}
-      <span class="blue">{{$t('login.protocol')}}</span>和
-      <span class="blue">{{$t('login.privacy')}}</span>
-    </div>
-    <router-link class="goLogin" :to="{name:'login'}" tag="div">
-      {{$t('login.goLogin')}}
-      <span class="icon icon-you"></span>
-    </router-link>
+      <div class="submit" @click="doRegister">{{$t('login.doRegister')}}</div>
+      <div class="userText">
+        {{$t('login.registerMsg')}}
+        <span class="blue">{{$t('login.protocol')}}</span>和
+        <span class="blue">{{$t('login.privacy')}}</span>
+      </div>
+      <router-link class="goLogin" :to="{name:'login'}" tag="div">
+        {{$t('login.goLogin')}}
+        <span class="icon icon-you"></span>
+      </router-link>
+    </scroll>
   </div>
 </template>
 
 <script>
+import scroll from "../../components/common/Scroll";
 import { registerApi } from "@/api/user";
 import { userMixin } from "@/mixins/my";
 export default {
   name: "Register",
   mixins: [userMixin],
-  components: {},
+  components: {
+    scroll
+  },
   props: {},
   data() {
     return {
