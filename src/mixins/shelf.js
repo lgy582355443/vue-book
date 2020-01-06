@@ -79,7 +79,7 @@ export const shelfMixin = {
         //更新数据库书架信息
         updataShelf() {
             const user = getUserInfo();
-            if (user && user.id && user.loginTime) {
+            if (user && user !== {}) {
                 const params = {
                     userId: user.id,
                     shelfList: JSON.stringify(this.getShelfIdList(this.shelfList))
