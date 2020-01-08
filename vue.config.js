@@ -1,4 +1,4 @@
-const CompressionWebpackPlugin = require('compression-webpack-plugin')
+// const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 //本地数据mock
 // function mock(app, url, data) {
@@ -52,19 +52,19 @@ module.exports = {
     // }, 
   // },
 
-  chainWebpack: config => {
-    // 移除 prefetch 插件
-    config.plugins.delete('prefetch')
-    // 移除 preload 插件
-    config.plugins.delete('preload');
+  // chainWebpack: config => {
+  //   // 移除 prefetch 插件
+  //   config.plugins.delete('prefetch')
+  //   // 移除 preload 插件
+  //   config.plugins.delete('preload');
 
-    // 压缩代码
-    config.optimization.minimize(true);
-    // 分割代码
-    config.optimization.splitChunks({
-      chunks: 'all'
-    })
-  },
+  //   // 压缩代码
+  //   config.optimization.minimize(true);
+  //   // 分割代码
+  //   config.optimization.splitChunks({
+  //     chunks: 'all'
+  //   })
+  // },
 
   configureWebpack: config => {
     //打包的大小限制的警告
@@ -83,19 +83,19 @@ module.exports = {
     }
 
     // 生成gzip压缩文件
-    const productionGzipExtensions = ['html', 'js', 'css']
-    config.plugins.push(
-      new CompressionWebpackPlugin({
-        filename: '[path].gz[query]',
-        algorithm: 'gzip',
-        test: new RegExp(
-          '\\.(' + productionGzipExtensions.join('|') + ')$'
-        ),
-        threshold: 10240, // 只有大小大于该值的资源会被处理 10k
-        minRatio: 0.8, // 只有压缩率小于这个值的资源才会被处理
-        deleteOriginalAssets: false // 是否删除原文件
-      })
-    )
+  //   const productionGzipExtensions = ['html', 'js', 'css']
+  //   config.plugins.push(
+  //     new CompressionWebpackPlugin({
+  //       filename: '[path].gz[query]',
+  //       algorithm: 'gzip',
+  //       test: new RegExp(
+  //         '\\.(' + productionGzipExtensions.join('|') + ')$'
+  //       ),
+  //       threshold: 10240, // 只有大小大于该值的资源会被处理 10k
+  //       minRatio: 0.8, // 只有压缩率小于这个值的资源才会被处理
+  //       deleteOriginalAssets: false // 是否删除原文件
+  //     })
+  //   )
   }
 
 }
