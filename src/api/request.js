@@ -1,7 +1,11 @@
 import axios from 'axios'
 import vue from '../main'
 import qs from 'qs'
-import { getToken, setToken, removeToken } from '../utils/login'
+import {
+    getToken,
+    setToken,
+    removeToken
+} from '../utils/login'
 import Router from '../router/index'
 
 export const service = axios.create({
@@ -14,7 +18,7 @@ service.interceptors.request.use(
     config => {
         const token = getToken();
         if (token) {
-            config.headers['Authorization'] = token;
+            config.headers['Authorization'] = 'Bearer ' + token;
         }
         return config
     },
@@ -33,7 +37,9 @@ service.interceptors.response.use(
         }
         if (response.data.code == -1) {
             removeToken();
-            Router.push({ name: 'login' })
+            Router.push({
+                name: 'login'
+            })
         }
         return response
     },
@@ -46,10 +52,12 @@ service.interceptors.response.use(
 //对与get和post请求做不同处理,axios默认post发送json格式
 export function http(config) {
     if (config.method.toLowerCase() === 'post') {
-        config.data = qs.stringify(config.data, { arrayFormat: 'repeat', allowDots: true });
+        config.data = qs.stringify(config.data, {
+            arrayFormat: 'repeat',
+            allowDots: true
+        });
     } else {
         config.params = config.data;
     }
     return service(config)
 }
-

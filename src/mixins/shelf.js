@@ -1,8 +1,20 @@
-import { mapGetters, mapActions } from 'vuex'
-import { gotoBookDetail } from '@/utils/home'
-import { getShelfApi, updataShelfApi } from "@/api/shelf"
+import {
+    mapGetters,
+    mapActions
+} from 'vuex'
+import {
+    gotoBookDetail
+} from '@/utils/home'
+import {
+    getShelfApi,
+    updataShelfApi
+} from "@/api/shelf"
 
-import { saveBookShelf, getBookShelf, getUserInfo } from '@/utils/localStorage'
+import {
+    saveBookShelf,
+    getBookShelf,
+    getUserInfo
+} from '@/utils/localStorage'
 export const shelfMixin = {
     computed: {
         ...mapGetters([
@@ -95,26 +107,27 @@ export const shelfMixin = {
 
         //获取书架列表
         getShelfList() {
-            let shelfList = getBookShelf()
             const user = getUserInfo();
-            if (!shelfList) {
-                getShelfApi({ userId: user.id }).then(res => {
+            if (user && user !== {}) {
+                getShelfApi({
+                    userId: user.id
+                }).then(res => {
                     if (res.status === 200 && res.data && res.data.shelfList) {
                         saveBookShelf(res.data.shelfList)
                         return this.setShelfList(res.data.shelfList)
                     }
                 })
             } else {
-                return this.setShelfList(shelfList)
+                this.$router.push({
+                    name: 'login'
+                })
             }
         },
 
         //获取当前分组里的内容
         getCategoryList(title) {
-            this.getShelfList().then(() => {
-                const categoryList = this.shelfList.find(book => book.type === 2 && book.title === title)
-                this.setShelfCategory(categoryList)
-            })
+            const categoryList = this.shelfList.find(book => book.type === 2 && book.title === title)
+            this.setShelfCategory(categoryList)
         },
     }
 }

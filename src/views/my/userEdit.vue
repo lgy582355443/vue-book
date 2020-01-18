@@ -42,10 +42,7 @@
 import axios from "axios";
 import TitleView from "@/components/home/title";
 import scroll from "@/components/common/Scroll";
-import {
-  getUserInfo,
-  saveUserInfo,
-} from "@/utils/localStorage";
+import { getUserInfo, saveUserInfo } from "@/utils/localStorage";
 import { userUpdataApi, changeAvatarApi } from "@/api/user";
 export default {
   name: "UserEdit",
@@ -100,12 +97,23 @@ export default {
     getFile(event) {
       console.log(event);
       const userId = getUserInfo().id;
-      this.file = event.target.files[0]; //获取上传元素信息
+      const file = event.target.files[0]; //获取上传元素信息
       // avatar = window.URL.createObjectURL(this.file);
+      console.log(file);
+      const fileExt = file.name.substring(file.name.lastIndexOf("."));
+      //判断文件类型是否允许上传
+      if (".jpg.jpeg.png.gif".indexOf(fileExt.toLowerCase()) === -1) {
+        this.simpleToast(this.$t("my.updataExt"));
+        return;
+      }
+      if (file.size > 1 * 1024 * 1024) {
+        this.simpleToast(this.$t("my.updataFile"));
+        return;
+      }
       event.preventDefault();
       // 只能通过formData方式来传输文件;
       let formData = new FormData();
-      formData.append("file", this.file);
+      formData.append("file", file);
 
       changeAvatarApi(userId, formData).then(res => {
         if (res.data.code == 0) {

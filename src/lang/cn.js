@@ -161,7 +161,9 @@ const messages = {
     pictureNickname: '请输入昵称',
     pictureSignature: '请输入个性签名',
     isEdit: '已修改',
-    EditFailed: '更新失败'
+    EditFailed: '更新失败',
+    updataFile:'上传文件过大',
+    updataExt:'只支持.jpg.jpeg.png.gif格式文件'
   },
   login: {
     nologin: '未登录',

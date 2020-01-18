@@ -8,6 +8,14 @@ export function loginApi(data) {
     })
 }
 
+export function getUserInfoApi(data) {
+    return http({
+        method: 'get',
+        url: `/api/user/userInfo`,
+        data
+    })
+}
+
 export function registerApi(data) {
     return http({
         method: 'post',

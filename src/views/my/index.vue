@@ -36,6 +36,7 @@ import {
   saveUserInfo,
   clearLocalStorage
 } from "@/utils/localStorage";
+import { getUserInfoApi } from "@/api/user";
 export default {
   name: "My",
   components: {},
@@ -75,6 +76,10 @@ export default {
   created() {
     this.user = getUserInfo();
     saveUserInfo(this.user);
+    getUserInfoApi({ id: this.user.id }).then(res => {
+      this.user = res.data.data;
+      saveUserInfo(this.user);
+    });
   },
   mounted() {}
 };

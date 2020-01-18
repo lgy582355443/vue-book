@@ -164,7 +164,9 @@ const messages = {
     pictureSignature: 'Please enter the picture catchword',
     isEdit: 'updated successfully',
     EditFailed: 'updated failed',
-    popupSex: 'Please select gender'
+    popupSex: 'Please select gender',
+    updataFile: 'Upload files too large',
+    updataExt: 'Support.jpg. Jpeg. PNG. GIF file only'
   },
   login: {
     nologin: 'Not logged in',
