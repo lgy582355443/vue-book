@@ -19,37 +19,37 @@ module.exports = {
   productionSourceMap: false,
 
   // css: {
-    //提取css代码到文件
-    // extract: true
-    // css预设器配置项
-    // loaderOptions: {
-    //   sass: {
-    //     // 引入全局变量样式,@使我们设置的别名,执行src目录
-    //     data: `
-    //     @import "@/assets/styles/global.scss";
-    //         `
-    //   }
-    // },
+  //提取css代码到文件
+  // extract: true
+  // css预设器配置项
+  // loaderOptions: {
+  //   sass: {
+  //     // 引入全局变量样式,@使我们设置的别名,执行src目录
+  //     data: `
+  //     @import "@/assets/styles/global.scss";
+  //         `
+  //   }
+  // },
   // },
 
   // devServer: {
-    // before(app) {
-    //   本地数据mock
-    //   mock(app, '/book/home', mockBookHomeData)
-    //   mock(app, '/book/shelf', mockBookShelfData)
-    //   mock(app, '/book/list', mockBookList)
-    //   mock(app, '/book/flat-list', mockBookFlatList)
-    // }
+  // before(app) {
+  //   本地数据mock
+  //   mock(app, '/book/home', mockBookHomeData)
+  //   mock(app, '/book/shelf', mockBookShelfData)
+  //   mock(app, '/book/list', mockBookList)
+  //   mock(app, '/book/flat-list', mockBookFlatList)
+  // }
 
-    // proxy: {
-    //拦截所有以'/api'开始的请求
-    //   '^/api': { 
-    //     target: process.env.VUE_APP_BASE_URL,
-    //     changeOrigin: true,
-    //     pathRewrite: {
-    //     }
-    //   },
-    // }, 
+  // proxy: {
+  //拦截所有以'/api'开始的请求
+  //   '^/api': { 
+  //     target: process.env.VUE_APP_BASE_URL,
+  //     changeOrigin: true,
+  //     pathRewrite: {
+  //     }
+  //   },
+  // }, 
   // },
 
   // chainWebpack: config => {
