@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div class="search-main" v-if="hotSearch.length>0">
     <div class="hot-search-title">
       <span class="label">{{label}}</span>
-      <span class="btn">{{btn}}</span>
+      <span class="btn" @click="btnTap">{{btn}}</span>
     </div>
     <div class="hot-search-list">
       <div class="hot-search-item" v-for="(item, index) in hotSearch" :key="index">
         <div class="icon-wrapper">
           <span class="icon-book icon" v-if="item.type === 1"></span>
-          <span class="icon-search icon" v-if="item.type === 2"></span>
+          <span class="icon-search icon" v-else></span>
         </div>
         <div class="hot-search-text-wrapper">
           <div class="text" ref="searchText">{{item.text}}</div>
@@ -20,19 +20,36 @@
 </template>
 
 <script>
-
+import { removeLocalStorage } from "@/utils/localStorage.js";
+import { StoreHomeMixin } from "@/mixins/home";
 export default {
   name: "HotSearch",
+  mixins: [StoreHomeMixin],
   props: {
     label: String,
     btn: String,
     hotSearch: Array
   },
-  methods: {},
+  computed: {
+    btnTap() {
+      return this.btn === this.$t("home.clear")
+        ? this.clearHistory
+        : this.replaceList;
+    }
+  },
+  methods: {
+    clearHistory() {
+      removeLocalStorage("searchHistory");
+      this.setSearchHistoryList([]);
+    },
+    replaceList() {}
+  },
   mounted() {
-    this.$refs.searchText.forEach(item => {
-      item.style.width = window.innerWidth - 20 - 40 + "px";
-    });
+    if (this.$refs.searchText) {
+      this.$refs.searchText.forEach(item => {
+        item.style.width = window.innerWidth - 20 - 40 + "px";
+      });
+    }
   }
 };
 </script>

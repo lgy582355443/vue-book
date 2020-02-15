@@ -39,7 +39,11 @@
 </template>
 
 <script>
-import { setLocalStorage } from "../../utils/localStorage";
+import {
+  setLocalStorage,
+  saveSearchHistory,
+  getSearchHistory
+} from "../../utils/localStorage";
 import { StoreHomeMixin } from "@/mixins/home";
 import hotSearchList from "./hotSearchList";
 
@@ -93,13 +97,23 @@ export default {
   },
   methods: {
     search() {
-      this.$refs.searchInput.blur();
+      this.addSearchHistory(this.searchText);
       this.$router.push({
         name: "bookList",
         query: {
           keyword: this.searchText
         }
       });
+    },
+    //加入历史搜索
+    addSearchHistory(searchText) {
+      let searchHistoryList = getSearchHistory();
+      if (searchHistoryList.indexOf(searchText) == -1) {
+        searchHistoryList.unshift({ text: searchText, type: 2 });
+      }
+      this.setSearchHistoryList(searchHistoryList);
+      saveSearchHistory(searchHistoryList);
+      this.searchText = "";
     },
     hideTitle() {
       this.titleVisible = false;
@@ -156,7 +170,6 @@ export default {
       } else {
         this.$i18n.locale = "en";
       }
-
       setLocalStorage("locale", this.$i18n.locale);
     }
   },

@@ -8,6 +8,7 @@ export const StoreHomeMixin = {
             'homeOffsetY',
             'hotSearchOffsetY',
             'flapCardVisible',
+            'searchHistoryList'
         ])
     },
     methods: {
@@ -16,6 +17,7 @@ export const StoreHomeMixin = {
             'setHomeOffsetY',
             'setHotSearchOffsetY',
             'setFlapCardVisible',
+            'setSearchHistoryList'
         ]),
         showBookDetail(book) {
             gotoBookDetail(this, book)

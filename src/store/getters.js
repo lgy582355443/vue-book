@@ -22,6 +22,7 @@ const getters = {
   hotSearchOffsetY: state => state.home.hotSearchOffsetY,
   homeOffsetY: state => state.home.homeOffsetY,
   flapCardVisible: state => state.home.flapCardVisible,
+  searchHistoryList: state => state.home.searchHistoryList,
 
   isEditMode: state => state.shelf.isEditMode,
   shelfList: state => state.shelf.shelfList,

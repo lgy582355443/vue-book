@@ -73,6 +73,13 @@ export function saveReaderHistory(history) {
 export function getReaderHistory() {
   return getLocalStorage('history');
 }
+export function saveSearchHistory(history) {
+  return setLocalStorage('searchHistory', history);
+}
+
+export function getSearchHistory() {
+  return getLocalStorage('searchHistory');
+}
 
 export function getReadTime(fileName) {
   return getBookObject(fileName, 'time')

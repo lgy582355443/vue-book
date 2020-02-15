@@ -67,6 +67,9 @@ const actions = {
   setFlapCardVisible({ commit }, visible) {
     return commit('SET_FLAP_CARD_VISIBLE', visible)
   },
+  setSearchHistoryList({commit},list){
+    return commit('SET_SEARXH_HISTORY_LIST',list)
+  },
   //shelf
   setIsEditMode({ commit }, isEditMode) {
     return commit('SET_IS_EDIT_MODE', isEditMode)

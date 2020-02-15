@@ -3,7 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import i18n from './lang'
-import { clearLocalStorage, getUserInfo } from './utils/localStorage'
+import {
+  clearLocalStorage,
+  getUserInfo
+} from './utils/localStorage'
 
 // 初始化html font-size
 import 'lib-flexible';
@@ -30,14 +33,16 @@ var vue = new Vue({
 //登录守卫
 router.beforeEach(async (to, from, next) => {
   const UserInfo = getUserInfo();
-  if (UserInfo && UserInfo !== {}) {
+  if (UserInfo && JSON.stringify(UserInfo) == "{}") {
     next()
   } else {
     if (!to.meta.isLogin) {
       next()
     } else {
       clearLocalStorage();
-      next({ path: "/login" })
+      next({
+        path: "/login"
+      })
     }
   }
 })

@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="shelf-search-wrapper"
-    :class="{'search-top':ifInputClicked, 'hide-shadow':ifHideShadow}"
-  >
+  <div class="shelf-search-main" :class="{'search-top':ifInputClicked, 'hide-shadow':ifHideShadow}">
     <div class="shelf-search" :class="{'search-top': ifInputClicked}">
       <div class="search-wrapper">
         <div class="icon-search-wrapper">
@@ -98,6 +95,7 @@ export default {
       this.setShelfTitleVisible(false);
     },
     onCancelClick() {
+      this.clearSearchText();
       this.ifInputClicked = false;
       this.setShelfTitleVisible(true);
     },
@@ -124,7 +122,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "../../assets/styles/global.scss";
-.shelf-search-wrapper {
+.shelf-search-main {
   position: relative;
   z-index: 105;
   width: 100%;

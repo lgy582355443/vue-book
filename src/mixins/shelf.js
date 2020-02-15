@@ -27,7 +27,6 @@ export const shelfMixin = {
             'currentType',
             'historyList'
         ]),
-
     },
     methods: {
         ...mapActions([
