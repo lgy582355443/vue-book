@@ -52,7 +52,7 @@ const routes = [
     name: 'shelf',
     component: () => import(/* webpackChunkName: "shelf" */ '../views/shelf/index.vue'),
     meta: {
-      footShow: false,
+      footShow: true,
       isLogin: true
     },
   },

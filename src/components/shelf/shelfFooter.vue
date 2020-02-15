@@ -1,6 +1,7 @@
 <template>
-  <div class="edit-moadl">
+  <transition name="footerUp">
     <div class="shelf-footer" v-show="isEditMode">
+    <!-- <div class="shelf-footer"> -->
       <div
         class="shelf-footer-tab-wrapper"
         v-for="item in tabs"
@@ -18,7 +19,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -336,6 +337,20 @@ export default {
         }
       }
     }
+  }
+}
+.footerUp-enter-active {
+  animation: footerUp 0.5s;
+}
+.footerUp-leave-active {
+  animation: footerUp 0.5s reverse;
+}
+@keyframes footerUp {
+  0% {
+    transform: translateY(50px);
+  }
+  100% {
+    transform: translateY(0);
   }
 }
 </style>

@@ -6,12 +6,10 @@
       <shelf-list :data="shelfList"></shelf-list>
     </scroll>
     <shelf-Footer></shelf-Footer>
-    <footers></footers>
   </div>
 </template>
 
 <script>
-import footers from "@/components/common/Footer";
 import ShelfTitle from "../../components/shelf/shelfTitle";
 import Scroll from "../../components/common/Scroll";
 import ShelfSearch from "../../components/shelf/shelfSearch";
@@ -28,7 +26,6 @@ export default {
     ShelfSearch,
     ShelfList,
     ShelfFooter,
-    footers
   },
   props: {},
   data() {
