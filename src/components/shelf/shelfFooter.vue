@@ -1,7 +1,6 @@
 <template>
   <transition name="footerUp">
     <div class="shelf-footer" v-show="isEditMode">
-    <!-- <div class="shelf-footer"> -->
       <div
         class="shelf-footer-tab-wrapper"
         v-for="item in tabs"
@@ -296,12 +295,12 @@ export default {
 @import "../../assets/styles/global.scss";
 .shelf-footer {
   position: fixed;
-  bottom: 0;
+  bottom: 0px;
   left: 0;
   z-index: 250;
   display: flex;
   width: 100%;
-  height: 48px;
+  height: 50px;
   background-color: #fff;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   .shelf-footer-tab-wrapper {
@@ -340,17 +339,17 @@ export default {
   }
 }
 .footerUp-enter-active {
-  animation: footerUp 0.5s;
+  animation: footerUp .3s;
 }
 .footerUp-leave-active {
-  animation: footerUp 0.5s reverse;
+  animation: footerUp .3s reverse;
 }
 @keyframes footerUp {
   0% {
     transform: translateY(50px);
   }
   100% {
-    transform: translateY(0);
+    transform: translateY(0px);
   }
 }
 </style>

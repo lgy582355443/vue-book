@@ -5,7 +5,6 @@
       <shelf-search></shelf-search>
       <shelf-list :data="shelfList"></shelf-list>
     </scroll>
-    <shelf-Footer></shelf-Footer>
   </div>
 </template>
 
@@ -14,7 +13,6 @@ import ShelfTitle from "../../components/shelf/shelfTitle";
 import Scroll from "../../components/common/Scroll";
 import ShelfSearch from "../../components/shelf/shelfSearch";
 import ShelfList from "../../components/shelf/shelfList";
-import ShelfFooter from "../../components/shelf/shelfFooter";
 import { shelfMixin } from "@/mixins/shelf";
 
 export default {
@@ -25,7 +23,6 @@ export default {
     Scroll,
     ShelfSearch,
     ShelfList,
-    ShelfFooter,
   },
   props: {},
   data() {

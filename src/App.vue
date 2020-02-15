@@ -6,13 +6,16 @@
       </keep-alive>
     </transition>
     <footers v-if="$route.meta.footShow"></footers>
+    <shelf-footer v-if="$route.name=='shelf'||'ShelfCategory'"></shelf-footer>
   </div>
 </template>
 <script>
+import shelfFooter from "./components/shelf/shelfFooter";
 import footers from "./components/common/Footer";
 export default {
   components: {
-    footers
+    footers,
+    shelfFooter
   },
   data() {
     return {
