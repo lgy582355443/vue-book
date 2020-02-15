@@ -74,13 +74,10 @@ export default {
   },
   created() {
     let searchList = getSearchHistory();
-    console.log(searchList);
     if (searchList) {
-      console.log('11');
       this.setSearchHistoryList(searchList);
     } else {
       saveSearchHistory(this.searchHistoryList);
-      console.log('22');
     }
   },
   mounted() {}

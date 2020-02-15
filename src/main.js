@@ -33,7 +33,7 @@ var vue = new Vue({
 //登录守卫
 router.beforeEach(async (to, from, next) => {
   const UserInfo = getUserInfo();
-  if (UserInfo && JSON.stringify(UserInfo) == "{}") {
+  if (UserInfo && JSON.stringify(UserInfo) !== "{}") {
     next()
   } else {
     if (!to.meta.isLogin) {
