@@ -11,11 +11,8 @@
       <div class="shelf-title-btn-wrapper shelf-title-left back" v-if="showBack">
         <span class="icon-back" @click="back"></span>
       </div>
-      <div class="shelf-title-btn-wrapper shelf-title-right" v-show="showEdit">
-        <span
-          class="shelf-title-btn-text"
-          @click="onEditClick"
-        >{{isEditMode?$t('shelf.cancel'):$t('shelf.edit')}}</span>
+      <div class="shelf-title-btn-wrapper shelf-title-right" @click="onEditClick" v-show="showEdit">
+        <span class="shelf-title-btn-text">{{isEditMode?$t('shelf.cancel'):$t('shelf.edit')}}</span>
       </div>
       <div
         class="shelf-title-btn-wrapper"

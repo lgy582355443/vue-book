@@ -302,7 +302,7 @@ export default {
   width: 100%;
   height: 50px;
   background-color: #fff;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0px 5px #cccc;
   .shelf-footer-tab-wrapper {
     flex: 1;
     width: 25%;
@@ -339,10 +339,10 @@ export default {
   }
 }
 .footerUp-enter-active {
-  animation: footerUp .3s;
+  animation: footerUp 0.3s;
 }
 .footerUp-leave-active {
-  animation: footerUp .3s reverse;
+  animation: footerUp 0.3s reverse;
 }
 @keyframes footerUp {
   0% {
