@@ -18,7 +18,7 @@ const book = {
     paginate: '',
     pagelist: null,
     offsetY: 0,
-    isBookmark: null
+    isBookmark: false
   },
   mutations: {
     SET_FILENAME: (state, fileName) => {

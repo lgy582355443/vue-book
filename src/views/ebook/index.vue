@@ -18,6 +18,7 @@ import EbookBookmark from "@/components/ebook/EbookBookmark";
 import EbookTitle from "@/components/ebook/EbookTitle";
 import EbookMenu from "@/components/ebook/EbookMenu";
 import EbookReader from "../../components/ebook/EbookReader";
+import { px2rem } from "@/utils/utils.js";
 import { ebookMixin } from "../../mixins/ebook";
 import { getReadTime, saveReadTime } from "../../utils/localStorage";
 
@@ -51,7 +52,7 @@ export default {
   methods: {
     //下拉
     move(v) {
-      this.$refs.ebook.style.top = v + "px";
+      this.$refs.ebook.style.top = px2rem(v) + "rem";
     },
 
     //下拉后还原
@@ -95,14 +96,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .ebook-main {
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: rgb(97, 96, 96);
   .ebook {
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
     z-index: 99;

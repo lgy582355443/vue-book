@@ -3,11 +3,8 @@
 </template>
 
 <script>
-import { px2rem } from "@/utils/utils";
 export default {
   props: {
-    width: Number,
-    height: Number,
     color: String
   },
   computed: {
@@ -21,20 +18,8 @@ export default {
       }
     }
   },
-  methods: {
-    refresh() {
-      if (this.height && this.width && this.width > 0 && this.height > 10) {
-        this.$refs.bookmark.style.borderWidth = `${px2rem(
-          this.height - 5
-        )}rem ${px2rem(this.width / 2)}rem ${px2rem(5)}rem ${px2rem(
-          this.width / 2
-        )}rem`;
-      }
-    }
-  },
-  mounted() {
-    this.refresh();
-  }
+  methods: {},
+  mounted() {}
 };
 </script>
 
@@ -46,7 +31,7 @@ export default {
   height: 0;
   font-weight: bold;
   line-height: 0;
-  border-width: 50px 10px 10px 10px;
+  border-width: 25px 8px 8px 8px;
   border-style: solid;
   border-color: white white transparent white;
 }

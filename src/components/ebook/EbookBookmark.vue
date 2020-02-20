@@ -7,13 +7,13 @@
       <div class="ebook-bookmark-text">{{text}}</div>
     </div>
     <div class="ebook-bookmark-icon-wrapper" :style="isFixed?fixedStyle:{}">
-      <book-mark :width="15" :height="35" :color="color" ref="bookmark"></book-mark>
+      <book-mark :color="color" ref="bookmark"></book-mark>
     </div>
   </div>
 </template>
 
 <script>
- import { realPx } from '@/utils/utils';
+import { px2rem } from "@/utils/utils.js";
 import BookMark from "@/components/common/Bookmark";
 import { ebookMixin } from "@/mixins/ebook";
 import { saveBookmark, getBookmark } from "../../utils/localStorage";
@@ -28,25 +28,24 @@ export default {
   data() {
     return {
       color: WHITE,
-      text: this.$t("book.pulldownAddMark"),
-      isFixed: false,
+      text: "",
+      isFixed: false
     };
   },
   computed: {
     //书签高
-     height() {
-        return realPx(35)
-      },
-      //临界值
-      threshold() {
-        return realPx(55)
-      },
+    height() {
+      return 33;
+    },
+    //临界值
+    threshold() {
+      return 55;
+    },
     fixedStyle() {
       return {
         position: "fixed",
         top: 0,
-        right: `${(window.innerWidth - this.$refs.ebookBookmark.clientWidth) /
-          2}px`
+        right: 0
       };
     }
   },
@@ -75,12 +74,18 @@ export default {
       }
     }
   },
-
+  created() {
+    if (this.isBookmark) {
+      this.text = this.$t("book.pulldownDeleteMark");
+    } else {
+      this.text = this.$t("book.pulldownAddMark");
+    }
+  },
   methods: {
     //归位
     restore() {
       setTimeout(() => {
-        this.$refs.ebookBookmark.style.top = -100% + "px";
+        this.$refs.ebookBookmark.style.top = `${-px2rem(this.height)}rem`;
         this.$refs.iconDown.style.transform = "rotate(0deg)";
       }, 200);
       if (this.isFixed) {
@@ -147,7 +152,7 @@ export default {
     beforeThreshold(v) {
       //第二阶段:吸顶
       //相对ebook在移动
-      this.$refs.ebookBookmark.style.top = `${-v}px`;
+      this.$refs.ebookBookmark.style.top = `${-px2rem(v)}rem`;
       if (this.$refs.iconDown.style.transform == "rotate(180deg)") {
         this.$refs.iconDown.style.transform = "rotate(0deg)";
       }
@@ -156,7 +161,7 @@ export default {
 
     afterThreshold(v) {
       //第三阶段:箭头向上,书签变蓝
-      this.$refs.ebookBookmark.style.top = `${-v}px`;
+      this.$refs.ebookBookmark.style.top = `${-px2rem(v)}rem`;
       if (
         this.$refs.iconDown.style.transform == "" ||
         this.$refs.iconDown.style.transform == "rotate(0deg)"
@@ -183,17 +188,17 @@ export default {
 
 .ebook-bookmark {
   position: absolute;
-  top: -35px;
+  top: -33px;
   left: 0;
   z-index: 100;
   width: 100%;
-  height: 35px;
+  height: 33px;
   .ebook-bookmark-text-wrapper {
     position: absolute;
     right: 45px;
     bottom: 0;
     display: flex;
-     z-index: 101;
+    z-index: 101;
     .ebook-bookmark-down-wrapper {
       font-size: 14px;
       color: #ffffff;
@@ -208,8 +213,8 @@ export default {
   .ebook-bookmark-icon-wrapper {
     position: absolute;
     right: 0;
-    bottom: 0;
-    margin-right: 10px;
+    top: 0;
+    margin-right: 16px;
     z-index: 100;
   }
 }
