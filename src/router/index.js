@@ -111,6 +111,15 @@ const routes = [
     },
   },
   {
+    path: '/my/about',
+    name: 'About',
+    component: () => import(/* webpackChunkName: "About" */ '../views/my/about.vue'),
+    meta: {
+      footShow: false,
+      isLogin: true
+    },
+  },
+  {
     path: '/login',
     name: 'login',
     component: () => import(/* webpackChunkName: "login" */ '../views/login/index.vue'),

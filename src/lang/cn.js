@@ -148,6 +148,7 @@ const messages = {
     ReaderHistory: '最近阅读',
     clearHistory: '清除历史',
     logout: '退出登录',
+    about:'关于',
     userData: '个人质料',
     changeAvatar: '更改头像',
     imgUrl: '头像图片地址',

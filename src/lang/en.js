@@ -150,6 +150,7 @@ const messages = {
     editUser: 'Modify personal materials',
     ReaderHistory: 'history',
     clearHistory: 'clear history',
+    about:'about',
     logout: 'log out',
     userData: 'personal data',
     changeAvatar: 'change avatar',

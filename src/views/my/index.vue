@@ -19,6 +19,11 @@
           {{$t('my.ReaderHistory')}}
           <span class="icon-you"></span>
         </div>
+        <div class="list-item about" @click="goAbout">
+          <span class="icon icon-about"></span>
+          {{$t('my.about')}}
+          <span class="icon-you"></span>
+        </div>
         <div class="list-item logout" @click="doLogout">
           <span class="icon icon-logout"></span>
           {{$t('my.logout')}}
@@ -71,15 +76,16 @@ export default {
       this.$router.push({
         name: "UserEdit"
       });
+    },
+    goAbout() {
+      this.$router.push({
+        name: "About"
+      });
     }
   },
   created() {
     this.user = getUserInfo();
     saveUserInfo(this.user);
-    getUserInfoApi({ id: this.user.id }).then(res => {
-      this.user = res.data.data;
-      saveUserInfo(this.user);
-    });
   },
   mounted() {}
 };
