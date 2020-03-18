@@ -11,11 +11,9 @@ import {
 // 初始化html font-size
 import 'lib-flexible';
 import './assets/styles/icon.css'
-import './assets/styles/reset.scss'
 import './assets/styles/global.scss'
 
 // import './mock/index';
-import './utils/boost'
 import './utils/create-api'
 import './utils/lazy'
 

@@ -57,7 +57,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "@/assets/styles/global.scss";
 .reader-history-main {
   width: 100%;
   height: 100%;

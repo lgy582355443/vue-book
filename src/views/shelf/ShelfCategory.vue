@@ -24,8 +24,10 @@ import Scroll from "../../components/common/Scroll";
 import ShelfList from "../../components/shelf/shelfList";
 import ShelfFooter from "../../components/shelf/shelfFooter";
 import { shelfMixin } from "@/mixins/shelf";
+import { getBookShelf } from "../../utils/localStorage";
 
 export default {
+  name: "ShelfCategory",
   mixins: [shelfMixin],
   components: {
     Scroll,
@@ -69,14 +71,11 @@ export default {
     this.getCategoryList(this.$route.query.title);
     // 标记currentType为2，currentType=1在书架页，2为在分组页，ShelfTitle将呈现不同状态
     this.setCurrentType(2);
-  },
-  mounted() {}
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
-
 .store-category {
   position: relative;
   z-index: 100;

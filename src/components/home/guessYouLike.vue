@@ -27,6 +27,7 @@ import { realPx } from "@/utils/utils";
 import { StoreHomeMixin } from "@/mixins/home";
 
 export default {
+  name:"GuessYouLike",
   mixins: [StoreHomeMixin],
   components: {
     TitleView
@@ -101,7 +102,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 
 .guess-you-like {
   .guess-you-like-list {

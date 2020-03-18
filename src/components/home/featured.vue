@@ -22,6 +22,7 @@ import { categoryText } from "@/utils/home";
 import { StoreHomeMixin } from "@/mixins/home";
 
 export default {
+  name:"Featured",
   mixins: [StoreHomeMixin],
   components: {
     TitleView,
@@ -67,7 +68,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/global.scss";
 
 .featured-main {
   .featured-list {

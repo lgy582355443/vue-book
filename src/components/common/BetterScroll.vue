@@ -9,7 +9,7 @@
 <script>
 import BScroll from "@better-scroll/core";
 export default {
-  name: "BaseLayer",
+  name: "BetterScroll",
   props: {
     top: {
       type: Number,

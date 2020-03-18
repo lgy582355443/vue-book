@@ -48,6 +48,7 @@ $moves: (
   height: px2rem($height);
   background: $backgroud;
   animation: #{$keyframesName} $animationTime $animationType $animationIterator;
+  
   @keyframes #{$keyframesName} {
     0% {
       transform: translate3d(px2rem($startX), px2rem($startY), 0) scale(0);

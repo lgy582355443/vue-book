@@ -20,6 +20,7 @@
 
 <script>
   export default {
+    name:"DialogBox",
     props: {
       title: String
     },
@@ -40,7 +41,6 @@
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 
   .dialog {
     position: fixed;

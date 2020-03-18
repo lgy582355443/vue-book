@@ -30,6 +30,7 @@ import { categoryText, getCategoryName } from "@/utils/home";
 import { StoreHomeMixin } from "@/mixins/home";
 
 export default {
+  name:"CategoryBook",
   mixins: [StoreHomeMixin],
   components: {
     TitleView
@@ -47,6 +48,7 @@ export default {
         }
       });
     },
+    
     categoryText(category) {
       return categoryText(category, this);
     }
@@ -55,8 +57,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/global.scss";
-
 .category-book-main {
   .category-book-list {
     width: 100%;

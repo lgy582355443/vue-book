@@ -28,7 +28,6 @@
   }
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
   .cover-title-wrapper {
     display: flex;
     width: 100%;

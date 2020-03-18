@@ -3,16 +3,12 @@ import {
     mapActions
 } from 'vuex'
 import {
-    gotoBookDetail
-} from '@/utils/home'
-import {
     getShelfApi,
     updataShelfApi
 } from "@/api/shelf"
 
 import {
     saveBookShelf,
-    getBookShelf,
     getUserInfo
 } from '@/utils/localStorage'
 export const shelfMixin = {
@@ -33,6 +29,7 @@ export const shelfMixin = {
             'setIsEditMode',
             'setShelfList',
             'setShelfSelected',
+            'addShelfSelected',
             'setShelfTitleVisible',
             'setOffsetY',
             'setShelfCategory',
@@ -47,10 +44,6 @@ export const shelfMixin = {
             'setSelectedMoveToNewGroup',
             'setChangeGroupName'
         ]),
-
-        showBookDetail(book) {
-            gotoBookDetail(this, book)
-        },
 
         //只保留 shelfList 部分属性，用于上传服务器
         getShelfIdList(arr) {
@@ -105,15 +98,20 @@ export const shelfMixin = {
         },
 
         //获取书架列表
-        getShelfList() {
+        getShelfList(cb) {
             const user = getUserInfo();
             if (user && user !== {}) {
                 getShelfApi({
                     userId: user.id
                 }).then(res => {
                     if (res.status === 200 && res.data && res.data.shelfList) {
+                        console.log("shelfList", res.data.shelfList);
                         saveBookShelf(res.data.shelfList)
-                        return this.setShelfList(res.data.shelfList)
+                        this.setShelfList(res.data.shelfList)
+                        if (cb) {
+                            cb()
+                        }
+                        return res.data.shelfList
                     }
                 })
             } else {
@@ -125,8 +123,11 @@ export const shelfMixin = {
 
         //获取当前分组里的内容
         getCategoryList(title) {
-            const categoryList = this.shelfList.find(book => book.type === 2 && book.title === title)
-            this.setShelfCategory(categoryList)
-        },
+            this.getShelfList(() => {
+                const categoryList = this.shelfList.find(book => book.type === 2 && book.title === title)
+                this.setShelfCategory(categoryList)
+                return categoryList
+            })
+        }
     }
 }

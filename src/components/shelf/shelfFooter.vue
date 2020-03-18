@@ -29,7 +29,7 @@ import {
   getBookShelf
 } from "../../utils/localStorage";
 import { download } from "@/api/download";
-import { removeLocalForage } from "../../utils/localForage";
+import { removeLocalForage, setLocalForage } from "../../utils/localForage";
 export default {
   name: "ShelfFooter",
   components: {},
@@ -86,25 +86,22 @@ export default {
     //缓存选中的书籍
     async downloadSelectedBook() {
       for (let i = 0; i < this.shelfSelected.length; i++) {
-        await this.downloadBook(this.shelfSelected[i]).then(book => {
+        await this._downloadBook(this.shelfSelected[i]).then(book => {
           book.cache = true;
         });
       }
     },
 
-    //缓存书籍
-    downloadBook(book) {
+    //缓存书籍方法
+    _downloadBook(book) {
       let text = this.$t("shelf.startDownload");
       this.continueShow(text);
       return new Promise((resolve, reject) => {
-        download(
-          book,
-          book => {
-            this.toastHide();
-            resolve(book);
-          },
-          reject,
-          progressEvent => {
+        download({
+          categoryText: book.categoryText,
+          fileName: book.fileName,
+          //下载处理进度事件
+          onProgress: progressEvent => {
             const progress =
               Math.floor((progressEvent.loaded / progressEvent.total) * 100) +
               "%";
@@ -114,7 +111,19 @@ export default {
             );
             this.toastUpdata(text);
           }
-        );
+        }).then(res => {
+          const blob = new Blob([res.data]);
+          //存入indexDB
+          setLocalForage(
+            book.fileName,
+            blob,
+            () => {
+              this.toastHide();
+              resolve(book);
+            },
+            err => reject(err)
+          );
+        });
       });
     },
 
@@ -186,13 +195,13 @@ export default {
       saveBookShelf(this.shelfList);
     },
 
-    //开启或关闭私密阅读弹出框
+    //开启或关闭私密阅读弹popup
     showPrivate() {
-      this.popupShow(
-        this.isPrivate
+      this.popupShow({
+        title: this.isPrivate
           ? this.$t("shelf.closePrivateSuccess")
           : this.$t("shelf.setPrivateTitle"),
-        [
+        btn: [
           {
             text: this.isPrivate
               ? this.$t("shelf.cancel")
@@ -204,16 +213,16 @@ export default {
             click: this.popupHide
           }
         ]
-      );
+      });
     },
 
     //删除或下载书本离线缓存弹出框
     showDownload() {
-      this.popupShow(
-        this.isDownload
+      this.popupShow({
+        title: this.isDownload
           ? this.$t("shelf.removeDownloadTitle")
           : this.$t("shelf.setDownloadTitle"),
-        [
+        btn: [
           {
             text: this.isDownload
               ? this.$t("shelf.delete")
@@ -225,7 +234,7 @@ export default {
             click: this.popupHide
           }
         ]
-      );
+      });
     },
 
     //弹出移出书架弹出框
@@ -267,7 +276,7 @@ export default {
           this.showDownload();
           break;
         case 3:
-          this.dialog().show();
+          this.shelfDialog().show();
           break;
         case 4:
           this.showRemove();
@@ -288,11 +297,14 @@ export default {
     }
   },
   created() {},
-  mounted() {}
+  mounted() {},
+  beforeDestroy() {
+    //离开组件时，隐藏toas
+    this.toastHide();
+  }
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 .shelf-footer {
   position: fixed;
   bottom: 0px;

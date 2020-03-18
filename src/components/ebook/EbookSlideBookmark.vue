@@ -46,7 +46,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 
 .ebook-slide-bookmark {
   width: 100%;

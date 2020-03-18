@@ -1,5 +1,7 @@
-import { mapGetters, mapActions } from 'vuex'
-import { gotoBookDetail } from '@/utils/home'
+import {
+    mapGetters,
+    mapActions
+} from 'vuex'
 
 export const StoreHomeMixin = {
     computed: {
@@ -19,8 +21,15 @@ export const StoreHomeMixin = {
             'setFlapCardVisible',
             'setSearchHistoryList'
         ]),
+
         showBookDetail(book) {
-            gotoBookDetail(this, book)
-        }
+            this.$router.push({
+                name: "detail",
+                query: {
+                    fileName: book.fileName,
+                    category: book.categoryText
+                }
+            });
+        },
     }
 }

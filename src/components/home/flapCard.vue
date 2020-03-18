@@ -245,7 +245,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 .flap-card-wrapper {
   position: absolute;
   top: 0;

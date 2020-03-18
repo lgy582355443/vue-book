@@ -388,7 +388,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 .ebook-reader {
   width: 100%;
   height: 100%;

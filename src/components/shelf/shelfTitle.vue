@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div class="shelf-title" :class="{'hide-shadow':ifHideShadow}" v-show="shelfTitleVisible">
+    <div :class="[{'hide-shadow':ifHideShadow},'shelf-title']" v-show="shelfTitleVisible">
       <div class="shelf-title-text-wrapper">
         <span class="shelf-title-text">{{title}}</span>
         <span class="shelf-title-sub-text" v-show="isEditMode">{{selectedText}}</span>
@@ -14,9 +14,10 @@
       <div class="shelf-title-btn-wrapper shelf-title-right" @click="onEditClick" v-show="showEdit">
         <span class="shelf-title-btn-text">{{isEditMode?$t('shelf.cancel'):$t('shelf.edit')}}</span>
       </div>
+
+      <!-- 当分组里没有书籍 -->
       <div
-        class="shelf-title-btn-wrapper"
-        :class="{'shelf-title-left': changeGroupLeft, 'shelf-title-right': changeGroupRight}"
+        :class="[{'shelf-title-left': changeGroupLeft}, {'shelf-title-right': changeGroupRight},'shelf-title-btn-wrapper']"
         @click="changeGroup"
         v-if="showChangeGroup"
       >
@@ -69,7 +70,6 @@ export default {
     showBack() {
       return this.currentType === 2 && !this.isEditMode;
     },
-
     showChangeGroup() {
       return this.currentType === 2 && (this.isEditMode || this.emptyCategory);
     },
@@ -81,32 +81,27 @@ export default {
     changeGroupRight() {
       return this.emptyCategory;
     },
+
+    //选择书籍时标题栏，提示选中书籍数量
     selectedText() {
       const selectedNumber = this.shelfSelected ? this.shelfSelected.length : 0;
       if (selectedNumber == 0) {
         return this.$t("shelf.selectBook");
       } else {
-        if (selectedNumber == 1) {
-          return this.$t("shelf.haveSelectedBooks").replace(
-            "$1",
-            selectedNumber
-          );
-        } else {
-          return this.$t("shelf.haveSelectedBooks").replace(
-            "$1",
-            selectedNumber
-          );
-        }
+        return this.$t("shelf.haveSelectedBooks").replace("$1", selectedNumber);
       }
     },
 
+    // popup取消按钮
     popupCancelBtn() {
-      return this.createPopupBtn(this.$t("shelf.cancel"), () => {
-        this.hidePopup();
-      });
+      return {
+        text: this.$t("shelf.cancel"),
+        click:  this.popupHide
+      };
     }
   },
   methods: {
+    //点击编辑
     onEditClick() {
       if (!this.isEditMode) {
         this.setShelfSelected([]);
@@ -132,27 +127,37 @@ export default {
       this.simpleToast(this.$t("shelf.clearCacheSuccess"));
     },
 
-    //创建-修改分组popup
+    //修改分组popup
     changeGroup() {
-      this.popupMenu = this.popup({
+      // utils文件夹里，create-api插件，自动生成组件
+      this.popupShow({
         btn: [
-          this.createPopupBtn(this.$t("shelf.editGroupName"), () => {
-            this.changeGroupName();
-          }),
-          this.createPopupBtn(
-            this.$t("shelf.deleteGroup"),
-            () => {
-              this.showDeleteGroup();
-            },
-            "danger"
-          ),
+          {
+            text: this.$t("shelf.editGroupName"),
+            click: this._changeGroupName
+          },
+          {
+            text: this.$t("shelf.deleteGroup"),
+            type: "danger",
+            click: this._showDeleteGroup
+          },
           this.popupCancelBtn
         ]
+      });
+    },
+
+    //更改分组名弹窗
+    _changeGroupName() {
+      this.popupHide();
+      this.shelfDialog({
+        showNewGroup: true,
+        groupName: this.shelfCategory.title,
+        isEditGroup: true
       }).show();
     },
 
-    //删除分组
-    deleteGroup() {
+    //删除分组操作
+    _deleteGroup() {
       this.setDeleteGroup(this.shelfCategory).then(() => {
         this.setIsEditMode(false);
         this.updataShelf();
@@ -160,49 +165,25 @@ export default {
       });
     },
 
-    //更改分组名弹窗
-    changeGroupName() {
-      this.hidePopup();
-      this.dialog({
-        showNewGroup: true,
-        groupName: this.shelfCategory.title,
-        isEditGroup: true
-      }).show();
-    },
-
     //删除分组时的popup警示，是否确认删除
-    showDeleteGroup() {
-      this.hidePopup();
+    _showDeleteGroup() {
+      this.popupHide();
       setTimeout(() => {
-        this.popupMenu = this.popup({
+        this.popupShow({
           title: this.$t("shelf.deleteGroupTitle"),
           btn: [
-            this.createPopupBtn(
-              this.$t("shelf.confirm"),
-              () => {
-                this.deleteGroup();
-              },
-              "danger"
-            ),
+            {
+              text: this.$t("shelf.confirm"),
+              type: "danger",
+              click: this._deleteGroup
+            },
             this.popupCancelBtn
           ]
-        }).show();
+        });
       }, 200);
     },
 
-    hidePopup() {
-      this.popupMenu.hide();
-    },
-
-    //用于创建popup里单个按钮需要的参数和事件
-    createPopupBtn(text, onClick, type = "normal") {
-      return {
-        text: text,
-        click: onClick,
-        type: type
-      };
-    },
-
+    //返回
     back() {
       this.$router.go(-1);
       this.setIsEditMode(false);
@@ -213,7 +194,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 .shelf-title {
   position: relative;
   z-index: 130;

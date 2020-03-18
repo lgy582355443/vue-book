@@ -43,3 +43,14 @@ export function changeAvatarApi(userId, data) {
         // }
     })
 }
+
+// export function changeAvatarApi(userId, data) {
+//     return http({
+//         method: "post",
+//         url: process.env.VUE_APP_BASE_URL + "/api/user/avatar/" + userId,
+//         data,
+//         // headers: {
+//         //     "Content-Type": "multipart/form-data"
+//         // }
+//     })
+// }

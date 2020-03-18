@@ -70,7 +70,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 
 .bottom-wrapper {
   position: absolute;

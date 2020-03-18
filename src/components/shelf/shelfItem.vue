@@ -42,6 +42,7 @@ export default {
   watch: {},
   computed: {
     item() {
+      //type =1 为书籍 ，type = 2 为分组
       if (this.data.type == 1) {
         return this.book;
       } else if (this.data.type == 2) {
@@ -56,7 +57,7 @@ export default {
       if (this.isEditMode) {
         this.data.selected = !this.data.selected;
         if (this.data.selected && this.data.type == 1) {
-          this.shelfSelected.pushWithoutDuplicate(this.data);
+          this.addShelfSelected(this.data);
         } else {
           this.setShelfSelected(
             this.shelfSelected.filter(item => item.id !== this.data.id)
@@ -64,7 +65,13 @@ export default {
         }
       } else {
         if (this.data.type == 1) {
-          this.showBookDetail(this.data);
+          this.$router.push({
+            name: "detail",
+            query: {
+              fileName: this.data.fileName,
+              category: this.data.categoryText
+            }
+          });
         } else if (this.data.type == 2) {
           this.$router.push({
             name: "ShelfCategory",
@@ -83,7 +90,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 .shelf-item-main {
   position: relative;
   width: 100%;

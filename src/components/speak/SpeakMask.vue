@@ -208,7 +208,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 
   .book-speak-mask-wrapper {
     position: fixed;

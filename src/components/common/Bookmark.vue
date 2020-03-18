@@ -24,7 +24,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 
 .ebook-bookmark-icon {
   width: 0;

@@ -22,7 +22,7 @@ export default {
     ShelfTitle,
     Scroll,
     ShelfSearch,
-    ShelfList,
+    ShelfList
   },
   props: {},
   data() {
@@ -47,13 +47,13 @@ export default {
   created() {
     this.getShelfList();
     this.setShelfCategory([]);
+    //1，为当前在书架页， 2 ，为当前在书架分组页
     this.setCurrentType(1);
   },
   mounted() {}
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 .book-shelf {
   position: fixed;
   z-index: 100;

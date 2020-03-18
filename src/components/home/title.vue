@@ -52,7 +52,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "@/assets/styles/global.scss";
 .home-title-wrapper {
   width: 100%;
   padding: 15px 10px;

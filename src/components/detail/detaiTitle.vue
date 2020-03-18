@@ -43,7 +43,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 .detail-title-wrapper {
   position: relative;
   display: flex;

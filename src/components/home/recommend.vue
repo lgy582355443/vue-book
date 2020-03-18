@@ -23,8 +23,8 @@
 <script>
 import TitleView from "@/components/home/title";
 import { StoreHomeMixin } from "@/mixins/home";
-
 export default {
+  name: "Recommend",
   mixins: [StoreHomeMixin],
   components: {
     TitleView
@@ -36,8 +36,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
-
 .recommend {
   .recommend-list {
     width: 100%;

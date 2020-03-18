@@ -49,7 +49,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 
 .playing-item-wrapper {
   @include center;

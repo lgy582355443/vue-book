@@ -53,7 +53,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 .popup {
   position: fixed;
   left: 0;

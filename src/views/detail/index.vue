@@ -421,7 +421,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 
 .book-detail {
   width: 100%;

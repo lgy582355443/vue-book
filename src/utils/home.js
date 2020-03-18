@@ -183,13 +183,3 @@ export const categoryList = {
     'Psychology': 21,
     'Statistics': 22
 }
-
-export function gotoBookDetail(vue, book) {
-    vue.$router.push({
-        name: 'detail',
-        query: {
-            fileName: book.fileName,
-            category: book.categoryText
-        }
-    })
-}

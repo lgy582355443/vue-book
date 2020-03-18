@@ -60,7 +60,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 .toast-bg-wrapper {
   position: fixed;
   left: 0;

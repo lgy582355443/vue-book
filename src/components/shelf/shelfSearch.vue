@@ -115,13 +115,13 @@ export default {
   },
   created() {},
   mounted() {},
+  //离开时，输入框复位
   beforeDestroy() {
     this.onCancelClick();
   }
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 .shelf-search-main {
   position: relative;
   z-index: 105;

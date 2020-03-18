@@ -1,14 +1,16 @@
-import { computeId } from '@/utils/shelf'
+import {
+    computeId
+} from '@/utils/shelf'
 
 
 const shelf = {
     state: {
         isEditMode: false, //是否为编辑状态
-        shelfList: [],//书架列表
-        shelfSelected: [],//书架勾选后的图书
+        shelfList: [], //书架列表
+        shelfSelected: [], //书架勾选后的图书
         shelfTitleVisible: true,
         shelfCategory: [], // 书架分组列表数据
-        currentType: 1,// 书架列表为1，书架分组列表为2
+        currentType: 1, // 书架列表为1，书架分组列表为2
     },
     mutations: {
         SET_IS_EDIT_MODE(state, isEditMode) {
@@ -19,6 +21,11 @@ const shelf = {
         },
         SET_SHELF_SELECTED(state, shelfSelected) {
             state.shelfSelected = shelfSelected;
+        },
+        ADD_SHELF_SELECTED(state, shelf) {
+            if (!state.shelfSelected.some(item => item.id == shelf.id)) {
+                state.shelfSelected.push(shelf)
+            }
         },
         SET_SHELF_TITLE_VISIBLE(state, shelfTitleVisible) {
             state.shelfTitleVisible = shelfTitleVisible;

@@ -46,12 +46,12 @@ export default {
     }
   },
   methods: {},
-  created() {},
+  created() {
+  },
   mounted() {}
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 .shelf-list-main {
   position: absolute;
   z-index: 104;

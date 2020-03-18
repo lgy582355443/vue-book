@@ -30,6 +30,7 @@ import TitleView from "@/components/home/title";
 import { categoryText, getCategoryName } from "@/utils/home";
 
 export default {
+  name:"Category",
   components: {
     TitleView
   },
@@ -58,7 +59,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 .category-main {
   .category-list {
     display: flex;

@@ -13,7 +13,6 @@
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 
   .ebook-header {
     position: absolute;

@@ -1,20 +1,19 @@
 <template>
-  <shelf-dialog :title="title" ref="dialog">
+  <dialog-box :title="title" ref="dialog">
+    <!-- 修改分组 -->
     <div class="dialog-list-wrapper" v-if="!ifNewGroup">
-      <div
-        class="dialog-list-item"
-        :class="{'is-add': item.edit  ? item.edit === 1 : false}"
-        v-for="(item, index) in categoryList"
-        :key="index"
-        @click="onGroupClick(item)"
-        v-if="(item.edit === 2 && isInGroup) || item.edit !== 2 || !item.edit"
-      >
-        <div class="dialog-list-item-text">{{item.title}}</div>
+      <div v-for="(item, index) in categoryList" :key="index" @click="onGroupClick(item)">
         <div
-          class="dialog-list-icon-wrapper"
-          v-if="isInGroup && shelfCategory.shelf_id === item.shelf_id"
+          :class="[{'is-add': item.edit === 1},'dialog-list-item']"
+          v-if="(item.edit === 2 && isInGroup) || item.edit !== 2 || !item.edit"
         >
-          <span class="icon-check"></span>
+          <div class="dialog-list-item-text">{{item.title}}</div>
+          <div
+            class="dialog-list-icon-wrapper"
+            v-if="isInGroup && shelfCategory.shelf_id === item.shelf_id"
+          >
+            <span class="icon-check"></span>
+          </div>
         </div>
       </div>
     </div>
@@ -45,19 +44,19 @@
         v-if="ifNewGroup"
       >{{$t('shelf.confirm')}}</div>
     </div>
-  </shelf-dialog>
+  </dialog-box>
 </template>
 
 <script>
-import ShelfDialog from "../common/Dialog";
+import DialogBox from "../common/Dialog";
 import { shelfMixin } from "@/mixins/shelf";
 import { saveBookShelf } from "../../utils/localStorage";
 
 export default {
-  name: "GroupDialog",
+  name: "ShelfDialog",
   mixins: [shelfMixin],
   components: {
-    ShelfDialog
+    DialogBox
   },
   props: {
     showNewGroup: {
@@ -202,8 +201,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
-
 .dialog-list-wrapper {
   width: 100%;
   padding: 0 20px;

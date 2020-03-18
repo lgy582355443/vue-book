@@ -80,6 +80,9 @@ const actions = {
   setShelfSelected({ commit }, shelfSelected) {
     return commit('SET_SHELF_SELECTED', shelfSelected)
   },
+  addShelfSelected({ commit }, shelfSelected) {
+    return commit('ADD_SHELF_SELECTED', shelfSelected)
+  },
   setShelfTitleVisible({ commit }, shelfTitleVisible) {
     return commit('SET_SHELF_TITLE_VISIBLE', shelfTitleVisible)
   },

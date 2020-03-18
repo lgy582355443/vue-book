@@ -104,6 +104,7 @@ export default {
           keyword: this.searchText
         }
       });
+      this.searchText = "";
     },
     //加入历史搜索
     addSearchHistory(searchText) {
@@ -113,7 +114,6 @@ export default {
       }
       this.setSearchHistoryList(searchHistoryList);
       saveSearchHistory(searchHistoryList);
-      this.searchText = "";
     },
     hideTitle() {
       this.titleVisible = false;
@@ -187,7 +187,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 .search-bar {
   position: relative;
   width: 100%;

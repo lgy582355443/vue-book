@@ -54,32 +54,11 @@ export default {
   data() {
     return {
       isShadow: false,
-      user: {
-        avatar: require("../../assets/images/user/avatar.png")
-      }
+      user: null
     };
   },
   watch: {},
-  computed: {
-    sexPopup() {
-      return [
-        {
-          text: "男",
-          click: () => {
-            this.user.sex = "男";
-            this.popupHide();
-          }
-        },
-        {
-          text: "女",
-          click: () => {
-            this.user.sex = "女";
-            this.popupHide();
-          }
-        }
-      ];
-    }
-  },
+  computed: {},
   methods: {
     onScroll(offsetY) {
       if (offsetY > 20) {
@@ -87,10 +66,6 @@ export default {
       } else {
         this.isShadow = false;
       }
-    },
-
-    changeAvatar() {
-      this.getFile(event);
     },
 
     //修改头像
@@ -125,9 +100,26 @@ export default {
     },
 
     EditSex() {
-      this.popupShow(this.$t("my.popupSex"), this.sexPopup);
+      this.popupShow({ title: this.$t("my.popupSex"), btn: this.sexPopup() });
     },
-
+    sexPopup() {
+      return [
+        {
+          text: "男",
+          click: () => {
+            this.user.sex = "男";
+            this.popupHide();
+          }
+        },
+        {
+          text: "女",
+          click: () => {
+            this.user.sex = "女";
+            this.popupHide();
+          }
+        }
+      ];
+    },
     submit() {
       delete this.user.loginTime;
       //只保留文件名
@@ -149,12 +141,12 @@ export default {
   },
   created() {
     this.user = getUserInfo();
+    console.log(this.user);
   },
   mounted() {}
 };
 </script>
 <style lang="scss" scoped>
-@import "@/assets/styles/global.scss";
 .user-edit-main {
   width: 100%;
   height: 100%;

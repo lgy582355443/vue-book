@@ -38,7 +38,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../assets/styles/global.scss";
 .featured-item {
   flex: 0 0 50%;
   width: 50%;
