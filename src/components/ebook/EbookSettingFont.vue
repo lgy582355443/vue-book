@@ -5,6 +5,7 @@
         <div class="preview left" ref="left">
           <span ref="leftText">A</span>
         </div>
+        <!-- 字体大小控制条 -->
         <div class="select">
           <div
             class="select-wrapper"
@@ -22,10 +23,12 @@
             <div class="line"></div>
           </div>
         </div>
+
         <div class="preview right" ref="right">
           <span ref="rightText">A</span>
         </div>
-      </div>
+      </div>      
+      <!-- 字体选择按钮 -->
       <div class="setting-font-family" @click.stop="showFontFamilySetting">
         <div class="setting-font-family-text-wrapper">
           <span class="setting-font-family-text">{{defaultFontFamily}}</span>
@@ -43,6 +46,7 @@ import { ebookMixin } from "@/mixins/ebook";
 import { getFontSize, saveFontSize } from "../../utils/localStorage";
 
 export default {
+  name:"EbookSetFont",
   mixins: [ebookMixin],
   data() {
     return {};

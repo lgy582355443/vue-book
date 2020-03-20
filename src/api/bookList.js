@@ -1,14 +1,14 @@
-import {http} from '@/api/request';
+import { request } from "./request"
 
 export function flatListApi() {
-    return http({
+    return request({
         method: 'get',
         url: `/api/list/allBookList`
     })
 }
 
 export function listApi() {
-    return http({
+    return request({
         method: 'get',
         url: `/api/list/categoryList`
     })

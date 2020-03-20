@@ -4,11 +4,13 @@
       <transition name="slide-right">
         <div class="content" v-if="settingVisible == 3">
           <div class="content-page-wrapper" v-if="bookAvailable">
+            <!-- 动态章节组件和书签组件 -->
             <div class="content-page">
               <keep-alive>
                 <component :is="currentTab == 1?content:bookmark"></component>
               </keep-alive>
             </div>
+            <!-- 底部按钮 -->
             <div class="content-page-tab">
               <div
                 class="content-page-tab-item"
@@ -22,11 +24,13 @@
               >{{$t('book.bookmark')}}</div>
             </div>
           </div>
+          <!-- 侧边栏加载动画 -->
           <div class="empty" v-else>
             <ebook-loading></ebook-loading>
           </div>
         </div>
       </transition>
+      <!-- 蒙版 -->
       <div class="content-bg" @click="hideMenuVisible()"></div>
     </div>
   </transition>
@@ -39,6 +43,7 @@ import EbookBookmark from "./EbookSlideBookmark";
 import { ebookMixin } from "@/mixins/ebook";
 
 export default {
+  name: "EbookSildeBar",
   mixins: [ebookMixin],
   components: {
     EbookLoading
@@ -59,7 +64,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .slide-content-wrapper {
   position: absolute;
   top: 0;

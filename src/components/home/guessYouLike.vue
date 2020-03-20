@@ -27,7 +27,7 @@ import { realPx } from "@/utils/utils";
 import { StoreHomeMixin } from "@/mixins/home";
 
 export default {
-  name:"GuessYouLike",
+  name: "GuessYouLike",
   mixins: [StoreHomeMixin],
   components: {
     TitleView
@@ -38,6 +38,7 @@ export default {
   watch: {
     data(v) {
       this.total = v.length / 3;
+      immediate: true;
     }
   },
   computed: {
@@ -63,6 +64,7 @@ export default {
     };
   },
   methods: {
+    //换一批猜你喜欢
     change() {
       if (this.index + 1 >= this.total) {
         this.index = 0;
@@ -70,6 +72,7 @@ export default {
         this.index++;
       }
     },
+    //拼接有多少人观看等字符串。
     resultText(item) {
       if (item && item.type && item.result) {
         switch (item.type) {
@@ -84,6 +87,7 @@ export default {
         }
       }
     },
+    //设置书籍每一项样式（宽）
     resize() {
       this.$nextTick(() => {
         this.$refs.title.forEach(item => {
@@ -102,7 +106,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .guess-you-like {
   .guess-you-like-list {
     width: 100%;

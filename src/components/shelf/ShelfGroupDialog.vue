@@ -76,10 +76,11 @@ export default {
     };
   },
   computed: {
-    //是否在分组列表里
+    //是否在分组页
     isInGroup() {
       return this.currentType === 2;
     },
+
     defaultCategory() {
       return [
         {
@@ -92,6 +93,7 @@ export default {
         }
       ];
     },
+    //筛选出书架列表中的分组
     category() {
       return this.shelfList.filter(item => item.type === 2);
     },

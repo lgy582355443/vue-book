@@ -1,6 +1,17 @@
-import { mapGetters, mapActions } from 'vuex'
-import { FONT_SIZE_LIST, FONT_FAMILY, themeList, getReadTimeByMinute } from '@/utils/book'
-import { addCss, removeAllCss } from '@/utils/utils'
+import {
+  mapGetters,
+  mapActions
+} from 'vuex'
+import {
+  FONT_SIZE_LIST,
+  FONT_FAMILY,
+  themeList,
+  getReadTimeByMinute
+} from '@/utils/book'
+import {
+  addCss,
+  removeAllCss
+} from '@/utils/utils'
 import * as Storage from '@/utils/localStorage'
 
 export const ebookMixin = {
@@ -8,19 +19,19 @@ export const ebookMixin = {
     ...mapGetters([
       'fileName',
       'menuVisible',
-      'settingVisible',//-1:隐藏2级菜单, 0:设置字体, 1:设置主题, 2:进度条, 3:书籍目录
+      'settingVisible', //-1:隐藏2级菜单, 0:设置字体, 1:设置主题, 2:进度条, 3:书籍目录
       'defaultFontSize',
       'defaultFontFamily',
       'fontFamilyVisible',
       'defaultTheme',
-      'bookAvailable',//电子书通过epub.js加载完成后为true
+      'bookAvailable', //电子书通过epub.js加载完成后为true
       'progress',
       'section',
       'isPaginating',
-      'currentBook',//new Epub实例对象
+      'currentBook', //new Epub实例对象
       'navigation',
       'cover',
-      'metadata',//书籍简介，信息
+      'metadata', //书籍简介，信息
       'paginate',
       'pagelist',
       'offsetY',
@@ -137,32 +148,9 @@ export const ebookMixin = {
       }
     },
 
-    //注册主题
-    registerTheme() {
-      this.themeList.forEach(theme => {
-        this.currentBook.rendition.themes.register(theme.name, theme.style)
-      })
-    },
-
-    //给book设置样式
-    // switchTheme() {
-    //   const rules = this.themeList.filter(theme => theme.name === this.defaultTheme)[0]
-    //   if (this.defaultFontFamily && this.defaultFontFamily !== 'Default') {
-    //     rules.style.body['font-family'] = `${this.defaultFontFamily}!important`
-    //   } else {
-    //     rules.style.body['font-family'] = `Cabin!important`
-    //   }
-    //   this.registerTheme()
-    //   this.setGlobalTheme(this.defaultTheme)
-    //   this.currentBook.rendition.themes.font(this.defaultFontFamily);
-    //   this.currentBook.rendition.themes.select(this.defaultTheme)
-    //   this.currentBook.rendition.themes.fontSize(this.defaultFontSize)
-    // },
-
     //设置字体大小
     setFontSize(fontSize) {
       this.setDefaultFontSize(fontSize).then(() => {
-        // this.switchTheme()
         this.currentBook.rendition.themes.fontSize(this.defaultFontSize)
         Storage.saveFontSize(this.fileName, fontSize)
       })
@@ -171,16 +159,22 @@ export const ebookMixin = {
     //设置字体样式
     setFontFamily(font) {
       this.setDefaultFontFamily(font).then(() => {
-        // this.switchTheme()
         this.currentBook.rendition.themes.font(this.defaultFontFamily);
         Storage.saveFontFamily(this.fileName, font)
+      })
+    },
+
+
+    //注册主题
+    registerTheme() {
+      this.themeList.forEach(theme => {
+        this.currentBook.rendition.themes.register(theme.name, theme.style)
       })
     },
 
     //设置主题
     setTheme(theme) {
       this.setDefaultTheme(theme).then(() => {
-        // this.switchTheme()
         this.currentBook.rendition.themes.select(this.defaultTheme)
         this.setGlobalTheme(this.defaultTheme)
         Storage.saveTheme(this.fileName, theme)
@@ -211,7 +205,7 @@ export const ebookMixin = {
       const currentLocation = this.currentBook.rendition.currentLocation();
       if (currentLocation && currentLocation.start) {
         this.setSection(currentLocation.start.index);
-        //  通过本章第一个字currentLocation.start.cfi
+        //  通过本页的定位currentLocation.start.cfi
         const startCfi = currentLocation.start.cfi
         //获取百分比
         const progress = this.currentBook.locations.percentageFromCfi(startCfi);
@@ -228,12 +222,9 @@ export const ebookMixin = {
         } else {
           this.setIsBookmark(false)
         }
-        // debugger
         Storage.saveLocation(this.fileName, startCfi);
       }
     },
 
   }
 }
-
-

@@ -40,11 +40,10 @@ import { ebookMixin } from "@/mixins/ebook";
 import { saveProgress } from "../../utils/localStorage";
 
 export default {
+  name: "EbookProgress",
   mixins: [ebookMixin],
   data() {
-    return {
-      isProgressLoading: false
-    };
+    return {};
   },
   computed: {},
   created() {},
@@ -52,7 +51,6 @@ export default {
     //上一章
     prevSection() {
       if (this.section > 0 && this.bookAvailable) {
-        this.isProgressLoading = true;
         this.setSection(this.section - 1).then(() => {
           this.displaySection();
           // this.displaySection(() => {
@@ -60,6 +58,8 @@ export default {
           //   this.isProgressLoading = false;
           // });
         });
+      } else {
+        return;
       }
     },
     //下一章
@@ -68,7 +68,6 @@ export default {
         this.section < this.currentBook.spine.length - 1 &&
         this.bookAvailable
       ) {
-        this.isProgressLoading = true;
         this.setSection(this.section + 1).then(() => {
           this.displaySection();
           // this.displaySection(() => {
@@ -76,6 +75,8 @@ export default {
           //   this.isProgressLoading = false;
           // });
         });
+      } else {
+        return;
       }
     },
 
@@ -124,7 +125,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .setting-wrapper {
   position: absolute;
   bottom: 48px;
@@ -158,7 +158,8 @@ export default {
         width: 100%;
         -webkit-appearance: none;
         height: 2px;
-        // background: -webkit-linear-gradient(#5d6268, #5d6268) no-repeat, #b4b5b7;
+        background: -webkit-linear-gradient(45deg #272727, #3c3c3d) no-repeat,
+          #b4b5b7;
         // background-size: 0 100%;
         margin: 0 10px;
         &:focus {
@@ -170,7 +171,7 @@ export default {
           width: 20px;
           border-radius: 50%;
           background: #ceced0;
-          box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
+          box-shadow: 0 4px 6px 0 #00000026;
           border: none;
         }
       }

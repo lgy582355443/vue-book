@@ -6,7 +6,7 @@
       </keep-alive>
     </transition>
     <footers v-if="$route.meta.footShow"></footers>
-    <shelf-footer v-if="$route.name=='shelf'||'ShelfCategory'"></shelf-footer>
+    <shelf-footer v-if="isInShlef"></shelf-footer>
   </div>
 </template>
 <script>
@@ -19,11 +19,18 @@ export default {
   },
   data() {
     return {
-      transitionName: ""
+      transitionName: "",
+      routeName: ""
     };
+  },
+  computed: {
+    isInShlef() {
+      return this.routeName == "shelf" || this.routeName == "ShelfCategory";
+    }
   },
   watch: {
     $route(to, from) {
+      this.routeName = this.$route.name;
       const tabPath = ["/home", "/shelf", "/my"];
       //从tab来而且到tab去 不要走slide动画
       if (

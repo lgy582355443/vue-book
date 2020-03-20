@@ -1,5 +1,6 @@
 <template>
   <div class="ebook-slide-contents">
+    <!-- 顶部搜索框 -->
     <div class="slide-contents-search-wrapper">
       <div class="slide-contents-search-input-wrapper">
         <div class="slide-contents-search-icon">
@@ -20,6 +21,7 @@
         @click="hideSearchPage()"
       >{{$t('book.cancel')}}</div>
     </div>
+    <!-- 书籍信息 -->
     <div class="slide-contents-book-wrapper" v-show="!searchVisible">
       <div class="slide-contents-book-img-wrapper">
         <img :src="cover" class="slide-contents-book-img" />
@@ -40,6 +42,7 @@
         <div class="slide-contents-book-time">{{getReadTimeText}}</div>
       </div>
     </div>
+    <!-- 章节列表 -->
     <scroll class="slide-contents-list" :top="156" :bottom="0" ref="scroll" v-show="!searchVisible">
       <div
         class="slide-contents-item"
@@ -55,6 +58,7 @@
         <span class="slide-contents-item-page">{{item.page}}</span>
       </div>
     </scroll>
+    <!-- 搜索列表 -->
     <scroll class="slide-search-list" :top="67" ref="scroll" v-show="searchVisible">
       <div
         class="slide-search-item"
@@ -70,8 +74,9 @@
 <script>
 import { ebookMixin } from "@/mixins/ebook";
 import Scroll from "../common/Scroll";
-
+import { px2rem } from "@/utils/utils";
 export default {
+  name: "EbookSideContent",
   mixins: [ebookMixin],
   components: {
     Scroll
@@ -100,10 +105,13 @@ export default {
         }
       });
     },
+
+    // 搜索操作
     search() {
       if (this.searchText) {
         this.doSearch(this.searchText).then(list => {
           this.searchList = list.map(item => {
+            //给搜索关键字添加样式，突出显示
             item.excerpt = item.excerpt.replace(
               this.searchText,
               `<span class="content-search-text">${this.searchText}</span>`
@@ -113,7 +121,8 @@ export default {
         });
       }
     },
-    //全文搜索
+
+    //全文搜索方法
     doSearch(q) {
       return Promise.all(
         this.currentBook.spine.spineItems.map(section =>
@@ -122,7 +131,7 @@ export default {
             .then(section.find.bind(section, q))
             .finally(section.unload.bind(section))
         )
-        //二维数组转化为一维数组 [].concat.apply([], arr);
+        //二维数组转化为一维数组 1dArr = [].concat.apply([], 2dArr);
       ).then(results => Promise.resolve([].concat.apply([], results)));
     },
     //子级目录样式缩进

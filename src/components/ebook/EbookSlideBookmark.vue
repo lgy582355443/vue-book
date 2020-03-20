@@ -23,6 +23,7 @@ import { getBookmark } from "@/utils/localStorage";
 import { ebookMixin } from "@/mixins/ebook";
 
 export default {
+  name:"EbookSideBookMark",
   mixins: [ebookMixin],
   components: {
     Scroll
@@ -36,6 +37,7 @@ export default {
     this.bookmark = getBookmark(this.fileName);
   },
   methods: {
+    // 跳转到书签页
     displayBookmark(target) {
       this.display(target, () => {
         this.hideMenuVisible();

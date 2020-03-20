@@ -1,10 +1,12 @@
 <template>
   <div class="flap-card-wrapper" v-show="flapCardVisible">
+    <!-- 翻转动画 -->
     <div
       class="flap-card-bg"
       :class="{'animation': runFlapCardAnimation}"
       v-show="runFlapCardAnimation"
     >
+      <!-- 动画卡片 -->
       <div
         class="flap-card"
         v-for="(item, index) in flapCardList"
@@ -20,6 +22,7 @@
           ></div>
         </div>
       </div>
+      <!-- 动画的烟花小圆点 -->
       <div class="point-wrapper">
         <div
           class="point"
@@ -29,6 +32,8 @@
         ></div>
       </div>
     </div>
+
+    <!-- 动画结束后弹出书籍 -->
     <div
       class="book-card"
       :class="{'animation': runBookCardAnimation}"
@@ -41,11 +46,11 @@
         <div class="content-wrapper">
           <div class="title">{{randomBook?randomBook.title:''}}</div>
           <div class="author sub-title-medium">{{randomBook?randomBook.author:''}}</div>
-          <div class="category">{{categoryText()}}</div>
         </div>
         <div class="read-btn" @click.stop="goBookDetail(randomBook)">{{$t('home.readNow')}}</div>
       </div>
     </div>
+    <!-- 关闭按钮 -->
     <div class="close-btn-wrapper" @click="close">
       <span class="icon-close"></span>
     </div>
@@ -54,7 +59,7 @@
 
 <script>
 import { StoreHomeMixin } from "@/mixins/home";
-import { flapCardList, categoryText } from "../../utils/home";
+import { flapCardList } from "../../utils/home";
 export default {
   name: "FlapCard",
   components: {},
@@ -71,7 +76,10 @@ export default {
       runFlapCardAnimation: false,
       pointList: [],
       runPointAnimation: false,
-      runBookCardAnimation: false
+      runBookCardAnimation: false,
+      task: null,
+      time1: null,
+      time2: null
     };
   },
   watch: {
@@ -83,23 +91,19 @@ export default {
   },
   computed: {},
   created() {
+    //生成小圆点烟花
     for (let i = 0; i < 18; i++) {
       this.pointList.push("point" + i);
     }
   },
   mounted() {},
   methods: {
-    categoryText() {
-      if (this.data) {
-        return categoryText(this.data.category, this);
-      } else {
-        return "";
-      }
-    },
+    //关闭书籍随机推荐
     close() {
       this.setFlapCardVisible(false);
       this.stopFlapCardAnimation();
     },
+    //跳转书籍详情页
     goBookDetail(book) {
       this.showBookDetail(book);
       this.close();
@@ -113,26 +117,27 @@ export default {
       };
     },
 
-    //判断左半边还是右半边
-    rotate(index, type) {
+    //卡片翻转的方法
+    _rotate(index, type) {
       const item = this.flapCardList[index];
       let dom;
-      //判断翻转方向,front 右半边,back, 左半边
+      //获取Dom,front右半边,back左半边
       if (type == "front") {
         dom = this.$refs.right[index];
       } else {
         dom = this.$refs.left[index];
       }
+      //更改旋转角度和颜色(_g)
       dom.style.transform = `rotateY(${item.rotateDegree}deg)`;
       dom.style.backgroundColor = `rgb(${item.r},${item._g},${item.b})`;
     },
 
-    //初始化,旋转之前左半圆与右半圆重叠
+    //动画前的初始化, 旋转之前第二层的左半圆先转到180度，与第一层右半圆重叠
     prepare() {
       const backFlapCard = this.flapCardList[this.back];
       backFlapCard.rotateDegree = 180;
       backFlapCard._g = backFlapCard.g - 5 * 9;
-      this.rotate(this.back, "back");
+      this._rotate(this.back, "back");
     },
 
     //翻转过程
@@ -142,23 +147,30 @@ export default {
       //正面每次旋转增加10度,反面每次减少10度
       frontFlapCard.rotateDegree += 10;
       frontFlapCard._g -= 5;
-      backFlapCard.rotateDegree -= 10;
+      backFlapCard.rotateDegree += 10;
 
-      if (backFlapCard.rotateDegree < 90) {
+      if (backFlapCard.rotateDegree > 270) {
         backFlapCard._g += 5;
       }
-      //当正面翻转到90度时,增加下一张左半边的z-index值,使下一张位于上一张上面显示;
-      if (frontFlapCard.rotateDegree == 90 && backFlapCard.rotateDegree == 90) {
+      //当正面翻转到90度时,增加下一张左半边(背面)的z-index值,使下一张位于上一张上面显示;
+      if (
+        frontFlapCard.rotateDegree == 90 &&
+        backFlapCard.rotateDegree == 270
+      ) {
         backFlapCard.zIndex += 2;
       }
-      this.rotate(this.front, "front");
-      this.rotate(this.back, "back");
-      if (frontFlapCard.rotateDegree == 180 && backFlapCard.rotateDegree == 0) {
+      this._rotate(this.front, "front");
+      this._rotate(this.back, "back");
+      // 当正面翻转180度，背面翻转360度，一轮动画完成
+      if (
+        frontFlapCard.rotateDegree == 180 &&
+        backFlapCard.rotateDegree == 360
+      ) {
         this.next();
       }
     },
 
-    //当翻转一次完成后,上一次翻转的又回到原位,除了z-index不变
+    //当完成一次翻转动画，又重新归位，除了Z-index，为下一轮动画准备
     next() {
       const frontFlapCard = this.flapCardList[this.front];
       const backFlapCard = this.flapCardList[this.back];
@@ -166,8 +178,9 @@ export default {
       backFlapCard.rotateDegree = 0;
       frontFlapCard._g = frontFlapCard.g;
       backFlapCard._g = backFlapCard.g;
-      this.rotate(this.front, "front");
-      this.rotate(this.back, "back");
+      this._rotate(this.front, "front");
+      this._rotate(this.back, "back");
+      //进行下一层卡片动画的准备
       this.front++;
       this.back++;
       const length = this.flapCardList.length;
@@ -177,7 +190,7 @@ export default {
       if (this.back >= length) {
         this.back = 0;
       }
-      //动态设置zIndex
+      //动态设置zIndex，形成循环
       //100->96
       //99->100
       //98->99
@@ -189,6 +202,22 @@ export default {
       this.prepare();
     },
 
+    //把卡片以及flapCardList,还原为最初值
+    _reset() {
+      this.front = 0;
+      this.back = 1;
+      this.flapCardList.map((item, index) => {
+        item.zIndex = 100 - index;
+        item._g = item.g;
+        item.rotateDegree = 0;
+        this._rotate(index, "front");
+        this._rotate(index, "back");
+      });
+      this.runBookCardAnimation = false;
+      this.runFlapCardAnimation = false;
+      this.runPointAnimation = false;
+    },
+
     //设定时器翻转动画
     startFlapCardAnimation() {
       this.prepare();
@@ -197,6 +226,7 @@ export default {
       }, this.intervalTime);
     },
 
+    //停止动画方法
     stopFlapCardAnimation() {
       if (this.task) {
         clearInterval(this.task);
@@ -207,29 +237,15 @@ export default {
       if (this.time2) {
         clearTimeout(this.time2);
       }
-      this.reset();
+      this._reset();
     },
 
-    //重置翻转卡片
-    reset() {
-      this.front = 0;
-      this.back = 1;
-      this.flapCardList.map((item, index) => {
-        item.zIndex = 100 - index;
-        item._g = item.g;
-        item.rotateDegree = 0;
-        this.rotate(index, "front");
-        this.rotate(index, "back");
-      });
-      this.runBookCardAnimation = false;
-      this.runFlapCardAnimation = false;
-      this.runPointAnimation = false;
-    },
-
+    //显示烟花效果
     startPointAnimation() {
       this.runPointAnimation = true;
     },
 
+    //执行动画操作
     runAnimation() {
       this.time1 = setTimeout(() => {
         this.runFlapCardAnimation = true;
@@ -321,6 +337,7 @@ export default {
           background-position: center right;
           border-radius: 24px 0 0 24px;
           transform-origin: right;
+          // 转动到背面时不显示
           backface-visibility: hidden;
         }
         .flap-card-semi-circle-right {

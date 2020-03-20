@@ -9,6 +9,7 @@
   import { ebookMixin } from '@/mixins/ebook'
 
   export default {
+    name:"EbookFooter",
     mixins: [ebookMixin]
   }
 </script>

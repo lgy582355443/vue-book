@@ -5,7 +5,7 @@
         <span class="icon-back"></span>
       </div>
       <div class="right">
-        <div class="icon-wrapper" @click="gotoBookStore">
+        <div class="icon-wrapper" @click="gotoBookShelf">
           <span class="icon-shelf"></span>
         </div>
         <!-- <div class="icon-wrapper">
@@ -30,7 +30,7 @@ export default {
       this.hideMenuVisible();
       this.setBookAvailable(false);
     },
-    gotoBookStore() {
+    gotoBookShelf() {
       this.$router.push({
         name: "shelf"
       });

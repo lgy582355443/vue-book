@@ -6,8 +6,8 @@
           <span class="icon-down2"></span>
         </div>
         <span class="ebook-popup-title-text">{{$t('book.selectFont')}}</span>
-        <!-- <span class="ebook-popup-title-text">选择字体</span> -->
       </div>
+      <!-- 字体列表 -->
       <div class="ebook-popup-list-wrapper">
         <div
           class="ebook-popup-item"
@@ -16,6 +16,7 @@
           @click="setFontFamily(item.font)"
         >
           <div class="ebook-popup-item-text" :class="{'selected': isSelected(item)}">{{item.font}}</div>
+          <!-- 选中的icon -->
           <div class="ebook-popup-item-check" v-if="isSelected(item)">
             <span class="icon-check"></span>
           </div>

@@ -1,9 +1,10 @@
 <!-- 电子书详情组件 -->
 <template>
   <div class="book-detail">
-    <detail-title @back="back" :showShelf="true" ref="title"></detail-title>
+    <detail-title :showShelf="true" ref="title"></detail-title>
     <scroll class="content-wrapper" :top="42" :bottom="52" @onScroll="onScroll" ref="scroll">
       <book-info :cover="cover" :title="title" :author="author" :desc="desc"></book-info>
+      <!-- 出版社 -->
       <div class="book-detail-content-wrapper">
         <div class="book-detail-content-title">{{$t('detail.copyright')}}</div>
         <div class="book-detail-content-list-wrapper">
@@ -25,6 +26,7 @@
           </div>
         </div>
       </div>
+      <!-- 书籍章节 -->
       <div class="book-detail-content-wrapper">
         <div class="book-detail-content-title">{{$t('detail.navigation')}}</div>
         <div class="book-detail-content-list-wrapper">
@@ -48,6 +50,7 @@
           </div>
         </div>
       </div>
+      <!-- 试读 -->
       <div class="book-detail-content-wrapper">
         <div class="book-detail-content-title">{{$t('detail.trial')}}</div>
         <div class="book-detail-content-list-wrapper">
@@ -58,6 +61,7 @@
         <div id="preview" v-show="this.displayed" ref="preview"></div>
       </div>
     </scroll>
+    <!-- 底部按钮 -->
     <div class="bottom-wrapper">
       <div class="bottom-btn" @click.stop.prevent="readBook()">{{$t('detail.read')}}</div>
       <!-- <div class="bottom-btn" @click.stop.prevent="trialListening()">{{$t('detail.listen')}}</div> -->
@@ -75,6 +79,7 @@ import BookInfo from "../../components/detail/bookInfo";
 import Scroll from "../../components/common/Scroll";
 import { detailApi } from "@/api/detail";
 import { px2rem, realPx } from "../../utils/utils";
+import { flatBookList } from "../../utils/shelf";
 import { getLocalForage } from "../../utils/localForage";
 import { shelfMixin } from "@/mixins/shelf";
 import {
@@ -108,13 +113,7 @@ export default {
     // 将电子书目录转为一维数组
     flatNavigation() {
       if (this.navigation) {
-        return Array.prototype.concat.apply(
-          [],
-          Array.prototype.concat.apply(
-            [],
-            this.doFlatNavigation(this.navigation.toc)
-          )
-        );
+        return this.doFlatNavigation(this.navigation.toc);
       } else {
         return [];
       }
@@ -143,11 +142,7 @@ export default {
     inBookShelf() {
       if (this.bookItem && this.shelfList) {
         // 定义一个自执行函数，将书架转为一维数组结构，并且只保留type为1的数据（type=1的为电子书）
-        const flatShelf = (function flatten(arr) {
-          return [].concat(
-            ...arr.map(v => (v.itemList ? [v, ...flatten(v.itemList)] : v))
-          );
-        })(this.shelfList).filter(item => item.type === 1);
+        const flatShelf = flatBookList(this.shelfList);
         // 查找当前电子书是否存在于书架
         const book = flatShelf.filter(
           item => item.fileName === this.bookItem.fileName
@@ -226,28 +221,28 @@ export default {
     },
 
     // 听书
-    trialListening() {
-      // 如果电子书已经缓存，从IndexedDB中读取电子书
-      getLocalForage(this.bookItem.fileName, (err, blob) => {
-        if (!err && blob && blob instanceof Blob) {
-          this.$router.push({
-            path: "/home/speaking",
-            query: {
-              fileName: this.bookItem.fileName
-            }
-          });
-        } else {
-          // 如果没有缓存，直接跳转到听书页面
-          this.$router.push({
-            path: "/home/speaking",
-            query: {
-              fileName: this.bookItem.fileName,
-              opf: this.opf
-            }
-          });
-        }
-      });
-    },
+    // trialListening() {
+    //   // 如果电子书已经缓存，从IndexedDB中读取电子书
+    //   getLocalForage(this.bookItem.fileName, (err, blob) => {
+    //     if (!err && blob && blob instanceof Blob) {
+    //       this.$router.push({
+    //         path: "/home/speaking",
+    //         query: {
+    //           fileName: this.bookItem.fileName
+    //         }
+    //       });
+    //     } else {
+    //       // 如果没有缓存，直接跳转到听书页面
+    //       this.$router.push({
+    //         path: "/home/speaking",
+    //         query: {
+    //           fileName: this.bookItem.fileName,
+    //           opf: this.opf
+    //         }
+    //       });
+    //     }
+    //   });
+    // },
 
     // 阅读电子书
     readBook() {
@@ -300,12 +295,12 @@ export default {
       return arr;
     },
 
-    // 通过opf下载电子书（实现逐章下载，提供电子书访问性能）
-    downloadBook() {
-      // 拼接opf文件路径
-      const opf = `${process.env.VUE_APP_EPUB_URL}/${this.$route.query.categoryText}/${this.$route.query.fileName}/OEBPS/package.opf`;
-      this.parseBook(opf);
-    },
+    // // 通过opf下载电子书（实现逐章下载，提供电子书访问性能）
+    // downloadBook() {
+    //   // 拼接opf文件路径
+    //   const opf = `${process.env.VUE_APP_EPUB_URL}/${this.$route.query.categoryText}/${this.$route.query.fileName}/OEBPS/package.opf`;
+    //   this.parseBook(opf);
+    // },
 
     // 解析电子书
     parseBook(url) {
@@ -378,11 +373,7 @@ export default {
       }
     },
 
-    back() {
-      this.$router.go(-1);
-    },
-
-    // 根据传入的目录信息，渲染电子书
+    // 渲染电子书（试读部分）
     display(location) {
       if (this.$refs.preview) {
         if (!this.rendition) {
@@ -409,19 +400,25 @@ export default {
       }
     }
   },
-
-  mounted() {
-    this.init();
+  created() {
+    let historyList = getReaderHistory();
+    if (historyList) {
+      this.setHistoryList(historyList);
+    } else {
+      this.setHistoryList([]);
+    }
     this.user = getUserInfo();
     if ((!this.shelfList || this.shelfList.length === 0) && this.user) {
       this.getShelfList();
     }
+  },
+  mounted() {
+    this.init();
   }
 };
 </script>
 
 <style lang="scss" scoped>
-
 .book-detail {
   width: 100%;
   height: 100%;

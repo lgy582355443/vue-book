@@ -34,9 +34,9 @@ export default {
     },
     hideShadow() {
       this.ifHideShadow = true;
-    },
+    },   
     back() {
-      this.$emit("back");
+      this.$router.go(-1);
     }
   }
 };

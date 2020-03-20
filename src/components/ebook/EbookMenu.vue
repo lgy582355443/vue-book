@@ -37,6 +37,7 @@
   import { ebookMixin } from '@/mixins/ebook'
 
   export default {
+    name:"EbookMenu",
     mixins: [ebookMixin],
     components: {
       EbookSettingFontPopup,

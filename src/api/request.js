@@ -1,5 +1,4 @@
 import axios from 'axios'
-import vue from '../main'
 import qs from 'qs'
 import {
     getToken,
@@ -50,13 +49,20 @@ service.interceptors.response.use(
 )
 
 //对与get和post请求做不同处理,axios默认post发送json格式
-export function http(config) {
+export function request(config) {
     if (config.method.toLowerCase() === 'post') {
         config.data = qs.stringify(config.data, {
             arrayFormat: 'repeat',
             allowDots: true
         });
     } else {
+        config.params = config.data;
+    }
+    return service(config)
+}
+
+export function upload(config) {
+    if (config.method.toLowerCase() === 'get') {
         config.params = config.data;
     }
     return service(config)

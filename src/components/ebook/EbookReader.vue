@@ -43,22 +43,39 @@ export default {
   props: {},
   data() {
     return {
-      book: null,
+      book: null, // epub实例
+      rendition: null, // 渲染epub
       mouseState: null,
-      isOnline: false
+      isOnOpf: false, // 是否从opf解析书籍
+      firstOffsetY: null, //下来操作，touch第一次Y轴坐标
+      mouseStartTime:0
     };
   },
   watch: {},
   computed: {},
+
+  /**
+   * epub.js的主要对象
+   * book: 书籍的解析
+   * rendition: 生成阅读器
+   * locations: 书籍的定位
+   * navigation: 书籍的封面作责出版社等信息
+   * cfi: 对书籍进行文字级别的定位，如查找书籍中某一段文字
+   * theme: 阅读器主题，字体等样式
+   * spine: 管理section
+   * section: 用于章节切换
+   * annotations: 管理标签，如文字高亮
+   */
+
   methods: {
     //初始化图书
     initEpub(url) {
       // let url = process.env.VUE_APP_EPUB_URL + this.fileName + ".epub";
       this.book = new Epub(url);
       this.setCurrentBook(this.book);
+      this.parseBook();
       this.initRendition();
       // this.initGuest();
-      this.parseBook();
       //book解析完成后获取locations对象
       this.book.ready
         .then(() => {
@@ -94,13 +111,15 @@ export default {
           //   });
           // });
           // this.setPageList(location);
+
           //加载完成
           this.setBookAvailable(true);
+          //更新阅读进度
           this.refreshLocation();
         });
     },
 
-    //初始化rendition对象
+    //生成阅读器，并渲染书籍
     initRendition() {
       this.rendition = this.book.renderTo("read", {
         width: window.innerWidth,
@@ -108,6 +127,7 @@ export default {
         method: "default"
         // flow:'scrolled' //滚动模式,兼容不好
       });
+      //判断是否从书籍详情页中某个章节阅读
       if (this.$route.query.navigation) {
         this.display(this.$route.query.navigation, () => {
           this.initTheme();
@@ -117,6 +137,7 @@ export default {
           this.parseBook();
         });
       } else {
+        //获取阅读历史，并渲染上一次阅读位置
         const location = getLocation(this.fileName);
         this.display(location, () => {
           this.initTheme();
@@ -173,7 +194,8 @@ export default {
 
     //解析book,获取封面图片,作者等信息
     parseBook() {
-      if (this.isOnline) {
+      //获取封面
+      if (this.isOnOpf) {
         this.book.coverUrl().then(url => {
           this.setCover(url);
         });
@@ -184,14 +206,16 @@ export default {
           });
         });
       }
+      // 获取书籍信息
       this.book.loaded.metadata.then(metadata => {
         this.setMetadata(metadata);
       });
+      // 获取书籍章节目录
       this.book.loaded.navigation.then(nav => {
-        console.log(nav);
+        console.log("nav:", nav);
         //把目录转化为一维数组
         const navItem = flatten(nav.toc);
-        console.log(navItem);
+        console.log("navItem", navItem);
         //添加level属性,指定每项目录标是哪一级的目录
         function find(item, level = 0) {
           const parent = navItem.filter(parentItem => {
@@ -206,6 +230,7 @@ export default {
             return level;
           }
         }
+        // 获取章节名称
         navItem.forEach((item, index) => {
           item.level = find(item);
           item.total = 0;
@@ -249,6 +274,7 @@ export default {
       ) {
         return;
       }
+      //获取鼠标点击的屏幕x轴坐标，根据坐标在屏幕位置执行事件
       const offsetX = e.offsetX;
       const width = window.innerWidth;
       if (offsetX > 0 && offsetX < width * 0.3) {
@@ -267,6 +293,7 @@ export default {
       }
       let offsetY = 0;
       if (this.firstOffsetY) {
+        //获取下拉的距离
         offsetY = e.changedTouches[0].clientY - this.firstOffsetY;
         this.setOffsetY(offsetY);
       } else {
@@ -286,8 +313,8 @@ export default {
     },
 
     // pc端书签功能
-    //1-鼠标进入
-    //2-鼠标进入后移动
+    //1-鼠标按下
+    //2-鼠标按下后移动
     //3-鼠标从移动状态松手
     //4-鼠标还原
 
@@ -296,6 +323,7 @@ export default {
         return;
       }
       this.mouseState = 1;
+      // 鼠标按下时的时间戳
       this.mouseStartTime = e.timeStamp;
       e.preventDefault();
       e.stopPropagation();
@@ -310,6 +338,7 @@ export default {
       } else if (this.mouseState == 2) {
         let offsetY = 0;
         if (this.firstOffsetY) {
+          // 获取下拉的长度
           offsetY = e.clientY - this.firstOffsetY;
           this.setOffsetY(offsetY);
         } else {
@@ -329,9 +358,9 @@ export default {
       } else {
         this.mouseState = 4; //只点击不移动
       }
-      //修正误触
+      //修正误触，鼠标按下时间小于400毫秒
       const time = e.timeStamp - this.mouseStartTime;
-      if (time < 200) {
+      if (time < 400) {
         this.mouseState = 4;
       }
       e.preventDefault();
@@ -363,22 +392,23 @@ export default {
   mounted() {
     const books = this.$route.params.fileName.split("|");
     const fileName = books[1];
+    //在indexDB中查看是否有缓存
     getLocalForage(fileName, (err, blob) => {
       if (!err && blob) {
         this.setFileName(books.join("/")).then(() => {
-          this.isOnline = false;
+          this.isOnOpf = false;
           this.initEpub(blob);
         });
       } else {
+        // 选择章节阅读
         if (this.$route.query.opf) {
-          this.isOnline = true;
+          this.isOnOpf = true;
           this.initEpub(this.$route.query.opf);
         } else {
-          // let fileName = this.$route.params.fileName.split("|").join("/");
           this.setFileName(books.join("/")).then(() => {
             const url =
               process.env.VUE_APP_EPUB_URL + "/" + this.fileName + ".epub";
-            this.isOnline = false;
+            this.isOnOpf = false;
             this.initEpub(url);
           });
         }

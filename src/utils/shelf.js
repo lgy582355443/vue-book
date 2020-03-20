@@ -1,5 +1,11 @@
-import { getLocalStorage, setLocalStorage, removeLocalStorage} from './localStorage'
-import { removeLocalForage } from './localForage'
+import {
+    getLocalStorage,
+    setLocalStorage,
+    removeLocalStorage
+} from './localStorage'
+import {
+    removeLocalForage
+} from './localForage'
 
 //重新排序shelf_id
 export function computeId(list) {
@@ -13,29 +19,22 @@ export function computeId(list) {
 }
 
 //获取书架里的所有书籍（一维数组）
-export function flatBookList(bookList) {
-    if (bookList) {
-        let orgBookList = bookList.filter(item => {
-            return item.type !== 3
-        })
-        const categoryList = bookList.filter(item => {
+export function flatBookList(shelfList) {
+    if (shelfList) {
+        const categoryList = shelfList.filter(item => {
             return item.type === 2
         })
-        //书架里的分组里的书籍加入orgBookList
-        categoryList.forEach(item => {
-            const index = orgBookList.findIndex(v => {
-                return v.shelf_id === item.shelf_id
-            })
-            if (item.itemList) {
-                item.itemList.forEach(subItem => {
-                    orgBookList.splice(index, 0, subItem)
-                })
-            }
+        const bookList = shelfList.filter(item => {
+            return item.type === 1
         })
+        let arr = []
+        categoryList.forEach(item => {
+            arr.push(...item.itemList)
+        })
+        let orgBookList = [].concat(arr, bookList);
         orgBookList.forEach((item, index) => {
             item.shelf_id = index + 1
         })
-        orgBookList = orgBookList.filter(item => item.type !== 2)
         return orgBookList
     } else {
         return []

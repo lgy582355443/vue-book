@@ -1,8 +1,8 @@
 
-import {http} from '@/api/request';
+import {request} from '@/api/request';
 
 export function homeApi() {
-    return http({
+    return request({
         method: 'get',
         url: `/api/home/homeData`
     })

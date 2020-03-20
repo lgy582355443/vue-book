@@ -4,7 +4,10 @@
     <scroll :top="48" @onScroll="onScroll">
       <div class="edit-wrapper">
         <div class="user-avatar">
-          <div class="avatar-img" :style="`background-image:url(${user.avatar});`"></div>
+          <div
+            class="avatar-img"
+            :style="`background-image:url(${isChangeAvatar?changeAvatar:user.avatar});`"
+          ></div>
           <div class="btn">
             <div class="btn-text">{{$t('my.changeAvatar')}}</div>
             <input class="updata-btn" type="file" accept="image/*" @change="getFile($event)" />
@@ -54,7 +57,10 @@ export default {
   data() {
     return {
       isShadow: false,
-      user: null
+      user: null,
+      isChangeAvatar: false,
+      changeAvatar: "", //临时保存头像地址
+      EditForm: new FormData()
     };
   },
   watch: {},
@@ -73,8 +79,7 @@ export default {
       console.log(event);
       const userId = getUserInfo().id;
       const file = event.target.files[0]; //获取上传元素信息
-      // avatar = window.URL.createObjectURL(this.file);
-      console.log(file);
+
       const fileExt = file.name.substring(file.name.lastIndexOf("."));
       //判断文件类型是否允许上传
       if (".jpg.jpeg.png.gif".indexOf(fileExt.toLowerCase()) === -1) {
@@ -85,23 +90,19 @@ export default {
         this.simpleToast(this.$t("my.updataFile"));
         return;
       }
+      this.isChangeAvatar = true;
+      //本地图片路径
+      this.changeAvatar = window.URL.createObjectURL(file);
       event.preventDefault();
-      // 只能通过formData方式来传输文件;
-      let formData = new FormData();
-      formData.append("file", file);
 
-      changeAvatarApi(userId, formData).then(res => {
-        if (res.data.code == 0) {
-          console.log(res);
-          this.user.avatar = res.data.fileUrl;
-          saveUserInfo(this.user);
-        }
-      });
+      this.EditForm.append("file", file);
     },
 
+    //性别选择popup
     EditSex() {
       this.popupShow({ title: this.$t("my.popupSex"), btn: this.sexPopup() });
     },
+    //性别选择popup构建数组
     sexPopup() {
       return [
         {
@@ -120,18 +121,21 @@ export default {
         }
       ];
     },
+
     submit() {
-      delete this.user.loginTime;
+      this.isChangeAvatar = true;
       //只保留文件名
       this.user.avatar = this.user.avatar.substring(
         this.user.avatar.lastIndexOf("/") + 1
       );
-      userUpdataApi(this.user).then(res => {
+      this.EditForm.append("user", JSON.stringify(this.user));
+      userUpdataApi(this.EditForm).then(res => {
         if (res.data.code == 0) {
           console.log(res);
           let user = res.data.data;
           this.user = user;
           saveUserInfo(user);
+          this.isChangeAvatar = false;
           this.simpleToast(this.$t("my.isEdit"));
         } else {
           this.simpleToast(this.$t("my.EditFailed"));
@@ -139,8 +143,10 @@ export default {
       });
     }
   },
+
   created() {
     this.user = getUserInfo();
+    this.changeAvatar = this.user.avatar;
     console.log(this.user);
   },
   mounted() {}

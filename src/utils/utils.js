@@ -29,7 +29,7 @@ export function removeCss(href) {
   }
 }
 
-//移除所有移除book菜单栏得css文件(在更换主题之前使用))
+//移除所有移除book菜单栏得css菜单栏主题文件(在更换主题之前使用))
 export function removeAllCss() {
   removeCss(`${process.env.VUE_APP_RES_URL}/theme/theme_default.css`)
   removeCss(`${process.env.VUE_APP_RES_URL}/theme/theme_eye.css`)
