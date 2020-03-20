@@ -12,6 +12,78 @@
   <link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="stylesheet" />
   <% } %>
   <title>AuroraReader</title>
+  <style>
+    .first-loading-wrap {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+    }
+
+    .first-loading-item {
+      width: .2rem;
+      height: 1rem;
+      margin: 0 .2rem;
+      background-color: black;
+      border-radius: .1rem;
+      animation: first-loading .9s infinite alternate;
+    }
+
+    @keyframes first-loading {
+      0% {
+        transform: scaleY(0);
+      }
+
+      25% {
+        transform: scaleY(1);
+      }
+
+      50% {
+        transform: scaleY(1);
+      }
+
+      75% {
+        transform: scaleY(1);
+      }
+
+      100% {
+        transform: scaleY(3.5);
+      }
+    }
+
+    .first-loading-wrap .first-loading-item.item1 {
+      animation-delay: .1s;
+    }
+
+    .first-loading-wrap .first-loading-item.item2 {
+      animation-delay: .2s;
+    }
+
+    .first-loading-wrap .first-loading-item.item3 {
+      animation-delay: .3s;
+    }
+
+    .first-loading-wrap .first-loading-item.item4 {
+      animation-delay: .4s;
+    }
+
+    .first-loading-wrap .first-loading-item.item5 {
+      animation-delay: .5s;
+    }
+
+    .first-loading-wrap .first-loading-item.item6 {
+      animation-delay: .6s;
+    }
+
+    .first-loading-wrap .first-loading-item.item7 {
+      animation-delay: .7s;
+    }
+
+    .first-loading-wrap .first-loading-item.item8 {
+      animation-delay: .8s;
+    }
+  </style>
 </head>
 
 <body>
@@ -19,7 +91,18 @@
     <strong>We're sorry but ebook-demo doesn't work properly without JavaScript enabled. Please enable it to
       continue.</strong>
   </noscript>
-  <div id="app"></div>
+  <div id="app">
+    <div class="first-loading-wrap">
+      <div class="first-loading-item item1"></div>
+      <div class="first-loading-item item2"></div>
+      <div class="first-loading-item item3"></div>
+      <div class="first-loading-item item4"></div>
+      <div class="first-loading-item item5"></div>
+      <div class="first-loading-item item6"></div>
+      <div class="first-loading-item item7"></div>
+      <div class="first-loading-item item8"></div>
+    </div>
+  </div>
   <!-- built files will be auto injected -->
   <!-- 使用CDN加速的JS文件，配置在vue.config.js下 -->
   <% for (var i in
