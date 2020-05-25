@@ -27,21 +27,16 @@ export default {
   methods: {
     back() {
       this.$router.go(-1);
-      this.hideMenuVisible();
-      this.setBookAvailable(false);
     },
     gotoBookShelf() {
       this.$router.push({
-        name: "shelf"
+        name: "shelf",
       });
-      this.hideMenuVisible();
-      this.setBookAvailable(false);
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
-
 .title-wrapper {
   position: absolute;
   top: 0;

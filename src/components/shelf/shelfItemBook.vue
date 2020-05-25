@@ -10,6 +10,7 @@
 
 <script>
 export default {
+  name:"ShelfItemBook",
   props: {
     data: Object
   }

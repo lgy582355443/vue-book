@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import ebook from '../views/ebook/index.vue'
+import home from '../views/home/index.vue'
+import my from '../views/my/index.vue'
+import login from '../views/login/index.vue'
+import shelf from '../views/shelf/index.vue'
+// import ShelfCategory from '../views/shelf/ShelfCategory.vue'
+import detail from '../views/detail/index.vue'
 
 Vue.use(VueRouter)
 
@@ -32,7 +37,16 @@ const routes = [
   {
     path: '/home',
     name: 'home',
-    component: () => import(/* webpackChunkName: "home" */ '../views/home/index.vue'),
+    component: home,
+    meta: {
+      footShow: true,
+      isLogin: false
+    },
+  },
+  {
+    path:"/classify",
+    name:"classify",
+    component:()=>import(/* webpackChunkName: "classify" */ '../views/classify/index.vue'),
     meta: {
       footShow: true,
       isLogin: false
@@ -50,7 +64,8 @@ const routes = [
   {
     path: '/shelf',
     name: 'shelf',
-    component: () => import(/* webpackChunkName: "shelf" */ '../views/shelf/index.vue'),
+    // component: () => import(/* webpackChunkName: "shelf" */ '../views/shelf/index.vue'),
+    component: shelf,
     meta: {
       footShow: true,
       isLogin: true
@@ -68,25 +83,26 @@ const routes = [
   {
     path: '/detail',
     name: 'detail',
-    component: () => import(/* webpackChunkName: "detail" */ '../views/detail/index.vue'),
+    // component: () => import(/* webpackChunkName: "detail" */ '../views/detail/index.vue'),
+    component: detail,
     meta: {
       footShow: false,
       isLogin: false
     },
   },
-  {
-    path: '/speaking',
-    name: 'speaking',
-    component: () => import(/* webpackChunkName: "speaking" */ '../views/speaking/index.vue'),
-    meta: {
-      footShow: false,
-      isLogin: false
-    },
-  },
+  // {
+  //   path: '/speaking',
+  //   name: 'speaking',
+  //   component: () => import(/* webpackChunkName: "speaking" */ '../views/speaking/index.vue'),
+  //   meta: {
+  //     footShow: false,
+  //     isLogin: false
+  //   },
+  // },
   {
     path: '/my',
     name: 'my',
-    component: () => import(/* webpackChunkName: "my" */ '../views/my/index.vue'),
+    component: my,
     meta: {
       footShow: true,
       isLogin: true
@@ -122,7 +138,8 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import(/* webpackChunkName: "login" */ '../views/login/index.vue'),
+    // component: () => import(/* webpackChunkName: "login" */ '../views/login/index.vue'),
+    component: login,
     meta: {
       footShow: false,
       isLogin: false
@@ -140,6 +157,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  // mode: 'history',
   routes
 })
 

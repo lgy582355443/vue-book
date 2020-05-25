@@ -39,7 +39,7 @@
           <span class="icon-back"></span>
           {{$t('login.goHome')}}
         </router-link>
-        <div class="third">
+        <!-- <div class="third">
           <div class="line"></div>
           {{$t('login.ThirdPartyLogin')}}
           <div class="line"></div>
@@ -54,7 +54,7 @@
           <div class="icon-item wx">
             <span class="icon icon-wxx"></span>
           </div>
-        </div>
+        </div> -->
       </div>
     </scroll>
   </div>

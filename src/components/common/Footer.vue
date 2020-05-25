@@ -1,23 +1,29 @@
 <template>
   <div class="footer-main">
     <div class="footer">
-      <router-link class="footer-icon home" :to="{name:'home'}" tag="div">
+      <router-link class="footer-icon home" :to="{ name: 'home' }" tag="div">
         <div class="title-icon-wrapper">
           <span class="icon-home icon"></span>
         </div>
-        <p class="footer-title">{{$t('home.home')}}</p>
+        <p class="footer-title">{{ $t("home.home") }}</p>
       </router-link>
-      <router-link class="footer-icon shelf" :to="{name:'shelf'}" tag="div">
+      <router-link class="footer-icon shelf" :to="{ name: 'classify' }" tag="div">
+        <div class="title-icon-wrapper">
+          <span class="icon-menu icon"></span>
+        </div>
+        <p class="footer-title">{{ $t("home.classify") }}</p>
+      </router-link>
+      <router-link class="footer-icon shelf" :to="{ name: 'shelf' }" tag="div">
         <div class="title-icon-wrapper">
           <span class="icon-shelf icon"></span>
         </div>
-        <p class="footer-title">{{$t('shelf.title')}}</p>
+        <p class="footer-title">{{ $t("shelf.title") }}</p>
       </router-link>
-      <router-link class="footer-icon my" :to="{name:'my'}" tag="div">
+      <router-link class="footer-icon my" :to="{ name: 'my' }" tag="div">
         <div class="title-icon-wrapper">
           <span class="icon-my icon"></span>
         </div>
-        <p class="footer-title">{{$t('my.my')}}</p>
+        <p class="footer-title">{{ $t("my.my") }}</p>
       </router-link>
     </div>
   </div>
@@ -29,11 +35,11 @@ export default {
   data() {
     return {};
   },
-  methods: {}
+  methods: {},
 };
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .footer-main {
   position: fixed;
   left: 0;

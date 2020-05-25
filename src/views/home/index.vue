@@ -22,7 +22,6 @@
       <div class="category-list-wrapper" v-for="(item, index) in categoryList" :key="index">
         <category-book class="category-book" :data="item"></category-book>
       </div>
-      <category class="category" :data="categories"></category>
     </scroll>
   </div>
 </template>
@@ -32,7 +31,6 @@ import guessYouLike from "../../components/home/guessYouLike";
 import recommend from "../../components/home/recommend";
 import featured from "../../components/home/featured";
 import categoryBook from "../../components/home/categoryBook";
-import category from "../../components/home/category";
 import SearchBar from "../../components/home/SearchBar";
 import flapCard from "../../components/home/flapCard";
 import Scroll from "../../components/common/Scroll";
@@ -53,7 +51,6 @@ export default {
     recommend,
     featured,
     categoryBook,
-    category,
     swiper,
     swiperSlide
   },
@@ -129,7 +126,6 @@ export default {
         this.recommend = data.recommend;
         this.featured = data.featured;
         this.categoryList = data.categoryList;
-        this.categories = data.categories;
         this.$nextTick(() => {
           this.swiper = this.$refs.mySwiper.swiper;
         });
@@ -159,10 +155,7 @@ export default {
     }
   }
   .category-book {
-    margin-top: 20px;
-  }
-  .category {
-    margin-top: 20px;
+    margin: 20px 0;
   }
 }
 </style>

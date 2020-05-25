@@ -7,14 +7,28 @@
         :key="item.index"
         @click="onTabClick(item)"
       >
-        <div class="book-shelf-tab" :class="{'is-selected': isSelected}">
-          <div class="icon-private tab-icon" v-show="item.index === 1 && !isPrivate"></div>
-          <div class="icon-private-see tab-icon" v-show="item.index === 1 && isPrivate"></div>
-          <div class="icon-download tab-icon" v-show="item.index === 2 && !isDownload"></div>
-          <div class="icon-download-remove tab-icon" v-show="item.index === 2 && isDownload"></div>
+        <div class="book-shelf-tab" :class="{ 'is-selected': isSelected }">
+          <div
+            class="icon-private tab-icon"
+            v-show="item.index === 1 && !isPrivate"
+          ></div>
+          <div
+            class="icon-private-see tab-icon"
+            v-show="item.index === 1 && isPrivate"
+          ></div>
+          <div
+            class="icon-download tab-icon"
+            v-show="item.index === 2 && !isDownload"
+          ></div>
+          <div
+            class="icon-download-remove tab-icon"
+            v-show="item.index === 2 && isDownload"
+          ></div>
           <div class="icon-move tab-icon" v-show="item.index === 3"></div>
           <div class="icon-shelf tab-icon" v-show="item.index === 4"></div>
-          <div class="tab-text" :class="{'remove-text': item.index === 4, }">{{label(item)}}</div>
+          <div class="tab-text" :class="{ 'remove-text': item.index === 4 }">
+            {{ label(item) }}
+          </div>
         </div>
       </div>
     </div>
@@ -22,26 +36,28 @@
 </template>
 
 <script>
-import { shelfMixin } from "@/mixins/shelf";
+// import ShelfMixin from "@/mixins/shelf";
 import {
   saveBookShelf,
   removeLocalStorage,
-  getBookShelf
+  getBookShelf,
+  getUserInfo,
 } from "../../utils/localStorage";
 import { download } from "@/api/download";
 import { removeLocalForage, setLocalForage } from "../../utils/localForage";
+import { mapGetters, mapActions } from "vuex";
+import { updataShelfApi } from "@/api/shelf";
 export default {
   name: "ShelfFooter",
-  components: {},
-  props: {},
-  mixins: [shelfMixin],
+  // mixins: [ShelfMixin],
   data() {
     return {
-      popupMenu: null
+      popupMenu: null,
     };
   },
   watch: {},
   computed: {
+    ...mapGetters(["isEditMode", "shelfList", "shelfSelected"]),
     isSelected() {
       return this.shelfSelected && this.shelfSelected.length > 0;
     },
@@ -50,43 +66,48 @@ export default {
         {
           label: this.$t("shelf.private"),
           label2: this.$t("shelf.noPrivate"),
-          index: 1
+          index: 1,
         },
         {
           label: this.$t("shelf.download"),
           label2: this.$t("shelf.delete"),
-          index: 2
+          index: 2,
         },
         {
           label: this.$t("shelf.move"),
-          index: 3
+          index: 3,
         },
         {
           label: this.$t("shelf.remove"),
-          index: 4
-        }
+          index: 4,
+        },
       ];
     },
     isPrivate() {
       if (!this.isSelected) {
         return false;
       } else {
-        return this.shelfSelected.every(item => item.private);
+        return this.shelfSelected.every((item) => item.private);
       }
     },
     isDownload() {
       if (!this.isSelected) {
         return false;
       } else {
-        return this.shelfSelected.every(item => item.cache);
+        return this.shelfSelected.every((item) => item.cache);
       }
-    }
+    },
   },
   methods: {
+    ...mapActions([
+      "setIsEditMode",
+      "setShelfSelected",
+      "setSelectedRemoveFromShelf",
+    ]),
     //缓存选中的书籍方法
     async _downloadSelectedBook() {
       for (let i = 0; i < this.shelfSelected.length; i++) {
-        await this._downloadBook(this.shelfSelected[i]).then(book => {
+        await this._downloadBook(this.shelfSelected[i]).then((book) => {
           book.cache = true;
         });
       }
@@ -115,7 +136,7 @@ export default {
           categoryText: book.categoryText,
           fileName: book.fileName,
           //下载处理进度事件
-          onProgress: progressEvent => {
+          onProgress: (progressEvent) => {
             const progress =
               Math.floor((progressEvent.loaded / progressEvent.total) * 100) +
               "%";
@@ -125,8 +146,8 @@ export default {
             );
             //toas显示下载进度
             this.toastUpdata(text);
-          }
-        }).then(res => {
+          },
+        }).then((res) => {
           const blob = new Blob([res.data]);
           //存入indexDB
           setLocalForage(
@@ -136,7 +157,7 @@ export default {
               this.toastHide();
               resolve(book);
             },
-            err => reject(err)
+            (err) => reject(err)
           );
         });
       });
@@ -144,15 +165,15 @@ export default {
 
     //删除选中的书架的离线缓存操作
     _removeSelectedBook() {
-      Promise.all(this.shelfSelected.map(book => this._removeBook(book))).then(
-        books => {
-          books.map(book => {
-            book.cache = false;
-          });
-          saveBookShelf(this.shelfList);
-          this.simpleToast(this.$t("shelf.removeDownloadSuccess"));
-        }
-      );
+      Promise.all(
+        this.shelfSelected.map((book) => this._removeBook(book))
+      ).then((books) => {
+        books.map((book) => {
+          book.cache = false;
+        });
+        saveBookShelf(this.shelfList);
+        this.simpleToast(this.$t("shelf.removeDownloadSuccess"));
+      });
     },
 
     //删除缓存方法
@@ -176,7 +197,7 @@ export default {
     //开启私密阅读
     setPrivate() {
       let isPrivate = this.isPrivate ? false : true;
-      this.shelfSelected.forEach(book => {
+      this.shelfSelected.forEach((book) => {
         book.private = isPrivate;
       });
       this.updataShelf();
@@ -200,20 +221,20 @@ export default {
     showPrivate() {
       this.popupShow({
         title: this.isPrivate
-          ? this.$t("shelf.closePrivateSuccess")
+          ? this.$t("shelf.closePrivateTitle")
           : this.$t("shelf.setPrivateTitle"),
         btn: [
           {
             text: this.isPrivate
-              ? this.$t("shelf.cancel")
+              ? this.$t("shelf.close")
               : this.$t("shelf.open"),
-            click: this.setPrivate
+            click: this.setPrivate,
           },
           {
             text: this.$t("shelf.cancel"),
-            click: this.popupHide
-          }
-        ]
+            click: this.popupHide,
+          },
+        ],
       });
     },
 
@@ -228,23 +249,23 @@ export default {
             text: this.isDownload
               ? this.$t("shelf.delete")
               : this.$t("shelf.open"),
-            click: this._setDownload
+            click: this._setDownload,
           },
           {
             text: this.$t("shelf.cancel"),
-            click: this.popupHide
-          }
-        ]
+            click: this.popupHide,
+          },
+        ],
       });
     },
 
     //弹出移出书架弹出框
     showRemove() {
-      let title;
+      let title = null;
       if (this.shelfSelected.length == 1) {
         title = this.$t("shelf.removeBookTitle").replace(
           "$1",
-          `<${this.shelfSelected[0].title}>`
+          `《${this.shelfSelected[0].title}》`
         );
       } else {
         title = this.$t("shelf.removeBookTitle").replace(
@@ -252,17 +273,20 @@ export default {
           this.$t("shelf.selectedBooks")
         );
       }
-      this.popupShow(title, [
-        {
-          text: this.$t("shelf.removeBook"),
-          type: "danger",
-          click: this.removeSelected
-        },
-        {
-          text: this.$t("shelf.cancel"),
-          click: this.popupHide
-        }
-      ]);
+      this.popupShow({
+        title,
+        btn: [
+          {
+            text: this.$t("shelf.removeBook"),
+            type: "danger",
+            click: this.removeSelected,
+          },
+          {
+            text: this.$t("shelf.cancel"),
+            click: this.popupHide,
+          },
+        ],
+      });
     },
 
     onTabClick(item) {
@@ -295,14 +319,65 @@ export default {
         default:
           return item.label;
       }
-    }
+    },
+    //只保留 shelfList 部分属性，用于上传服务器
+    getShelfIdList(arr) {
+      let updataArr = [];
+      arr.forEach((item, index) => {
+        if (item.type == 1) {
+          updataArr.push({
+            id: item.id,
+            shelf_id: item.shelf_id,
+            private: item.private,
+            haveRead: item.haveRead,
+            type: item.type,
+          });
+        } else if (item.type == 2) {
+          updataArr.push({
+            shelf_id: item.shelf_id,
+            type: item.type,
+            title: item.title,
+          });
+          updataArr[index].itemList = [];
+          item.itemList.forEach((itemc) => {
+            updataArr[index].itemList.push({
+              id: itemc.id,
+              shelf_id: itemc.shelf_id,
+              private: itemc.private,
+              haveRead: itemc.haveRead,
+              type: itemc.type,
+            });
+          });
+        } else {
+          return;
+        }
+      });
+      return updataArr;
+    },
+
+    //更新数据库书架信息
+    updataShelf() {
+      const user = getUserInfo();
+      if (user && user !== {}) {
+        const params = {
+          userId: user.id,
+          shelfList: JSON.stringify(this.getShelfIdList(this.shelfList)),
+        };
+        updataShelfApi(params);
+        saveBookShelf(this.shelfList);
+      } else {
+        this.$router.push({
+          name: "login",
+        });
+      }
+    },
   },
   created() {},
   mounted() {},
   beforeDestroy() {
     //离开组件时，隐藏toas
     this.toastHide();
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -315,7 +390,7 @@ export default {
   width: 100%;
   height: 50px;
   background-color: #fff;
-  box-shadow: 0 0px 5px #cccc;
+  box-shadow: 0 0 5px #ccc;
   .shelf-footer-tab-wrapper {
     flex: 1;
     width: 25%;

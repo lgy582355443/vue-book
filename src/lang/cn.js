@@ -1,5 +1,6 @@
 const messages = {
   home: {
+    classify:"分类",
     title: '书城',
     home: '首页',
     hint: '计算机科学和软件工程',

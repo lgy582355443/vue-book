@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <transition :name="transitionName">
-      <keep-alive include="StoreHome">
+      <keep-alive include="StoreHome,Classify">
         <router-view></router-view>
       </keep-alive>
     </transition>
@@ -15,27 +15,28 @@ import footers from "./components/common/Footer";
 export default {
   components: {
     footers,
-    shelfFooter
+    shelfFooter,
   },
   data() {
     return {
       transitionName: "",
-      routeName: ""
+      routeName: "",
+      loadTimer: null,
     };
   },
   computed: {
     isInShlef() {
       return this.routeName == "shelf" || this.routeName == "ShelfCategory";
-    }
+    },
   },
   watch: {
     $route(to, from) {
       this.routeName = this.$route.name;
-      const tabPath = ["/home", "/shelf", "/my"];
+      const tabPath = ["/home", "/shelf", "/my", "/classify"];
       //从tab来而且到tab去 不要走slide动画
       if (
-        tabPath.some(item => item == to.path) &&
-        tabPath.some(item => item == from.path)
+        tabPath.some((item) => item == to.path) &&
+        tabPath.some((item) => item == from.path)
       ) {
         this.transitionName = "fade2";
       } else {
@@ -46,8 +47,21 @@ export default {
         this.transitionName =
           toDepth < fromDepth ? "slide-right2" : "slide-left2";
       }
+    },
+  },
+  mounted() {
+    const loadingEl = document.getElementById("first-loading-box");
+    if (loadingEl !== null) {
+      this.loadTimer = setTimeout(() => {
+        document.body.removeChild(loadingEl);
+      }, 4000);
     }
-  }
+  },
+  beforeDestroy() {
+    if (this.loadTimer) {
+      clearTimeout(this.loadTimer);
+    }
+  },
 };
 // document.addEventListener("DOMContentLoaded", () => {
 //   const html = document.querySelector("html");

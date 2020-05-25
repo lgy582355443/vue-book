@@ -1,5 +1,6 @@
 const messages = {
   home: {
+    classify:"Classify",
     title: 'Book Store',
     home: 'Home',
     hint: 'Computer Science And Software Engineering',
@@ -45,7 +46,7 @@ const messages = {
     statistics: 'Statistics'
   },
   shelf: {
-    title: 'Book Shelf',
+    title: 'Shelf',
     shelf: 'shelf',
     edit: 'Edit',
     cancel: 'Cancel',

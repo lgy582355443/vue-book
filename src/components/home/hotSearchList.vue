@@ -36,27 +36,27 @@ export default {
       hotSearchList: [
         {
           type: 1,
-          text: "Self-Reported Population Health",
+          text: "Communicating, Networking: Interacting",
           num: "1.8万"
         },
         {
           type: 1,
-          text: "Library and Information Sciences",
+          text: "Migrating and Settling in a Mobile World",
           num: "1.1万"
         },
         {
           type: 1,
-          text: "Global Business Strategy",
+          text: "Promoting Social Dialogue in European Organizations",
           num: "1.3万"
         },
         {
           type: 1,
-          text: "Corporate Data Quality",
+          text: "How Generations Remember",
           num: "1.0万"
         },
         {
           type: 1,
-          text: "Verrechnungspreise",
+          text: "Ukrainian Migration to the European Union",
           num: "3.9万"
         }
       ]

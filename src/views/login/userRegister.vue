@@ -1,8 +1,9 @@
 <template>
   <div class="register-main">
     <scroll>
-      <div class="title">{{$t('login.register')}}</div>
+      <div class="title">{{ $t("login.register") }}</div>
       <div class="input-list">
+        <div class="input-lable">账号：</div>
         <div class="form-item user-name-box">
           <input
             class="login-input userId"
@@ -14,24 +15,27 @@
             <span class="icon icon-zhanghao"></span>
           </div>
         </div>
+        <div class="input-lable">密码：</div>
         <div class="form-item password-box">
           <input
             class="login-input userPassword"
-            :type="`${isShow?'text':'password'}`"
+            :type="`${isShow ? 'text' : 'password'}`"
             v-model.trim="register.password"
+            @blur="rule"
             :placeholder="$t('login.picturePassword')"
           />
           <div class="icon-wrapper">
             <span class="icon icon-suo"></span>
           </div>
           <div class="eye" @click="openPassword">
-            <span :class="`${isShow?' icon-eye':' icon-biyan'}`"></span>
+            <span :class="`${isShow ? ' icon-eye' : ' icon-biyan'}`"></span>
           </div>
         </div>
+        <div class="input-lable">再次输入密码：</div>
         <div class="form-item password-box">
           <input
             class="login-input userPassword"
-            :type="`${isShow?'text':'password'}`"
+            :type="`${isShow ? 'text' : 'password'}`"
             v-model.trim="passwordAgain"
             @blur="verifyPassword"
             :placeholder="$t('login.picturePasswordAgain')"
@@ -40,19 +44,20 @@
             <span class="icon icon-suo"></span>
           </div>
           <div class="eye" @click="openPassword">
-            <span :class="`${isShow?' icon-eye':' icon-biyan'}`"></span>
+            <span :class="`${isShow ? ' icon-eye' : ' icon-biyan'}`"></span>
           </div>
         </div>
       </div>
 
-      <div class="submit" @click="doRegister">{{$t('login.doRegister')}}</div>
+      <div class="submit" @click="doRegister">{{ $t("login.doRegister") }}</div>
       <div class="userText">
-        {{$t('login.registerMsg')}}
-        <span class="blue">{{$t('login.protocol')}}</span>和
-        <span class="blue">{{$t('login.privacy')}}</span>
+        {{ $t("login.registerMsg") }}
+        <span class="blue">{{ $t("login.protocol") }}</span
+        >和
+        <span class="blue">{{ $t("login.privacy") }}</span>
       </div>
-      <router-link class="goLogin" :to="{name:'login'}" tag="div">
-        {{$t('login.goLogin')}}
+      <router-link class="goLogin" :to="{ name: 'login' }" tag="div">
+        {{ $t("login.goLogin") }}
         <span class="icon icon-you"></span>
       </router-link>
     </scroll>
@@ -93,6 +98,16 @@ export default {
     //显示密码
     openPassword() {
       this.isShow = !this.isShow;
+    },
+
+    //验证两次密码
+    rule() {
+      if (/[\w]{6,10}/.test(this.register.password)) {
+        return;
+      } else {
+        this.pass = false;
+        this.simpleToast("请输入6-10位密码");
+      }
     },
 
     //验证两次密码
@@ -157,13 +172,20 @@ export default {
       position: relative;
       width: 70%;
       height: 40px;
-      margin: 20px auto;
+      margin: 10px auto;
       .icon-wrapper {
         position: absolute;
         left: 5px;
         top: 10px;
         font-size: 20px;
       }
+    }
+    .input-lable {
+      width: 70%;
+      margin: 0 auto;
+      font-size: 16px;
+      color: #a5a5a5;
+      font-weight: bold;
     }
     .login-input {
       display: block;

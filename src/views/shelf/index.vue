@@ -1,48 +1,78 @@
 <template>
   <div class="book-shelf">
     <shelf-title :title="$t('shelf.title')"></shelf-title>
-    <scroll class="book-shelf-scrill-wrapper" ref="scroll" :bottom="50" @onScroll="onScroll">
+    <scroll
+      class="book-shelf-scrill-wrapper"
+      ref="scroll"
+      :bottom="50"
+      @onScroll="onScroll"
+    >
       <shelf-search></shelf-search>
       <shelf-list :data="shelfList"></shelf-list>
     </scroll>
+    22
   </div>
 </template>
 
 <script>
-import ShelfTitle from "../../components/shelf/shelfTitle";
-import Scroll from "../../components/common/Scroll";
-import ShelfSearch from "../../components/shelf/shelfSearch";
-import ShelfList from "../../components/shelf/shelfList";
-import { shelfMixin } from "@/mixins/shelf";
-
+import ShelfTitle from "@/components/shelf/shelfTitle";
+import Scroll from "@/components/common/Scroll";
+import ShelfSearch from "@/components/shelf/shelfSearch";
+import ShelfList from "@/components/shelf/shelfList";
+import { getShelfApi } from "../../api/shelf";
+import { saveBookShelf, getUserInfo } from '../../utils/localStorage';
+// import ShelfMixin from "../../mixins/shelf";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "BookShelf",
-  mixins: [shelfMixin],
+  // mixins: [ShelfMixin],
   components: {
     ShelfTitle,
     Scroll,
     ShelfSearch,
-    ShelfList
+    ShelfList,
   },
-  props: {},
   data() {
     return {
-      scrollBottom: 0
+      scrollBottom: 0,
     };
   },
-  watch: {
-    // isEditMode(isEditMode) {
-    //   this.scrollBottom = isEditMode ? 50 : 0;
-    //   this.$nextTick(() => {
-    //     this.$refs.scroll.refresh();
-    //   });
-    // }
+  computed: {
+    ...mapGetters(["shelfList", "offsetY", "shelfCategory", "currentType"]),
   },
-  computed: {},
   methods: {
+    ...mapActions([
+      "setShelfList",
+      "setOffsetY",
+      "setShelfCategory",
+      "setCurrentType",
+    ]),
+    //获取书架列表
+    getShelfList(cb) {
+      const user = getUserInfo();
+      if (user && user !== {}) {
+        getShelfApi({
+          userId: user.id,
+        }).then((res) => {
+          if (res.status === 200 && res.data && res.data.shelfList) {
+            console.log("shelfList", res.data.shelfList);
+            saveBookShelf(res.data.shelfList);
+            this.setShelfList(res.data.shelfList);
+            if (cb) {
+              cb();
+            }
+            return res.data.shelfList;
+          }
+        });
+      } else {
+        this.$router.push({
+          name: "login",
+        });
+      }
+    },
     onScroll(offsetY) {
       this.setOffsetY(offsetY);
-    }
+    },
   },
   created() {
     this.getShelfList();
@@ -50,7 +80,6 @@ export default {
     //1，为当前在书架页， 2 ，为当前在书架分组页
     this.setCurrentType(1);
   },
-  mounted() {}
 };
 </script>
 <style lang="scss" scoped>

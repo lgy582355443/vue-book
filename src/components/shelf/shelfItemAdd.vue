@@ -7,22 +7,13 @@
 <script>
 export default {
   name: "ShelfItemAdd",
-  components: {},
-  props: {},
-  data() {
-    return {};
-  },
-  watch: {},
-  computed: {},
   methods: {
     goHome() {
       this.$router.push({
-        name: "home"
+        name: "home",
       });
-    }
+    },
   },
-  created() {},
-  mounted() {}
 };
 </script>
 <style lang="scss" scoped>

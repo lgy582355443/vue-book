@@ -1,18 +1,23 @@
 <template>
-  <div class="search-main" v-if="hotSearch.length>0">
+  <div class="search-main" v-if="hotSearch.length > 0">
     <div class="hot-search-title">
-      <span class="label">{{label}}</span>
-      <span class="btn" @click="btnTap">{{btn}}</span>
+      <span class="label">{{ label }}</span>
+      <span class="btn" @click="btnTap">{{ btn }}</span>
     </div>
     <div class="hot-search-list">
-      <div class="hot-search-item" v-for="(item, index) in hotSearch" :key="index">
+      <div
+        class="hot-search-item"
+        v-for="(item, index) in hotSearch"
+        :key="index"
+        @click="searchBook(item.text)"
+      >
         <div class="icon-wrapper">
           <span class="icon-book icon" v-if="item.type === 1"></span>
           <span class="icon-search icon" v-else></span>
         </div>
         <div class="hot-search-text-wrapper">
-          <div class="text" ref="searchText">{{item.text}}</div>
-          <div class="num" v-if="item.num">{{item.num}}人搜索</div>
+          <div class="text" ref="searchText">{{ item.text }}</div>
+          <div class="num" v-if="item.num">{{ item.num }}人搜索</div>
         </div>
       </div>
     </div>
@@ -42,7 +47,15 @@ export default {
       removeLocalStorage("searchHistory");
       this.setSearchHistoryList([]);
     },
-    replaceList() {}
+    replaceList() {},
+    searchBook(searchText) {
+      this.$router.push({
+        name: "bookList",
+        query: {
+          keyword: searchText
+        }
+      });
+    }
   },
   mounted() {
     if (this.$refs.searchText) {
@@ -54,7 +67,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-
 .hot-search-title {
   display: flex;
   width: 100%;

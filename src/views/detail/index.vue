@@ -2,36 +2,55 @@
 <template>
   <div class="book-detail">
     <detail-title :showShelf="true" ref="title"></detail-title>
-    <scroll class="content-wrapper" :top="42" :bottom="52" @onScroll="onScroll" ref="scroll">
-      <book-info :cover="cover" :title="title" :author="author" :desc="desc"></book-info>
+    <scroll
+      class="content-wrapper"
+      :top="42"
+      :bottom="52"
+      @onScroll="onScroll"
+      ref="scroll"
+    >
+      <book-info
+        :cover="cover"
+        :title="title"
+        :author="author"
+        :desc="desc"
+      ></book-info>
       <!-- 出版社 -->
       <div class="book-detail-content-wrapper">
-        <div class="book-detail-content-title">{{$t('detail.copyright')}}</div>
+        <div class="book-detail-content-title">
+          {{ $t("detail.copyright") }}
+        </div>
         <div class="book-detail-content-list-wrapper">
           <div class="book-detail-content-row">
-            <div class="book-detail-content-label">{{$t('detail.publisher')}}</div>
-            <div class="book-detail-content-text">{{publisher}}</div>
+            <div class="book-detail-content-label">
+              {{ $t("detail.publisher") }}
+            </div>
+            <div class="book-detail-content-text">{{ publisher }}</div>
           </div>
           <div class="book-detail-content-row">
-            <div class="book-detail-content-label">{{$t('detail.category')}}</div>
-            <div class="book-detail-content-text">{{categoryText}}</div>
+            <div class="book-detail-content-label">
+              {{ $t("detail.category") }}
+            </div>
+            <div class="book-detail-content-text">{{ categoryText }}</div>
           </div>
           <div class="book-detail-content-row">
-            <div class="book-detail-content-label">{{$t('detail.lang')}}</div>
-            <div class="book-detail-content-text">{{lang}}</div>
+            <div class="book-detail-content-label">{{ $t("detail.lang") }}</div>
+            <div class="book-detail-content-text">{{ lang }}</div>
           </div>
           <div class="book-detail-content-row">
-            <div class="book-detail-content-label">{{$t('detail.ISBN')}}</div>
-            <div class="book-detail-content-text">{{isbn}}</div>
+            <div class="book-detail-content-label">{{ $t("detail.ISBN") }}</div>
+            <div class="book-detail-content-text">{{ isbn }}</div>
           </div>
         </div>
       </div>
       <!-- 书籍章节 -->
       <div class="book-detail-content-wrapper">
-        <div class="book-detail-content-title">{{$t('detail.navigation')}}</div>
+        <div class="book-detail-content-title">
+          {{ $t("detail.navigation") }}
+        </div>
         <div class="book-detail-content-list-wrapper">
           <div class="loading-text-wrapper" v-if="!this.navigation">
-            <span class="loading-text">{{$t('detail.loading')}}</span>
+            <span class="loading-text">{{ $t("detail.loading") }}</span>
           </div>
           <div class="book-detail-content-item-wrapper">
             <div
@@ -42,20 +61,22 @@
             >
               <div
                 class="book-detail-content-navigation-text"
-                :class="{'is-sub': item.deep> 1}"
+                :class="{ 'is-sub': item.deep > 1 }"
                 :style="itemStyle(item)"
                 v-if="item.label"
-              >{{item.label}}</div>
+              >
+                {{ item.label }}
+              </div>
             </div>
           </div>
         </div>
       </div>
       <!-- 试读 -->
       <div class="book-detail-content-wrapper">
-        <div class="book-detail-content-title">{{$t('detail.trial')}}</div>
+        <div class="book-detail-content-title">{{ $t("detail.trial") }}</div>
         <div class="book-detail-content-list-wrapper">
           <div class="loading-text-wrapper" v-if="!this.displayed">
-            <span class="loading-text">{{$t('detail.loading')}}</span>
+            <span class="loading-text">{{ $t("detail.loading") }}</span>
           </div>
         </div>
         <div id="preview" v-show="this.displayed" ref="preview"></div>
@@ -63,11 +84,17 @@
     </scroll>
     <!-- 底部按钮 -->
     <div class="bottom-wrapper">
-      <div class="bottom-btn" @click.stop.prevent="readBook()">{{$t('detail.read')}}</div>
+      <div class="bottom-btn" @click.stop.prevent="readBook()">
+        {{ $t("detail.read") }}
+      </div>
       <!-- <div class="bottom-btn" @click.stop.prevent="trialListening()">{{$t('detail.listen')}}</div> -->
       <div class="bottom-btn" @click.stop.prevent="addOrRemoveShelf()">
         <span class="icon-check" v-if="inBookShelf"></span>
-        {{inBookShelf ? $t('detail.isAddedToShelf') : $t('detail.addOrRemoveShelf')}}
+        {{
+          inBookShelf
+            ? $t("detail.isAddedToShelf")
+            : $t("detail.addOrRemoveShelf")
+        }}
       </div>
     </div>
   </div>
@@ -81,26 +108,48 @@ import { detailApi } from "@/api/detail";
 import { px2rem, realPx } from "../../utils/utils";
 import { flatBookList } from "../../utils/shelf";
 import { getLocalForage } from "../../utils/localForage";
-import { shelfMixin } from "@/mixins/shelf";
+import { mapGetters, mapActions } from "vuex";
+import { getShelfApi, updataShelfApi } from "../../api/shelf";
+// import ShelfMixin from "@/mixins/shelf";
 import {
   getBookShelf,
   saveBookShelf,
   saveReaderHistory,
   getReaderHistory,
-  getUserInfo
+  getUserInfo,
 } from "../../utils/localStorage";
 import Epub from "epubjs";
 
 global.ePub = Epub;
 
 export default {
-  mixins: [shelfMixin],
+  name: "BookDetail",
+  // mixins: [ShelfMixin],
   components: {
     DetailTitle,
     Scroll,
-    BookInfo
+    BookInfo,
+  },
+  data() {
+    return {
+      user: null,
+      bookItem: null,
+      book: null,
+      metadata: null,
+      trialRead: null,
+      cover: null,
+      navigation: null,
+      displayed: false,
+      audio: null,
+      randomLocation: null,
+      description: null,
+      trialText: null,
+      categoryText: null,
+      opf: null,
+    };
   },
   computed: {
+    ...mapGetters(["shelfList", "offsetY", "historyList"]),
     // 获取电子书摘要
     desc() {
       if (this.description) {
@@ -145,7 +194,7 @@ export default {
         const flatShelf = flatBookList(this.shelfList);
         // 查找当前电子书是否存在于书架
         const book = flatShelf.filter(
-          item => item.fileName === this.bookItem.fileName
+          (item) => item.fileName === this.bookItem.fileName
         );
         return book && book.length > 0;
       } else {
@@ -156,32 +205,22 @@ export default {
     // //判断电子书是否在历史列表
     inHistory() {
       if (this.bookItem && this.historyList) {
-        const book = this.historyList.find(item => item.id == this.bookItem.id);
+        const book = this.historyList.find(
+          (item) => item.id == this.bookItem.id
+        );
         return book;
       } else {
         return false;
       }
-    }
-  },
-  data() {
-    return {
-      user: null,
-      bookItem: null,
-      book: null,
-      metadata: null,
-      trialRead: null,
-      cover: null,
-      navigation: null,
-      displayed: false,
-      audio: null,
-      randomLocation: null,
-      description: null,
-      trialText: null,
-      categoryText: null,
-      opf: null
-    };
+    },
   },
   methods: {
+    ...mapActions([
+      "setHistoryList",
+      "setAddToShelf",
+      "setRemoveFromShelf",
+      "setShelfList",
+    ]),
     //加入书架
     addOrRemoveShelf() {
       if (this.user) {
@@ -210,7 +249,7 @@ export default {
       }
       if (this.inHistory) {
         historyList = this.historyList.filter(
-          item => item.id != this.inHistory.id
+          (item) => item.id != this.inHistory.id
         );
         historyList.unshift(this.inHistory);
       } else {
@@ -244,11 +283,88 @@ export default {
     //   });
     // },
 
+    //更新数据库书架信息
+    updataShelf() {
+      const user = getUserInfo();
+      if (user && user !== {}) {
+        const params = {
+          userId: user.id,
+          shelfList: JSON.stringify(this.getShelfIdList(this.shelfList)),
+        };
+        updataShelfApi(params);
+        saveBookShelf(this.shelfList);
+      } else {
+        this.$router.push({
+          name: "login",
+        });
+      }
+    },
+
+    //获取书架列表
+    getShelfList(cb) {
+      const user = getUserInfo();
+      if (user && user !== {}) {
+        getShelfApi({
+          userId: user.id,
+        }).then((res) => {
+          if (res.status === 200 && res.data && res.data.shelfList) {
+            console.log("shelfList", res.data.shelfList);
+            saveBookShelf(res.data.shelfList);
+            this.setShelfList(res.data.shelfList);
+            if (cb) {
+              cb();
+            }
+            return res.data.shelfList;
+          }
+        });
+      } else {
+        this.$router.push({
+          name: "login",
+        });
+      }
+    },
+    //只保留 shelfList 部分属性，用于上传服务器
+    getShelfIdList(arr) {
+      let updataArr = [];
+      arr.forEach((item, index) => {
+        if (item.type == 1) {
+          updataArr.push({
+            id: item.id,
+            shelf_id: item.shelf_id,
+            private: item.private,
+            haveRead: item.haveRead,
+            type: item.type,
+          });
+        } else if (item.type == 2) {
+          updataArr.push({
+            shelf_id: item.shelf_id,
+            type: item.type,
+            title: item.title,
+          });
+          updataArr[index].itemList = [];
+          item.itemList.forEach((itemc) => {
+            updataArr[index].itemList.push({
+              id: itemc.id,
+              shelf_id: itemc.shelf_id,
+              private: itemc.private,
+              haveRead: itemc.haveRead,
+              type: itemc.type,
+            });
+          });
+        } else {
+          return;
+        }
+      });
+      return updataArr;
+    },
+
     // 阅读电子书
     readBook() {
       this.addReaderHistory();
       this.$router.push({
-        path: `/ebook/${this.$route.query.category}|${this.$route.query.fileName}`
+        path: `/ebook/${this.$route.query.category}|${
+          this.$route.query.fileName
+        }`,
       });
     },
 
@@ -257,18 +373,22 @@ export default {
       getLocalForage(this.$route.query.fileName, (err, blob) => {
         if (!err && blob && blob instanceof Blob) {
           this.$router.push({
-            path: `/ebook/${this.$route.query.category}}|${this.$route.query.fileName}`,
+            path: `/ebook/${this.$route.query.category}}|${
+              this.$route.query.fileName
+            }`,
             query: {
-              navigation: item.href
-            }
+              navigation: item.href,
+            },
           });
         } else {
           this.$router.push({
-            path: `/ebook/${this.$route.query.category}}|${this.$route.query.fileName}`,
+            path: `/ebook/${this.$route.query.category}}|${
+              this.$route.query.fileName
+            }`,
             query: {
               navigation: item.href,
-              opf: this.opf
-            }
+              opf: this.opf,
+            },
           });
         }
       });
@@ -278,14 +398,14 @@ export default {
     // 电子书目录缩进样式
     itemStyle(item) {
       return {
-        marginLeft: (item.deep - 1) * px2rem(20) + "rem"
+        marginLeft: (item.deep - 1) * px2rem(20) + "rem",
       };
     },
 
     // 将目录从多维转为一维
     doFlatNavigation(content, deep = 1) {
       const arr = [];
-      content.forEach(item => {
+      content.forEach((item) => {
         item.deep = deep;
         arr.push(item);
         if (item.subitems && item.subitems.length > 0) {
@@ -307,18 +427,18 @@ export default {
       // 通过电子书或opf文件的url生成Book对象
       this.book = new Epub(url);
       // 获取电子书的metadata信息
-      this.book.loaded.metadata.then(metadata => {
+      this.book.loaded.metadata.then((metadata) => {
         this.metadata = metadata;
       });
       // 获取电子书的目录信息
-      this.book.loaded.navigation.then(nav => {
+      this.book.loaded.navigation.then((nav) => {
         this.navigation = nav;
         // 通过第二章的目录（第一章通常是封面，所以获取第二章）
         if (this.navigation.toc && this.navigation.toc.length > 1) {
           // 将第二章进行渲染（渲染的内容隐藏在屏幕外，用户是看不见的）
           const candisplay = this.display(this.navigation.toc[1].href);
           if (candisplay) {
-            candisplay.then(section => {
+            candisplay.then((section) => {
               if (this.$refs.scroll) {
                 this.$refs.scroll.refresh();
               }
@@ -343,8 +463,8 @@ export default {
       if (this.fileName) {
         // 请求API，获取电子书详情数据
         detailApi({
-          fileName: this.fileName
-        }).then(response => {
+          fileName: this.fileName,
+        }).then((response) => {
           if (
             response.status === 200 &&
             response.data.code === 0 &&
@@ -362,7 +482,9 @@ export default {
               rootFile = rootFile.substring(1, rootFile.length);
             }
             // 根据rootFile拼接出opf文件路径(opf可以在线请求书籍,而用书籍url会下载整本电子书再解析)
-            this.opf = `${process.env.VUE_APP_EPUB_OPF_URL}/${this.fileName}/${rootFile}`;
+            this.opf = `${process.env.VUE_APP_EPUB_OPF_URL}/${
+              this.fileName
+            }/${rootFile}`;
             // 解析电子书
             this.parseBook(this.opf);
           } else {
@@ -380,7 +502,7 @@ export default {
           this.rendition = this.book.renderTo("preview", {
             width: window.innerWidth > 640 ? 640 : window.innerWidth,
             height: window.innerHeight,
-            method: "default"
+            method: "default",
           });
         }
         if (!location) {
@@ -398,7 +520,7 @@ export default {
       } else {
         this.$refs.title.hideShadow();
       }
-    }
+    },
   },
   created() {
     let historyList = getReaderHistory();
@@ -414,7 +536,7 @@ export default {
   },
   mounted() {
     this.init();
-  }
+  },
 };
 </script>
 

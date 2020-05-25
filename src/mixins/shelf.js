@@ -1,17 +1,7 @@
-import {
-    mapGetters,
-    mapActions
-} from 'vuex'
-import {
-    getShelfApi,
-    updataShelfApi
-} from "@/api/shelf"
-
-import {
-    saveBookShelf,
-    getUserInfo
-} from '@/utils/localStorage'
-export const shelfMixin = {
+import { mapGetters,mapActions } from 'vuex'
+import { getShelfApi,updataShelfApi } from "../api/shelf"
+import { saveBookShelf, getUserInfo } from '../utils/localStorage'
+export default {
     computed: {
         ...mapGetters([
             'isEditMode',
@@ -44,7 +34,7 @@ export const shelfMixin = {
             'setSelectedMoveToNewGroup',
             'setChangeGroupName'
         ]),
-
+        // getShelfIdList,updataShelf,getShelfList,getCategoryList
         //只保留 shelfList 部分属性，用于上传服务器
         getShelfIdList(arr) {
             let updataArr = [];

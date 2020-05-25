@@ -1,7 +1,7 @@
-// const CompressionWebpackPlugin = require('compression-webpack-plugin')
+// const CompressionWebpackPlugin = require('compression-webpack-plugin') //生成gzip
 const TerserPlugin = require("terser-webpack-plugin");
 const path = require("path");
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin // 代码分析工具
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin // 代码分析工具
 
 //本地数据mock
 // function mock(app, url, data) {
@@ -88,36 +88,31 @@ module.exports = {
       .set('@', path.resolve(__dirname, './src'))
       .set('cps', path.resolve(__dirname, './src/components'))
 
-    if (process.env.NODE_ENV === "production") {
-      // 项目文件大小分析
-      config.plugin('webpack-bundle-analyzer')
-        .use(new BundleAnalyzerPlugin({
-          openAnalyzer: true, // 是否打开默认浏览器
-          analyzerPort: 8777
-        }));
-    }
+    // if (process.env.NODE_ENV === "production") {
+    //   // 项目文件大小分析
+    //   config.plugin('webpack-bundle-analyzer')
+    //     .use(new BundleAnalyzerPlugin({
+    //       openAnalyzer: true, // 是否打开默认浏览器
+    //       analyzerPort: 8777
+    //     }));
+    // }
 
-    // 添加CDN参数到htmlWebpackPlugin配置中， 详见public/index.html 修改
-    config.plugin("html").tap(args => {
-      if (process.env.NODE_ENV === "production") {
-        args[0].cdn = cdn.build;
-      }
-      if (process.env.NODE_ENV === "development") {
-        args[0].cdn = cdn.dev;
-      }
-      return args;
-    });
-
+    // // 添加CDN参数到htmlWebpackPlugin配置中， 详见public/index.html 修改
+    // config.plugin("html").tap(args => {
+    //   if (process.env.NODE_ENV === "production") {
+    //     args[0].cdn = cdn.build;
+    //   }
+    //   if (process.env.NODE_ENV === "development") {
+    //     args[0].cdn = cdn.dev;
+    //   }
+    //   return args;
+    // });
   },
 
   configureWebpack: config => {
-
     if (process.env.NODE_ENV === "development") {
-      // 为开发环境修改配置...
       config.devtool = "cheap-module-eval-source-map";
     } else {
-      // 为生产环境修改配置...
-
       //打包的大小限制的警告
       config.performance = {
         hints: 'warning',
@@ -125,13 +120,13 @@ module.exports = {
         maxEntrypointSize: 524288 * 10
       };
 
-      // 忽略生产环境打包的文件
-      config.externals = {
-        vue: "Vue",
-        "vue-router": "VueRouter",
-        vuex: "Vuex",
-        axios: "axios",
-      };
+      // // 忽略生产环境打包的文件
+      // config.externals = {
+      //   vue: "Vue",
+      //   "vue-router": "VueRouter",
+      //   vuex: "Vuex",
+      //   axios: "axios",
+      // };
 
       config.optimization = {
         minimizer: [
@@ -150,7 +145,7 @@ module.exports = {
           })
         ]
       };
-      
+
       // if (process.env.NODE_ENV === 'production') {
       //   config.optimization.minimizer[0].options.terserOptions.compress.warnings = false
       //   config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true

@@ -1,46 +1,70 @@
 <template>
   <transition name="fade">
-    <div :class="[{'hide-shadow':ifHideShadow},'shelf-title']" v-show="shelfTitleVisible">
+    <div
+      :class="[{ 'hide-shadow': ifHideShadow }, 'shelf-title']"
+      v-show="shelfTitleVisible"
+    >
       <div class="shelf-title-text-wrapper">
-        <span class="shelf-title-text">{{title}}</span>
-        <span class="shelf-title-sub-text" v-show="isEditMode">{{selectedText}}</span>
+        <span class="shelf-title-text">{{ title }}</span>
+        <span class="shelf-title-sub-text" v-show="isEditMode">{{
+          selectedText
+        }}</span>
       </div>
-      <div class="shelf-title-btn-wrapper shelf-title-left clear-cache" v-if="showClear">
-        <span class="shelf-title-btn-text" @click="clearCache">{{$t('shelf.clearCache')}}</span>
+      <div
+        class="shelf-title-btn-wrapper shelf-title-left clear-cache"
+        v-if="showClear"
+      >
+        <span class="shelf-title-btn-text" @click="clearCache">{{
+          $t("shelf.clearCache")
+        }}</span>
       </div>
-      <div class="shelf-title-btn-wrapper shelf-title-left back" v-if="showBack">
+      <div
+        class="shelf-title-btn-wrapper shelf-title-left back"
+        v-if="showBack"
+      >
         <span class="icon-back" @click="back"></span>
       </div>
-      <div class="shelf-title-btn-wrapper shelf-title-right" @click="onEditClick" v-show="showEdit">
-        <span class="shelf-title-btn-text">{{isEditMode?$t('shelf.cancel'):$t('shelf.edit')}}</span>
+      <div
+        class="shelf-title-btn-wrapper shelf-title-right"
+        @click="onEditClick"
+        v-show="showEdit"
+      >
+        <span class="shelf-title-btn-text">{{
+          isEditMode ? $t("shelf.cancel") : $t("shelf.edit")
+        }}</span>
       </div>
 
       <!-- 当分组里没有书籍 -->
       <div
-        :class="[{'shelf-title-left': changeGroupLeft}, {'shelf-title-right': changeGroupRight},'shelf-title-btn-wrapper']"
+        :class="[
+          { 'shelf-title-left': changeGroupLeft },
+          { 'shelf-title-right': changeGroupRight },
+          'shelf-title-btn-wrapper',
+        ]"
         @click="changeGroup"
         v-if="showChangeGroup"
       >
-        <span class="shelf-title-btn-text">{{$t('shelf.editGroup')}}</span>
+        <span class="shelf-title-btn-text">{{ $t("shelf.editGroup") }}</span>
       </div>
     </div>
   </transition>
 </template>
 
 <script>
-import { shelfMixin } from "@/mixins/shelf";
-import { removeLocalStorage, saveBookShelf } from "../../utils/localStorage";
+// import ShelfMixin from "@/mixins/shelf";
+import { removeLocalStorage, saveBookShelf,getUserInfo } from "../../utils/localStorage";
 import { clearLocalForage } from "../../utils/localForage";
+import { mapGetters, mapActions } from "vuex";
+import { getShelfApi, updataShelfApi } from "@/api/shelf";
 export default {
   name: "ShelfTitle",
-  mixins: [shelfMixin],
-  components: {},
+  // mixins: [ShelfMixin],
   props: {
-    title: String
+    title: String,
   },
   data() {
     return {
-      ifHideShadow: true
+      ifHideShadow: true,
     };
   },
   watch: {
@@ -50,9 +74,18 @@ export default {
       } else {
         this.ifHideShadow = true;
       }
-    }
+    },
   },
   computed: {
+    ...mapGetters([
+      "isEditMode",
+      "shelfList",
+      "shelfSelected",
+      "shelfTitleVisible",
+      "offsetY",
+      "shelfCategory",
+      "currentType",
+    ]),
     //分组里的书籍列表(itemList)是否为空,空为true
     emptyCategory() {
       return (
@@ -96,19 +129,25 @@ export default {
     popupCancelBtn() {
       return {
         text: this.$t("shelf.cancel"),
-        click:  this.popupHide
+        click: this.popupHide,
       };
-    }
+    },
   },
   methods: {
+    ...mapActions([
+      "setIsEditMode",
+      "setShelfList",
+      "setShelfSelected",
+      "setDeleteGroup",
+    ]),
     //点击编辑
     onEditClick() {
       if (!this.isEditMode) {
         this.setShelfSelected([]);
-        this.shelfList.forEach(item => {
+        this.shelfList.forEach((item) => {
           item.selected = false;
           if (item.itemList) {
-            item.itemList.forEach(subItem => {
+            item.itemList.forEach((subItem) => {
               subItem.selected = false;
             });
           }
@@ -134,15 +173,15 @@ export default {
         btn: [
           {
             text: this.$t("shelf.editGroupName"),
-            click: this._changeGroupName
+            click: this._changeGroupName,
           },
           {
             text: this.$t("shelf.deleteGroup"),
             type: "danger",
-            click: this._showDeleteGroup
+            click: this._showDeleteGroup,
           },
-          this.popupCancelBtn
-        ]
+          this.popupCancelBtn,
+        ],
       });
     },
 
@@ -152,7 +191,7 @@ export default {
       this.shelfDialog({
         showNewGroup: true,
         groupName: this.shelfCategory.title,
-        isEditGroup: true
+        isEditGroup: true,
       }).show();
     },
 
@@ -175,10 +214,10 @@ export default {
             {
               text: this.$t("shelf.confirm"),
               type: "danger",
-              click: this._deleteGroup
+              click: this._deleteGroup,
             },
-            this.popupCancelBtn
-          ]
+            this.popupCancelBtn,
+          ],
         });
       }, 200);
     },
@@ -187,10 +226,84 @@ export default {
     back() {
       this.$router.go(-1);
       this.setIsEditMode(false);
-    }
+    },
+    getShelfIdList(arr) {
+      let updataArr = [];
+      arr.forEach((item, index) => {
+        if (item.type == 1) {
+          updataArr.push({
+            id: item.id,
+            shelf_id: item.shelf_id,
+            private: item.private,
+            haveRead: item.haveRead,
+            type: item.type,
+          });
+        } else if (item.type == 2) {
+          updataArr.push({
+            shelf_id: item.shelf_id,
+            type: item.type,
+            title: item.title,
+          });
+          updataArr[index].itemList = [];
+          item.itemList.forEach((itemc) => {
+            updataArr[index].itemList.push({
+              id: itemc.id,
+              shelf_id: itemc.shelf_id,
+              private: itemc.private,
+              haveRead: itemc.haveRead,
+              type: itemc.type,
+            });
+          });
+        } else {
+          return;
+        }
+      });
+      return updataArr;
+    },
+
+    //更新数据库书架信息
+    updataShelf() {
+      const user = getUserInfo();
+      if (user && user !== {}) {
+        const params = {
+          userId: user.id,
+          shelfList: JSON.stringify(this.getShelfIdList(this.shelfList)),
+        };
+        updataShelfApi(params);
+        saveBookShelf(this.shelfList);
+      } else {
+        this.$router.push({
+          name: "login",
+        });
+      }
+    },
+
+    //获取书架列表
+    getShelfList(cb) {
+      const user = getUserInfo();
+      if (user && user !== {}) {
+        getShelfApi({
+          userId: user.id,
+        }).then((res) => {
+          if (res.status === 200 && res.data && res.data.shelfList) {
+            console.log("shelfList", res.data.shelfList);
+            saveBookShelf(res.data.shelfList);
+            this.setShelfList(res.data.shelfList);
+            if (cb) {
+              cb();
+            }
+            return res.data.shelfList;
+          }
+        });
+      } else {
+        this.$router.push({
+          name: "login",
+        });
+      }
+    },
   },
   created() {},
-  mounted() {}
+  mounted() {},
 };
 </script>
 <style lang="scss" scoped>

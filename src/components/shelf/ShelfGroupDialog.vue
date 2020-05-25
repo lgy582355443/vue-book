@@ -2,12 +2,16 @@
   <dialog-box :title="title" ref="dialog">
     <!-- 修改分组 -->
     <div class="dialog-list-wrapper" v-if="!ifNewGroup">
-      <div v-for="(item, index) in categoryList" :key="index" @click="onGroupClick(item)">
+      <div
+        v-for="(item, index) in categoryList"
+        :key="index"
+        @click="onGroupClick(item)"
+      >
         <div
-          :class="[{'is-add': item.edit === 1},'dialog-list-item']"
+          :class="[{ 'is-add': item.edit === 1 }, 'dialog-list-item']"
           v-if="(item.edit === 2 && isInGroup) || item.edit !== 2 || !item.edit"
         >
-          <div class="dialog-list-item-text">{{item.title}}</div>
+          <div class="dialog-list-item-text">{{ item.title }}</div>
           <div
             class="dialog-list-icon-wrapper"
             v-if="isInGroup && shelfCategory.shelf_id === item.shelf_id"
@@ -20,11 +24,16 @@
     <!-- 新建分组 -->
     <div class="dialog-new-group-wrapper" v-else>
       <div class="dialog-input-title-wrapper">
-        <span class="dialog-input-title">{{$t('shelf.groupName')}}</span>
+        <span class="dialog-input-title">{{ $t("shelf.groupName") }}</span>
       </div>
       <div class="dialog-input-wrapper">
         <div class="dialog-input-inner-wrapper">
-          <input type="text" class="dialog-input" ref="dialogInput" v-model="newGroupName" />
+          <input
+            type="text"
+            class="dialog-input"
+            ref="dialogInput"
+            v-model="newGroupName"
+          />
           <div
             class="dialog-input-clear-wrapper"
             @click="clear"
@@ -36,46 +45,51 @@
       </div>
     </div>
     <div slot="btn" class="group-dialog-btn-wrapper">
-      <div class="dialog-btn" @click="hide">{{$t('shelf.cancel')}}</div>
+      <div class="dialog-btn" @click="hide">{{ $t("shelf.cancel") }}</div>
       <div
         class="dialog-btn"
         @click="createNewGroup"
-        :class="{'is-empty': newGroupName && newGroupName.length === 0}"
+        :class="{ 'is-empty': newGroupName && newGroupName.length === 0 }"
         v-if="ifNewGroup"
-      >{{$t('shelf.confirm')}}</div>
+      >
+        {{ $t("shelf.confirm") }}
+      </div>
     </div>
   </dialog-box>
 </template>
 
 <script>
 import DialogBox from "../common/Dialog";
-import { shelfMixin } from "@/mixins/shelf";
-import { saveBookShelf } from "../../utils/localStorage";
+// import ShelfMixin from "@/mixins/shelf";
+import { saveBookShelf, getUserInfo } from "../../utils/localStorage";
+import { mapGetters, mapActions } from "vuex";
+import { updataShelfApi } from "@/api/shelf";
 
 export default {
   name: "ShelfDialog",
-  mixins: [shelfMixin],
+  // mixins: [ShelfMixin],
   components: {
-    DialogBox
+    DialogBox,
   },
   props: {
     showNewGroup: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isEditGroup: {
       type: Boolean,
-      default: false
+      default: false,
     },
-    groupName: String
+    groupName: String,
   },
   data() {
     return {
       ifNewGroup: false,
-      newGroupName: ""
+      newGroupName: "",
     };
   },
   computed: {
+    ...mapGetters(["isEditMode", "shelfList", "shelfCategory", "currentType"]),
     //是否在分组页
     isInGroup() {
       return this.currentType === 2;
@@ -85,17 +99,17 @@ export default {
       return [
         {
           title: this.$t("shelf.newGroup"),
-          edit: 1
+          edit: 1,
         },
         {
           title: this.$t("shelf.groupOut"),
-          edit: 2
-        }
+          edit: 2,
+        },
       ];
     },
     //筛选出书架列表中的分组
     category() {
-      return this.shelfList.filter(item => item.type === 2);
+      return this.shelfList.filter((item) => item.type === 2);
     },
     //组成group弹窗里显示的列表
     categoryList() {
@@ -112,9 +126,16 @@ export default {
           return this.$t("shelf.newGroup");
         }
       }
-    }
+    },
   },
   methods: {
+    ...mapActions([
+      "setIsEditMode",
+      "setSelectRemoveFromGroup",
+      "setSelectedMoveToGroup",
+      "setSelectedMoveToNewGroup",
+      "setChangeGroupName",
+    ]),
     show() {
       this.ifNewGroup = this.showNewGroup;
       this.newGroupName = this.groupName;
@@ -176,7 +197,7 @@ export default {
           this.onComplete();
         });
       } else {
-        if (this.shelfList.some(item => item.title == this.newGroupName)) {
+        if (this.shelfList.some((item) => item.title == this.newGroupName)) {
           this.simpleToast(this.$t("shelf.sameName"));
           return;
         }
@@ -185,7 +206,7 @@ export default {
           itemList: [],
           selected: false,
           title: this.newGroupName,
-          type: 2
+          type: 2,
         };
         this.setSelectedMoveToNewGroup(group).then(() => {
           this.updataShelf();
@@ -197,8 +218,59 @@ export default {
     onComplete() {
       this.hide();
       this.setIsEditMode(false);
-    }
-  }
+    },
+    //只保留 shelfList 部分属性，用于上传服务器
+    getShelfIdList(arr) {
+      let updataArr = [];
+      arr.forEach((item, index) => {
+        if (item.type == 1) {
+          updataArr.push({
+            id: item.id,
+            shelf_id: item.shelf_id,
+            private: item.private,
+            haveRead: item.haveRead,
+            type: item.type,
+          });
+        } else if (item.type == 2) {
+          updataArr.push({
+            shelf_id: item.shelf_id,
+            type: item.type,
+            title: item.title,
+          });
+          updataArr[index].itemList = [];
+          item.itemList.forEach((itemc) => {
+            updataArr[index].itemList.push({
+              id: itemc.id,
+              shelf_id: itemc.shelf_id,
+              private: itemc.private,
+              haveRead: itemc.haveRead,
+              type: itemc.type,
+            });
+          });
+        } else {
+          return;
+        }
+      });
+      return updataArr;
+    },
+
+    //更新数据库书架信息
+    updataShelf() {
+      const user = getUserInfo();
+      if (user && user !== {}) {
+        const params = {
+          userId: user.id,
+          shelfList: JSON.stringify(this.getShelfIdList(this.shelfList)),
+        };
+        updataShelfApi(params);
+        saveBookShelf(this.shelfList);
+      } else {
+        this.$router.push({
+          name: "login",
+        });
+      }
+    },
+  },
 };
 </script>
 

@@ -7,9 +7,19 @@ export function flatListApi() {
     })
 }
 
-export function listApi() {
+
+export function searchBookApi(data){
     return request({
         method: 'get',
-        url: `/api/list/categoryList`
+        url: `/api/list/search`,
+        data
+    })
+}
+
+export function listApi(data) {
+    return request({
+        method: 'get',
+        url: `/api/list/categoryList`,
+        data
     })
 }

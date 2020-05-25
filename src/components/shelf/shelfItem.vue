@@ -1,18 +1,18 @@
 <template>
   <div
     class="shelf-item-main"
-    :class="{'shelf-item-shadow':data.type == 1 || data.type == 2}"
+    :class="{ 'shelf-item-shadow': data.type == 1 || data.type == 2 }"
     @click="onItemClick"
   >
     <component
       class="shelf-item-comp"
-      :class="{'is-edit':data.type == 2 && isEditMode}"
+      :class="{ 'is-edit': data.type == 2 && isEditMode }"
       :is="item"
       :data="data"
     ></component>
     <div
       class="icon-selected"
-      :class="{'is-selected':data.selected}"
+      :class="{ 'is-selected': data.selected }"
       v-show="isEditMode && data.type == 1"
     ></div>
   </div>
@@ -21,26 +21,26 @@
 <script>
 import ShelfItemBook from "./shelfItemBook";
 import shelfItemCategory from "./shelfItemCategory";
-import { shelfMixin } from "@/mixins/shelf";
-
+// import ShelfMixin from "@/mixins/shelf";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "ShelfItem",
-  mixins: [shelfMixin],
+  // mixins: [ShelfMixin],
   components: {
     ShelfItemBook,
-    shelfItemCategory
+    shelfItemCategory,
   },
   props: {
-    data: Object
+    data: Object,
   },
   data() {
     return {
       book: ShelfItemBook,
-      category: shelfItemCategory
+      category: shelfItemCategory,
     };
   },
-  watch: {},
   computed: {
+    ...mapGetters(["isEditMode", "shelfSelected", "shelfCategory"]),
     item() {
       //type =1 为书籍 ，type = 2 为分组
       if (this.data.type == 1) {
@@ -50,9 +50,10 @@ export default {
       } else {
         return;
       }
-    }
+    },
   },
   methods: {
+    ...mapActions(["setShelfSelected", "addShelfSelected"]),
     onItemClick() {
       if (this.isEditMode) {
         this.data.selected = !this.data.selected;
@@ -60,7 +61,7 @@ export default {
           this.addShelfSelected(this.data);
         } else {
           this.setShelfSelected(
-            this.shelfSelected.filter(item => item.id !== this.data.id)
+            this.shelfSelected.filter((item) => item.id !== this.data.id)
           );
         }
       } else {
@@ -69,24 +70,22 @@ export default {
             name: "detail",
             query: {
               fileName: this.data.fileName,
-              category: this.data.categoryText
-            }
+              category: this.data.categoryText,
+            },
           });
         } else if (this.data.type == 2) {
           this.$router.push({
             name: "ShelfCategory",
             query: {
-              title: this.data.title
-            }
+              title: this.data.title,
+            },
           });
         } else {
           return;
         }
       }
-    }
+    },
   },
-  created() {},
-  mounted() {}
 };
 </script>
 <style lang="scss" scoped>

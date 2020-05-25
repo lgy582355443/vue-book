@@ -13,7 +13,7 @@
             <span class="icon-shake icon"></span>
           </div>
           <div class="title-icon-lang-wrapper" @click="switchLocale">
-            <span class="icon-cn icon" v-if="lang == 'cn'"></span>
+            <span class="icon-cn icon" v-if="lang == 'en'"></span>
             <span class="icon-en icon" v-else></span>
           </div>
         </div>

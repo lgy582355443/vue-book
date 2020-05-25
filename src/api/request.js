@@ -9,7 +9,7 @@ import Router from '../router/index'
 
 export const service = axios.create({
     baseURL: process.env.VUE_APP_BASE_URL,
-    timeout: 5000
+    timeout: 90000
 })
 
 //请求拦截

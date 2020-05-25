@@ -1,6 +1,9 @@
 <template>
-  <div class="shelf-search-main" :class="{'search-top':ifInputClicked, 'hide-shadow':ifHideShadow}">
-    <div class="shelf-search" :class="{'search-top': ifInputClicked}">
+  <div
+    class="shelf-search-main"
+    :class="{ 'search-top': ifInputClicked, 'hide-shadow': ifHideShadow }"
+  >
+    <div class="shelf-search" :class="{ 'search-top': ifInputClicked }">
       <div class="search-wrapper">
         <div class="icon-search-wrapper">
           <span class="icon-search icon"></span>
@@ -15,22 +18,39 @@
             ref="searchInput"
           />
         </div>
-        <div class="icon-clear-wrapper" @click="clearSearchText" v-show="searchText.length>0">
+        <div
+          class="icon-clear-wrapper"
+          @click="clearSearchText"
+          v-show="searchText.length > 0"
+        >
           <span class="icon-close-circle-fill icon"></span>
         </div>
       </div>
-      <div class="icon-loale-wrapper" v-if="!ifInputClicked" @click="switchLocale">
+      <div
+        class="icon-loale-wrapper"
+        v-if="!ifInputClicked"
+        @click="switchLocale"
+      >
         <span class="icon-cn icon" v-if="lang == 'cn'"></span>
         <span class="icon-en icon" v-else></span>
       </div>
       <div class="cancel-btn-wrapper" v-else @click="onCancelClick">
-        <span class="cancel-btn">{{$t('shelf.cancel')}}</span>
+        <span class="cancel-btn">{{ $t("shelf.cancel") }}</span>
       </div>
     </div>
     <transition name="shelf-tab-slide-up">
       <div class="tab-wrapper" v-show="ifInputClicked">
-        <div class="tab-item" v-for="(item, index) in tabs" :key="index" @click="onTabClick(item)">
-          <span class="tab-item-text" :class="{'is-selected': selectedID == item.id}">{{item.text}}</span>
+        <div
+          class="tab-item"
+          v-for="(item, index) in tabs"
+          :key="index"
+          @click="onTabClick(item)"
+        >
+          <span
+            class="tab-item-text"
+            :class="{ 'is-selected': selectedID == item.id }"
+            >{{ item.text }}</span
+          >
         </div>
       </div>
     </transition>
@@ -39,18 +59,17 @@
 
 <script>
 import { setLocalStorage } from "../../utils/localStorage";
-import { shelfMixin } from "@/mixins/shelf";
+import { mapGetters, mapActions } from "vuex";
+// import ShelfMixin from "@/mixins/shelf";
 export default {
   name: "ShelfSearch",
-  components: {},
-  props: {},
-  mixins: [shelfMixin],
+  // mixins: [ShelfMixin],
   data() {
     return {
       ifInputClicked: false,
       ifHideShadow: true,
       searchText: "",
-      selectedID: 1
+      selectedID: 1,
     };
   },
   watch: {
@@ -60,9 +79,10 @@ export default {
       } else {
         this.ifHideShadow = true;
       }
-    }
+    },
   },
   computed: {
+    ...mapGetters(["shelfTitleVisible", "offsetY"]),
     lang() {
       return this.$i18n.locale;
     },
@@ -71,22 +91,25 @@ export default {
         {
           id: 1,
           text: this.$t("shelf.default"),
-          selected: true
+          selected: true,
         },
         {
           id: 2,
           text: this.$t("shelf.progress"),
-          selected: false
+          selected: false,
         },
         {
           id: 3,
           text: this.$t("shelf.purchase"),
-          selected: false
-        }
+          selected: false,
+        },
       ];
-    }
+    },
   },
   methods: {
+    ...mapActions([
+      "setShelfTitleVisible",
+    ]),
     onTabClick(item) {
       this.selectedID = item.id;
     },
@@ -111,14 +134,14 @@ export default {
     //清空文本框
     clearSearchText() {
       this.searchText = "";
-    }
+    },
   },
   created() {},
   mounted() {},
   //离开时，输入框复位
   beforeDestroy() {
     this.onCancelClick();
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
