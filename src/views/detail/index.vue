@@ -187,6 +187,7 @@ export default {
     author() {
       return this.metadata ? this.metadata.creator : "";
     },
+    
     // 判断当前的电子书是否存在于书架
     inBookShelf() {
       if (this.bookItem && this.shelfList) {

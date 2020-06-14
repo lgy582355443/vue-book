@@ -22,15 +22,6 @@ export default {
   components: {
     TitleView
   },
-  props: {},
-  data() {
-    return {};
-  },
-  watch: {},
-  computed: {},
-  methods: {},
-  created() {},
-  mounted() {}
 };
 </script>
 <style lang="scss" scoped>

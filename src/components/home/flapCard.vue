@@ -32,7 +32,6 @@
         ></div>
       </div>
     </div>
-
     <!-- 动画结束后弹出书籍 -->
     <div
       class="book-card"
@@ -62,7 +61,6 @@ import { StoreHomeMixin } from "@/mixins/home";
 import { flapCardList } from "../../utils/home";
 export default {
   name: "FlapCard",
-  components: {},
   props: {
     randomBook: Object
   },

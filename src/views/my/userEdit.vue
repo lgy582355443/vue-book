@@ -94,7 +94,6 @@ export default {
       //本地图片路径
       this.changeAvatar = window.URL.createObjectURL(file);
       event.preventDefault();
-
       this.EditForm.append("file", file);
     },
 

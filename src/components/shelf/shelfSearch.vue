@@ -13,7 +13,8 @@
             class="search-input"
             type="text"
             :placeholder="$t('shelf.search')"
-            v-model="searchText"
+            v-model.trim="searchText"
+            @input="doSearch"
             @click="onSearchClick"
             ref="searchInput"
           />
@@ -107,9 +108,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions([
-      "setShelfTitleVisible",
-    ]),
+    ...mapActions(["setShelfTitleVisible"]),
+    doSearch(e) {
+      this.$emit("doSearch", this.searchText);
+    },
     onTabClick(item) {
       this.selectedID = item.id;
     },
