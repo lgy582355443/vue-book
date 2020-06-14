@@ -10,7 +10,6 @@
       <shelf-search @doSearch="getSearchVaule"></shelf-search>
       <shelf-list :data="bookList"></shelf-list>
     </scroll>
-    22
   </div>
 </template>
 

@@ -136,6 +136,7 @@ export default {
     //清空文本框
     clearSearchText() {
       this.searchText = "";
+      this.$emit("doSearch", this.searchText);
     },
   },
   created() {},
