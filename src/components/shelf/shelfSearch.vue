@@ -139,8 +139,6 @@ export default {
       this.$emit("doSearch", this.searchText);
     },
   },
-  created() {},
-  mounted() {},
   //离开时，输入框复位
   beforeDestroy() {
     this.onCancelClick();

@@ -24,8 +24,8 @@
     "web-storage-cache": "^1.1.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.0.0",
-    "@vue/cli-service": "^4.0.0",
+    "@vue/cli-plugin-babel": "^4.4.6",
+    "@vue/cli-service": "^4.4.6",
     "compression-webpack-plugin": "^3.0.1",
     "mockjs": "^1.1.0",
     "node-sass": "^4.12.0",
